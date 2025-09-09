@@ -1,0 +1,94 @@
+/*
+DESCRIPTION: This file contains all the global styles for the entire application.
+- Tailwind CSS is imported here to make all utility classes available
+- Custom CSS variables are defined for consistent theming
+- Base styles are applied to HTML elements
+
+WHAT EACH PART DOES:
+1. @import "tailwindcss" - Imports all Tailwind CSS utility classes
+2. :root variables - Defines custom colors and fonts that can be reused
+3. body styles - Sets default font and background for the entire app
+4. Custom utilities - Additional styles specific to our app
+
+PSEUDOCODE:
+- Import Tailwind CSS framework
+- Define custom color variables
+- Set default body styles
+- Add custom utility classes
+*/
+
+/* Import Tailwind CSS - this gives us access to all utility classes like bg-blue-500, text-xl, etc. */
+@import "tailwindcss";
+
+/* Define custom CSS variables for consistent theming throughout the app */
+:root {
+  /* Background colors - these are used for the main app background */
+  --background: #ffffff;
+  --foreground: #171717;
+
+  /* Custom color palette for our safety dashboard */
+  --primary: #3b82f6;      /* Blue for primary actions */
+  --primary-dark: #1d4ed8; /* Darker blue for hover states */
+  --success: #10b981;      /* Green for success states */
+  --warning: #f59e0b;      /* Orange for warning states */
+  --danger: #ef4444;       /* Red for danger/error states */
+
+  /* Font families - these will be set by Next.js font loading */
+  --font-geist-sans: 'Geist', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-geist-mono: 'Geist Mono', 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', monospace;
+}
+
+/* Dark mode support - automatically switches colors based on user preference */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
+}
+
+/* Base body styles - applied to the entire app */
+body {
+  /* Use the custom background and foreground colors we defined above */
+  background: var(--background);
+  color: var(--foreground);
+
+  /* Set default font family - this will be overridden by Tailwind classes */
+  font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
+
+  /* Smooth scrolling for better user experience */
+  scroll-behavior: smooth;
+}
+
+/* Custom utility classes for our app */
+.glass-effect {
+  /* Creates a modern glass-like appearance */
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.gradient-text {
+  /* Creates text with a gradient color effect */
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Custom scrollbar styling for better appearance */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #a8a8a8;
+}
