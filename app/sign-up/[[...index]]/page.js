@@ -19,6 +19,7 @@ PSEUDOCODE:
 'use client'
 
 import { SignUp } from '@clerk/nextjs'
+import Link from 'next/link'
 
 export default function SignUpPage() {
   return (
@@ -58,12 +59,12 @@ export default function SignUpPage() {
         <div className="text-center mt-6">
           <p className="text-sm text-gray-500">
             Already have an account?{' '}
-            <a 
+            <Link 
               href="/sign-in" 
               className="text-blue-600 hover:text-blue-700 font-medium transition-colors"
             >
               Sign in here
-            </a>
+            </Link>
           </p>
         </div>
       </div>

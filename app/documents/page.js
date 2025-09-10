@@ -26,6 +26,7 @@ PSEUDOCODE:
 'use client'
 
 import { useUser } from '@clerk/nextjs'
+import Link from 'next/link'
 import { useState, useEffect, useCallback } from 'react'
 import DashboardLayout from '@/components/DashboardLayout'
 
@@ -178,12 +179,12 @@ export default function DocumentsPage() {
           <p className="text-gray-600 mb-6">
             You need to be signed in to view and manage documents.
           </p>
-          <a 
+          <Link 
             href="/sign-in" 
             className="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
           >
             Sign In
-          </a>
+          </Link>
         </div>
       </DashboardLayout>
     )

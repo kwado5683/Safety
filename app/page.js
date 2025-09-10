@@ -142,7 +142,7 @@ export default function Dashboard() {
       <div className="mb-8">
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-3xl font-bold mb-2" style={{ color: 'var(--foreground)' }}>Welcome to Safety Dashboard</h1>
+            {/* <h1 className="text-3xl font-bold mb-2" style={{ color: 'var(--foreground)' }}>Welcome to Safety Dashboard</h1> */}
             <p style={{ color: 'var(--muted-foreground)' }}>Monitor and manage your safety operations in real-time</p>
             {!user && (
               <div className="mt-4 p-4 rounded-lg transition-colors duration-300" style={{
@@ -151,7 +151,7 @@ export default function Dashboard() {
                 border: '1px solid'
               }}>
                 <p className="text-sm mb-2" style={{ color: 'var(--foreground)' }}>
-                  <strong>👋 Welcome, visitor!</strong> You're viewing our demo dashboard. 
+                  <strong>👋 Welcome, visitor!</strong> You&apos;re viewing our demo dashboard. 
                   Sign up to access the full safety management system.
                 </p>
                 <div className="flex gap-3">
