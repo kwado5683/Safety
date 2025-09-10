@@ -22,14 +22,22 @@ PSEUDOCODE:
 
 // Import React hooks for managing component state and side effects
 import { useEffect, useState } from 'react'
+import Link from 'next/link'
 
 // Import our custom components
 import DashboardLayout from '@/components/DashboardLayout'
+import PublicLayout from '@/components/PublicLayout'
 import KPI from '@/components/KPI'
 import { BarChart, PieChart } from '@/components/Chart'
 
+// Import Clerk hooks to check authentication status
+import { useUser } from '@clerk/nextjs'
+
 // Main dashboard component
 export default function Dashboard() {
+  // Get current user information from Clerk
+  const { user, isLoaded } = useUser()
+  
   // State variables - these store data that can change
   const [data, setData] = useState(null)        // Stores the dashboard data from API
   const [loading, setLoading] = useState(true)  // Tracks if we're still loading data
@@ -99,37 +107,28 @@ export default function Dashboard() {
     }
   }
 
+  // Choose the appropriate layout based on authentication status
+  const Layout = user ? DashboardLayout : PublicLayout
+
   // Show loading message while fetching data
-  if (loading) {
+  if (loading || !isLoaded) {
     return (
-      <DashboardLayout>
+      <Layout>
         <div className="p-6 bg-white rounded-xl border border-neutral-200">
           <p className="text-neutral-700">Loading dashboard...</p>
         </div>
-      </DashboardLayout>
+      </Layout>
     )
   }
 
-  // Show sign-in prompt if user is not authenticated
-  if (data?.error === 401) {
+  // Show error message if something went wrong (but still use appropriate layout)
+  if (data?.error && data.error !== 401) {
     return (
-      <DashboardLayout>
-        <div className="p-6 bg-white rounded-xl border border-neutral-200">
-          <p className="text-neutral-700">You must sign in to view the dashboard.</p>
-          <a href="/sign-in" className="text-indigo-600 underline">Sign in</a>
-        </div>
-      </DashboardLayout>
-    )
-  }
-
-  // Show error message if something went wrong
-  if (data?.error) {
-    return (
-      <DashboardLayout>
+      <Layout>
         <div className="p-6 bg-white rounded-xl border border-neutral-200">
           <p className="text-neutral-700">Error loading dashboard: {data.error}</p>
         </div>
-      </DashboardLayout>
+      </Layout>
     )
   }
 
@@ -138,16 +137,45 @@ export default function Dashboard() {
 
   // Main dashboard content
   return (
-    <DashboardLayout>
+    <Layout>
       {/* Welcome header section */}
       <div className="mb-8">
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-3xl font-bold text-slate-800 mb-2">Welcome to Safety Dashboard</h1>
-            <p className="text-slate-600">Monitor and manage your safety operations in real-time</p>
+            <h1 className="text-3xl font-bold mb-2" style={{ color: 'var(--foreground)' }}>Welcome to Safety Dashboard</h1>
+            <p style={{ color: 'var(--muted-foreground)' }}>Monitor and manage your safety operations in real-time</p>
+            {!user && (
+              <div className="mt-4 p-4 rounded-lg transition-colors duration-300" style={{
+                backgroundColor: 'var(--muted)',
+                borderColor: 'var(--border)',
+                border: '1px solid'
+              }}>
+                <p className="text-sm mb-2" style={{ color: 'var(--foreground)' }}>
+                  <strong>👋 Welcome, visitor!</strong> You're viewing our demo dashboard. 
+                  Sign up to access the full safety management system.
+                </p>
+                <div className="flex gap-3">
+                  <Link 
+                    href="/sign-up" 
+                    className="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition-colors text-sm font-medium"
+                  >
+                    Get Started Free
+                  </Link>
+                  <Link 
+                    href="/sign-in" 
+                    className="text-indigo-600 dark:text-indigo-400 px-4 py-2 rounded-lg hover:bg-indigo-50 dark:hover:bg-indigo-900/20 transition-colors text-sm font-medium border border-indigo-200 dark:border-indigo-800"
+                  >
+                    Sign In
+                  </Link>
+                </div>
+              </div>
+            )}
           </div>
           {/* System status indicator */}
-          <div className="flex items-center gap-2 px-3 py-2 bg-green-100 text-green-800 rounded-full text-sm font-medium">
+          <div className="flex items-center gap-2 px-3 py-2 rounded-full text-sm font-medium transition-colors duration-300" style={{
+            backgroundColor: 'var(--success)',
+            color: 'var(--success-foreground)'
+          }}>
             <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
             System Online
           </div>
@@ -179,6 +207,6 @@ export default function Dashboard() {
           />
         )}
       </div>
-    </DashboardLayout>
+    </Layout>
   )
 }

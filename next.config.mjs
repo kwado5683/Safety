@@ -22,7 +22,9 @@ const nextConfig = {
   // Enable experimental features
   experimental: {
     // Enable server actions (for forms and data mutations)
-    serverActions: true,
+    serverActions: {
+      allowedOrigins: ['localhost:3000', 'localhost:3001', 'localhost:3002', 'localhost:3003'],
+    },
   },
   
   // Configure image optimization

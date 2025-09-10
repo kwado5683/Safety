@@ -19,6 +19,7 @@ PSEUDOCODE:
 
 import { ClerkProvider } from '@clerk/nextjs'
 import { Geist, Geist_Mono } from 'next/font/google'
+import { ThemeProvider } from '@/lib/ThemeContext'
 import './globals.css'
 
 // Load Google Fonts - these fonts will be available throughout the app
@@ -47,8 +48,11 @@ export default function RootLayout({ children }) {
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         {/* ClerkProvider wraps the entire app to enable authentication */}
         <ClerkProvider>
-          {/* children represents whatever page is being displayed */}
-          {children}
+          {/* ThemeProvider wraps the app to enable theme management */}
+          <ThemeProvider>
+            {/* children represents whatever page is being displayed */}
+            {children}
+          </ThemeProvider>
         </ClerkProvider>
       </body>
     </html>

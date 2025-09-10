@@ -26,6 +26,7 @@ PSEUDOCODE:
 import { useState } from 'react'
 import { useUser, useClerk } from '@clerk/nextjs'
 import Link from 'next/link'
+import ThemeToggle from './ThemeToggle'
 
 // DashboardLayout component - wraps all dashboard pages
 export default function DashboardLayout({ children }) {
@@ -76,22 +77,30 @@ export default function DashboardLayout({ children }) {
 
   // Main layout structure
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 text-slate-900">
+    <div className="min-h-screen transition-colors duration-300" style={{ 
+      background: 'linear-gradient(to bottom right, var(--background), var(--muted), var(--primary))',
+      color: 'var(--foreground)'
+    }}>
       {/* Header - contains app title and user actions */}
-      <header className="h-16 bg-white/80 backdrop-blur-sm border-b border-slate-200/60 flex items-center justify-between px-4 sm:px-6 shadow-sm">
+      <header className="h-16 backdrop-blur-sm border-b flex items-center justify-between px-4 sm:px-6 shadow-sm transition-colors duration-300" style={{
+        backgroundColor: 'var(--card)',
+        borderColor: 'var(--border)'
+      }}>
         {/* App title with gradient text */}
         <div className="font-bold text-xl tracking-tight bg-gradient-to-r from-indigo-600 to-blue-600 bg-clip-text text-transparent">
           Safety Dashboard
         </div>
         
-        {/* User actions - settings and sign out */}
-        <div className="flex items-center gap-2">
-          <Link href="/settings" className="text-sm text-slate-600 hover:text-slate-900 transition-colors">
+        {/* User actions - theme toggle, settings and sign out */}
+        <div className="flex items-center gap-3">
+          <ThemeToggle />
+          <Link href="/settings" className="text-sm transition-colors" style={{ color: 'var(--muted-foreground)' }}>
             Settings
           </Link>
           <button 
             onClick={handleSignOut}
-            className="text-sm text-slate-600 hover:text-slate-900 transition-colors"
+            className="text-sm transition-colors"
+            style={{ color: 'var(--muted-foreground)' }}
           >
             Sign Out
           </button>
@@ -101,41 +110,44 @@ export default function DashboardLayout({ children }) {
       {/* Main content area with sidebar and page content */}
       <div className="flex">
         {/* Sidebar navigation - hidden on mobile, visible on desktop */}
-        <aside className="hidden md:block w-64 shrink-0 bg-white/80 backdrop-blur-sm border-r border-slate-200/60 min-h-[calc(100vh-4rem)] p-4 shadow-sm">
+        <aside className="hidden md:block w-64 shrink-0 backdrop-blur-sm border-r min-h-[calc(100vh-4rem)] p-4 shadow-sm transition-colors duration-300" style={{
+          backgroundColor: 'var(--card)',
+          borderColor: 'var(--border)'
+        }}>
           {/* Navigation menu */}
           <nav className="space-y-2">
             {/* Dashboard link */}
-            <Link href="/" className="block px-3 py-2 text-sm text-slate-700 hover:bg-gradient-to-r hover:from-indigo-50 hover:to-blue-50 rounded-lg transition-all duration-200 hover:shadow-sm">
+            <Link href="/" className="block px-3 py-2 text-sm rounded-lg transition-all duration-200 hover:shadow-sm" style={{ color: 'var(--foreground)' }}>
               Dashboard
             </Link>
             
             {/* Incidents link */}
-            <Link href="/incidents" className="block px-3 py-2 text-sm text-slate-700 hover:bg-gradient-to-r hover:from-red-50 hover:to-pink-50 rounded-lg transition-all duration-200 hover:shadow-sm">
+            <Link href="/incidents" className="block px-3 py-2 text-sm text-slate-700 dark:text-slate-300 hover:bg-gradient-to-r hover:from-red-50 hover:to-pink-50 dark:hover:from-red-900/20 dark:hover:to-pink-900/20 rounded-lg transition-all duration-200 hover:shadow-sm">
               Incidents
             </Link>
             
             {/* Inspections link */}
-            <Link href="/inspections" className="block px-3 py-2 text-sm text-slate-700 hover:bg-gradient-to-r hover:from-yellow-50 hover:to-orange-50 rounded-lg transition-all duration-200 hover:shadow-sm">
+            <Link href="/inspections" className="block px-3 py-2 text-sm text-slate-700 dark:text-slate-300 hover:bg-gradient-to-r hover:from-yellow-50 hover:to-orange-50 dark:hover:from-yellow-900/20 dark:hover:to-orange-900/20 rounded-lg transition-all duration-200 hover:shadow-sm">
               Inspections
             </Link>
             
             {/* Training link */}
-            <Link href="/training" className="block px-3 py-2 text-sm text-slate-700 hover:bg-gradient-to-r hover:from-green-50 hover:to-emerald-50 rounded-lg transition-all duration-200 hover:shadow-sm">
+            <Link href="/training" className="block px-3 py-2 text-sm text-slate-700 dark:text-slate-300 hover:bg-gradient-to-r hover:from-green-50 hover:to-emerald-50 dark:hover:from-green-900/20 dark:hover:to-emerald-900/20 rounded-lg transition-all duration-200 hover:shadow-sm">
               Training
             </Link>
             
             {/* Documents link */}
-            <Link href="/documents" className="block px-3 py-2 text-sm text-slate-700 hover:bg-gradient-to-r hover:from-purple-50 hover:to-violet-50 rounded-lg transition-all duration-200 hover:shadow-sm">
+            <Link href="/documents" className="block px-3 py-2 text-sm text-slate-700 dark:text-slate-300 hover:bg-gradient-to-r hover:from-purple-50 hover:to-violet-50 dark:hover:from-purple-900/20 dark:hover:to-violet-900/20 rounded-lg transition-all duration-200 hover:shadow-sm">
               Documents
             </Link>
             
             {/* Risk Management link - shown to all users for now */}
-            <Link href="/risk" className="block px-3 py-2 text-sm text-slate-700 hover:bg-gradient-to-r hover:from-amber-50 hover:to-orange-50 rounded-lg transition-all duration-200 hover:shadow-sm">
+            <Link href="/risk" className="block px-3 py-2 text-sm text-slate-700 dark:text-slate-300 hover:bg-gradient-to-r hover:from-amber-50 hover:to-orange-50 dark:hover:from-amber-900/20 dark:hover:to-orange-900/20 rounded-lg transition-all duration-200 hover:shadow-sm">
               Risk Management
             </Link>
             
             {/* Settings link */}
-            <Link href="/settings" className="block px-3 py-2 text-sm text-slate-700 hover:bg-gradient-to-r hover:from-slate-50 hover:to-gray-50 rounded-lg transition-all duration-200 hover:shadow-sm">
+            <Link href="/settings" className="block px-3 py-2 text-sm text-slate-700 dark:text-slate-300 hover:bg-gradient-to-r hover:from-slate-50 hover:to-gray-50 dark:hover:from-slate-800/20 dark:hover:to-gray-800/20 rounded-lg transition-all duration-200 hover:shadow-sm">
               Settings
             </Link>
           </nav>

@@ -1,21 +1,20 @@
 /*
 DESCRIPTION: This is an API route that provides dashboard summary data.
 - Returns key performance indicators (KPIs) and chart data
-- Protected by authentication (requires login)
-- Uses Clerk's getAuth() function to get current user
+- Allows both authenticated and unauthenticated access (public dashboard)
+- Uses Clerk's getAuth() function to get current user (optional)
 - Returns mock data for demonstration purposes
 
 WHAT EACH PART DOES:
-1. getAuth() - Clerk function that gets current user information from request
+1. getAuth() - Clerk function that gets current user information from request (optional)
 2. NextResponse - Next.js utility for creating API responses
 3. GET method - Handles GET requests to this endpoint
-4. Authentication check - Ensures only logged-in users can access
+4. Public access - Allows visitors to see demo data
 5. Mock data - Returns sample data for demonstration
 
 PSEUDOCODE:
-- Check if user is authenticated
-- If not authenticated, return 401 error
-- If authenticated, return dashboard data
+- Get user information (if available)
+- Return dashboard data (same for all users - demo data)
 - Include KPIs and chart data
 - Format response as JSON
 */
@@ -29,16 +28,11 @@ import { getAuth } from '@clerk/nextjs/server'
 // GET handler - called when someone makes a GET request to /api/dashboard/summary
 export async function GET(request) {
   try {
-    // Get current user information from Clerk
+    // Get current user information from Clerk (optional for public dashboard)
     const { userId } = await getAuth(request)
     
-    // If no user is logged in, return unauthorized error
-    if (!userId) {
-      return NextResponse.json(
-        { error: 'Unauthorized' },
-        { status: 401 }
-      )
-    }
+    // Note: We allow both authenticated and unauthenticated access to the dashboard
+    // This allows visitors to see demo data while authenticated users see real data
     
     // Mock dashboard data - in a real app, this would come from your database
     const dashboardData = {

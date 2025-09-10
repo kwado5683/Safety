@@ -20,11 +20,14 @@ import {
   Legend,
 } from 'chart.js'
 import { Bar, Pie } from 'react-chartjs-2'
+import { useTheme } from '@/lib/ThemeContext'
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, ArcElement, Title, Tooltip, Legend)
 
 export function BarChart({ labels = [], datasets = [], options = {} }) {
+  const { isDark } = useTheme()
   const data = { labels, datasets }
+  
   const baseOptions = {
     responsive: true,
     maintainAspectRatio: false,
@@ -37,7 +40,8 @@ export function BarChart({ labels = [], datasets = [], options = {} }) {
           font: {
             size: 12,
             weight: '600'
-          }
+          },
+          color: isDark ? 'rgba(248, 250, 252, 0.8)' : 'rgba(71, 85, 105, 0.8)'
         }
       },
       title: { display: false },
@@ -46,10 +50,10 @@ export function BarChart({ labels = [], datasets = [], options = {} }) {
       y: {
         beginAtZero: true,
         grid: {
-          color: 'rgba(148, 163, 184, 0.1)',
+          color: isDark ? 'rgba(148, 163, 184, 0.1)' : 'rgba(148, 163, 184, 0.1)',
         },
         ticks: {
-          color: 'rgba(71, 85, 105, 0.8)',
+          color: isDark ? 'rgba(248, 250, 252, 0.8)' : 'rgba(71, 85, 105, 0.8)',
           font: {
             size: 11
           }
@@ -57,10 +61,10 @@ export function BarChart({ labels = [], datasets = [], options = {} }) {
       },
       x: {
         grid: {
-          color: 'rgba(148, 163, 184, 0.1)',
+          color: isDark ? 'rgba(148, 163, 184, 0.1)' : 'rgba(148, 163, 184, 0.1)',
         },
         ticks: {
-          color: 'rgba(71, 85, 105, 0.8)',
+          color: isDark ? 'rgba(248, 250, 252, 0.8)' : 'rgba(71, 85, 105, 0.8)',
           font: {
             size: 11
           }
@@ -69,9 +73,13 @@ export function BarChart({ labels = [], datasets = [], options = {} }) {
     },
     ...options,
   }
+  
   return (
-    <div className="rounded-xl border border-slate-200 bg-white/90 backdrop-blur-sm p-6 shadow-lg hover:shadow-xl transition-all duration-300">
-      <h3 className="text-lg font-semibold text-slate-800 mb-4">Incidents by Month</h3>
+    <div className="rounded-xl border backdrop-blur-sm p-6 shadow-lg hover:shadow-xl transition-all duration-300" style={{
+      backgroundColor: 'var(--card)',
+      borderColor: 'var(--border)'
+    }}>
+      <h3 className="text-lg font-semibold mb-4" style={{ color: 'var(--foreground)' }}>Incidents by Month</h3>
       <div className="h-80">
         <Bar data={data} options={baseOptions} />
       </div>
@@ -80,7 +88,9 @@ export function BarChart({ labels = [], datasets = [], options = {} }) {
 }
 
 export function PieChart({ labels = [], datasets = [], options = {} }) {
+  const { isDark } = useTheme()
   const data = { labels, datasets }
+  
   const baseOptions = {
     responsive: true,
     maintainAspectRatio: false,
@@ -93,16 +103,21 @@ export function PieChart({ labels = [], datasets = [], options = {} }) {
           font: {
             size: 12,
             weight: '600'
-          }
+          },
+          color: isDark ? 'rgba(248, 250, 252, 0.8)' : 'rgba(71, 85, 105, 0.8)'
         }
       },
       title: { display: false },
     },
     ...options,
   }
+  
   return (
-    <div className="rounded-xl border border-slate-200 bg-white/90 backdrop-blur-sm p-6 shadow-lg hover:shadow-xl transition-all duration-300">
-      <h3 className="text-lg font-semibold text-slate-800 mb-4">Incidents by Status</h3>
+    <div className="rounded-xl border backdrop-blur-sm p-6 shadow-lg hover:shadow-xl transition-all duration-300" style={{
+      backgroundColor: 'var(--card)',
+      borderColor: 'var(--border)'
+    }}>
+      <h3 className="text-lg font-semibold mb-4" style={{ color: 'var(--foreground)' }}>Incidents by Status</h3>
       <div className="h-80">
         <Pie data={data} options={baseOptions} />
       </div>
