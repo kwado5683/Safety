@@ -34,8 +34,9 @@ export default function IncidentsPage() {
   // State variables - these store data that can change
   const [incidents, setIncidents] = useState([])        // List of incidents
   const [loading, setLoading] = useState(true)         // Loading state
-  const [statusFilter, setStatusFilter] = useState('')  // Filter by status
-  const [categoryFilter, setCategoryFilter] = useState('') // Filter by category
+  const [statusFilter, setStatusFilter] = useState('')  // Filter by incident type
+  const [categoryFilter, setCategoryFilter] = useState('') // Filter by severity
+  const [locationFilter, setLocationFilter] = useState('') // Filter by location
 
   // useEffect runs when the component first loads
   useEffect(() => {
@@ -46,8 +47,9 @@ export default function IncidentsPage() {
         
         // Build query string with filters
         const params = new URLSearchParams()
-        if (statusFilter) params.append('status', statusFilter)
-        if (categoryFilter) params.append('category', categoryFilter)
+        if (statusFilter) params.append('incidentType', statusFilter)
+        if (categoryFilter) params.append('severity', categoryFilter)
+        if (locationFilter) params.append('location', locationFilter)
         
         // Fetch incidents from API
         const response = await fetch(`/api/incidents/list?${params.toString()}`)
@@ -69,7 +71,7 @@ export default function IncidentsPage() {
 
     // Call the function to fetch incidents
     fetchIncidents()
-  }, [statusFilter, categoryFilter]) // Re-run when filters change
+  }, [statusFilter, categoryFilter, locationFilter]) // Re-run when filters change
 
   // Show loading message while fetching data
   if (loading) {
@@ -112,22 +114,39 @@ export default function IncidentsPage() {
       {/* Filters section */}
       <div className="mb-6 p-3 sm:p-4 bg-white/80 backdrop-blur-sm rounded-xl border border-slate-200/60 shadow-sm">
         <h3 className="text-sm font-semibold text-slate-700 mb-3 uppercase tracking-wide">Filters</h3>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-          {/* Status filter */}
-          <input
-            type="text"
-            placeholder="Filter by status"
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+          {/* Incident Type filter */}
+          <select
             value={statusFilter}
             onChange={(e) => setStatusFilter(e.target.value)}
             className="rounded-lg border border-slate-300 bg-white px-3 sm:px-4 py-2 sm:py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all duration-200"
-          />
+          >
+            <option value="">All Incident Types</option>
+            <option value="Nearmiss">Nearmiss</option>
+            <option value="Accident">Accident</option>
+            <option value="Dangerous occurence">Dangerous occurence</option>
+          </select>
           
-          {/* Category filter */}
-          <input
-            type="text"
-            placeholder="Filter by category"
+          {/* Severity filter */}
+          <select
             value={categoryFilter}
             onChange={(e) => setCategoryFilter(e.target.value)}
+            className="rounded-lg border border-slate-300 bg-white px-3 sm:px-4 py-2 sm:py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all duration-200"
+          >
+            <option value="">All Severity Levels</option>
+            <option value="1">Severity 1 (Low)</option>
+            <option value="2">Severity 2 (Low-Medium)</option>
+            <option value="3">Severity 3 (Medium)</option>
+            <option value="4">Severity 4 (High)</option>
+            <option value="5">Severity 5 (Critical)</option>
+          </select>
+          
+          {/* Location filter */}
+          <input
+            type="text"
+            placeholder="Filter by location"
+            value={locationFilter}
+            onChange={(e) => setLocationFilter(e.target.value)}
             className="rounded-lg border border-slate-300 bg-white px-3 sm:px-4 py-2 sm:py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all duration-200"
           />
         </div>
@@ -139,10 +158,12 @@ export default function IncidentsPage() {
           {/* Table header */}
           <thead className="bg-gradient-to-r from-slate-50 to-blue-50">
             <tr>
-              <th className="text-left px-6 py-4 text-xs font-semibold text-slate-700 uppercase tracking-wider">Title</th>
-              <th className="text-left px-6 py-4 text-xs font-semibold text-slate-700 uppercase tracking-wider">Status</th>
-              <th className="text-left px-6 py-4 text-xs font-semibold text-slate-700 uppercase tracking-wider">Category</th>
-              <th className="text-left px-6 py-4 text-xs font-semibold text-slate-700 uppercase tracking-wider">Created</th>
+              <th className="text-left px-3 sm:px-6 py-4 text-xs font-semibold text-slate-700 uppercase tracking-wider">Image</th>
+              <th className="text-left px-3 sm:px-6 py-4 text-xs font-semibold text-slate-700 uppercase tracking-wider">Type</th>
+              <th className="text-left px-3 sm:px-6 py-4 text-xs font-semibold text-slate-700 uppercase tracking-wider">Severity</th>
+              <th className="text-left px-3 sm:px-6 py-4 text-xs font-semibold text-slate-700 uppercase tracking-wider">Location</th>
+              <th className="text-left px-3 sm:px-6 py-4 text-xs font-semibold text-slate-700 uppercase tracking-wider">Reported By</th>
+              <th className="text-left px-3 sm:px-6 py-4 text-xs font-semibold text-slate-700 uppercase tracking-wider">Date</th>
             </tr>
           </thead>
           
@@ -151,7 +172,7 @@ export default function IncidentsPage() {
             {incidents.length === 0 ? (
               // Show message when no incidents found
               <tr>
-                <td className="px-6 py-8 text-center text-slate-500" colSpan={4}>
+                <td className="px-3 sm:px-6 py-8 text-center text-slate-500" colSpan={6}>
                   No incidents found
                 </td>
               </tr>
@@ -159,17 +180,77 @@ export default function IncidentsPage() {
               // Show incidents list
               incidents.map((incident) => (
                 <tr key={incident.id} className="hover:bg-slate-50 transition-colors duration-150">
-                  <td className="px-6 py-4">
-                    <span className="font-medium text-slate-900">{incident.title}</span>
+                  {/* Image Preview Column */}
+                  <td className="px-3 sm:px-6 py-4">
+                    {incident.hasImage ? (
+                      <div className="relative">
+                        <img
+                          src={incident.imagePreview.url}
+                          alt={incident.imagePreview.alt}
+                          className="w-12 h-12 sm:w-16 sm:h-16 object-cover rounded-lg border border-slate-200"
+                        />
+                        <div className="absolute -top-1 -right-1 w-4 h-4 bg-green-500 rounded-full border-2 border-white"></div>
+                      </div>
+                    ) : (
+                      <div className="w-12 h-12 sm:w-16 sm:h-16 bg-slate-100 rounded-lg border border-slate-200 flex items-center justify-center">
+                        <svg className="w-6 h-6 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                        </svg>
+                      </div>
+                    )}
                   </td>
-                  <td className="px-6 py-4">
-                    <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
-                      {incident.status}
+                  
+                  {/* Incident Type Column */}
+                  <td className="px-3 sm:px-6 py-4">
+                    <span className="font-medium text-slate-900 text-sm sm:text-base">
+                      {incident.incidentType}
                     </span>
                   </td>
-                  <td className="px-6 py-4 text-slate-600">{incident.category || '-'}</td>
-                  <td className="px-6 py-4 text-slate-600">
-                    {new Date(incident.created_at).toLocaleDateString()}
+                  
+                  {/* Severity Column */}
+                  <td className="px-3 sm:px-6 py-4">
+                    <span className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${
+                      incident.severity === '5' ? 'bg-red-100 text-red-800' :
+                      incident.severity === '4' ? 'bg-orange-100 text-orange-800' :
+                      incident.severity === '3' ? 'bg-yellow-100 text-yellow-800' :
+                      incident.severity === '2' ? 'bg-blue-100 text-blue-800' :
+                      'bg-green-100 text-green-800'
+                    }`}>
+                      {incident.severity}
+                    </span>
+                  </td>
+                  
+                  {/* Location Column */}
+                  <td className="px-3 sm:px-6 py-4">
+                    <span className="text-slate-600 text-sm sm:text-base">
+                      {incident.location}
+                    </span>
+                  </td>
+                  
+                  {/* Reported By Column */}
+                  <td className="px-3 sm:px-6 py-4">
+                    <div>
+                      <div className="font-medium text-slate-900 text-sm sm:text-base">
+                        {incident.reportedBy}
+                      </div>
+                      {incident.reporterPhone && (
+                        <div className="text-xs text-slate-500">
+                          {incident.reporterPhone}
+                        </div>
+                      )}
+                    </div>
+                  </td>
+                  
+                  {/* Date Column */}
+                  <td className="px-3 sm:px-6 py-4">
+                    <div>
+                      <div className="text-slate-900 text-sm sm:text-base">
+                        {new Date(incident.timeOfIncident).toLocaleDateString()}
+                      </div>
+                      <div className="text-xs text-slate-500">
+                        {new Date(incident.timeOfIncident).toLocaleTimeString()}
+                      </div>
+                    </div>
                   </td>
                 </tr>
               ))

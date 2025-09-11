@@ -1,22 +1,24 @@
 /*
-DESCRIPTION: This is an API route that provides a list of incidents.
+DESCRIPTION: This is an API route that provides a list of incidents from the database.
 - Returns incidents data with optional filtering
 - Protected by authentication (requires login)
 - Uses Clerk's getAuth() function to get current user
-- Returns mock data for demonstration purposes
+- Fetches real data from Supabase database
+- Includes image previews for incidents with images
 
 WHAT EACH PART DOES:
 1. getAuth() - Clerk function that gets current user information from request
 2. NextRequest - Next.js utility for handling request data
 3. GET method - Handles GET requests to this endpoint
 4. Query parameters - Gets filters from the URL
-5. Mock data - Returns sample incidents data
+5. Database query - Fetches incidents from Supabase
+6. Image handling - Includes image URLs for preview
 
 PSEUDOCODE:
 - Check if user is authenticated
 - Get filter parameters from request URL
-- Apply filters to mock data
-- Return filtered incidents as JSON
+- Query database for incidents with filters
+- Return incidents with image previews as JSON
 - Include pagination information
 */
 
@@ -25,6 +27,9 @@ import { NextResponse } from 'next/server'
 
 // Import Clerk's authentication function
 import { getAuth } from '@clerk/nextjs/server'
+
+// Import Supabase server client
+import { supabaseServer } from '@/lib/supabaseServer'
 
 // GET handler - called when someone makes a GET request to /api/incidents/list
 export async function GET(request) {
@@ -42,90 +47,80 @@ export async function GET(request) {
     
     // Get query parameters from the request URL
     const { searchParams } = new URL(request.url)
-    const status = searchParams.get('status')
-    const category = searchParams.get('category')
+    const incidentType = searchParams.get('incidentType')
+    const severity = searchParams.get('severity')
+    const location = searchParams.get('location')
     const page = parseInt(searchParams.get('page') || '1')
     const pageSize = parseInt(searchParams.get('pageSize') || '10')
     
-    // Mock incidents data - in a real app, this would come from your database
-    const mockIncidents = [
-      {
-        id: 1,
-        title: 'Slip and Fall in Warehouse',
-        status: 'open',
-        category: 'slip_trip',
-        description: 'Employee slipped on wet floor in warehouse area',
-        created_at: '2024-01-15T10:30:00Z',
-        location: 'Warehouse A',
-        severity: 'medium'
-      },
-      {
-        id: 2,
-        title: 'Equipment Malfunction',
-        status: 'in_progress',
-        category: 'equipment',
-        description: 'Forklift brake system malfunction',
-        created_at: '2024-01-14T14:20:00Z',
-        location: 'Loading Dock',
-        severity: 'high'
-      },
-      {
-        id: 3,
-        title: 'Chemical Spill',
-        status: 'resolved',
-        category: 'chemical',
-        description: 'Small chemical spill in laboratory',
-        created_at: '2024-01-13T09:15:00Z',
-        location: 'Lab B',
-        severity: 'low'
-      },
-      {
-        id: 4,
-        title: 'Fire Alarm Activation',
-        status: 'closed',
-        category: 'fire',
-        description: 'False fire alarm activation',
-        created_at: '2024-01-12T16:45:00Z',
-        location: 'Building C',
-        severity: 'low'
-      },
-      {
-        id: 5,
-        title: 'Electrical Hazard',
-        status: 'open',
-        category: 'electrical',
-        description: 'Exposed electrical wiring in office area',
-        created_at: '2024-01-11T11:00:00Z',
-        location: 'Office Floor 2',
-        severity: 'high'
-      }
-    ]
+    // Build query for Supabase
+    let query = supabaseServer
+      .from('incident')
+      .select('*')
+      .order('reporttimestamp', { ascending: false })
     
     // Apply filters if provided
-    let filteredIncidents = mockIncidents
+    if (incidentType) {
+      query = query.eq('incidenttype', incidentType)
+    }
     
-    if (status) {
-      filteredIncidents = filteredIncidents.filter(incident => 
-        incident.status === status
+    if (severity) {
+      query = query.eq('severity', severity)
+    }
+    
+    if (location) {
+      query = query.ilike('location', `%${location}%`)
+    }
+    
+    // Get total count for pagination
+    const { count } = await supabaseServer
+      .from('incident')
+      .select('*', { count: 'exact', head: true })
+    
+    // Apply pagination
+    const startIndex = (page - 1) * pageSize
+    const endIndex = startIndex + pageSize - 1
+    
+    query = query.range(startIndex, endIndex)
+    
+    // Execute the query
+    const { data: incidents, error } = await query
+    
+    if (error) {
+      console.error('Database error:', error)
+      return NextResponse.json(
+        { error: 'Failed to fetch incidents' },
+        { status: 500 }
       )
     }
     
-    if (category) {
-      filteredIncidents = filteredIncidents.filter(incident => 
-        incident.category === category
-      )
-    }
+    // Transform the data to match our form structure
+    const transformedIncidents = incidents.map(incident => ({
+      id: incident.id,
+      incidentType: incident.incidenttype,
+      severity: incident.severity,
+      reportedBy: incident.reportedby,
+      reporterPhone: incident.reporterphone,
+      timeOfIncident: incident.timeofincident,
+      location: incident.location,
+      description: incident.description,
+      imageUrl: incident.imageurl,
+      reportTimestamp: incident.reporttimestamp,
+      // Add computed fields for UI
+      hasImage: !!incident.imageurl,
+      imagePreview: incident.imageurl ? {
+        url: incident.imageurl,
+        alt: `Incident image for ${incident.incidenttype} at ${incident.location}`
+      } : null
+    }))
     
     // Calculate pagination
-    const totalItems = filteredIncidents.length
+    const totalItems = count || 0
     const totalPages = Math.ceil(totalItems / pageSize)
-    const startIndex = (page - 1) * pageSize
-    const endIndex = startIndex + pageSize
-    const paginatedIncidents = filteredIncidents.slice(startIndex, endIndex)
     
     // Prepare response data
     const responseData = {
-      items: paginatedIncidents,
+      items: transformedIncidents,
       pagination: {
         page,
         pageSize,
