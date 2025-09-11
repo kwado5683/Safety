@@ -81,8 +81,8 @@ export default function DashboardLayout({ children }) {
       background: 'linear-gradient(to bottom right, var(--background), var(--muted), var(--primary))',
       color: 'var(--foreground)'
     }}>
-      {/* Header - contains app title and user actions */}
-      <header className="h-16 backdrop-blur-sm border-b flex items-center justify-between px-4 sm:px-6 shadow-sm transition-colors duration-300" style={{
+      {/* Header - contains app title and user actions - STICKY */}
+      <header className="sticky top-0 z-50 h-16 backdrop-blur-sm border-b flex items-center justify-between px-4 sm:px-6 shadow-sm transition-colors duration-300" style={{
         backgroundColor: 'var(--card)',
         borderColor: 'var(--border)'
       }}>
@@ -108,9 +108,9 @@ export default function DashboardLayout({ children }) {
       </header>
 
       {/* Main content area with sidebar and page content */}
-      <div className="flex">
-        {/* Sidebar navigation - hidden on mobile, visible on desktop */}
-        <aside className="hidden md:block w-64 shrink-0 backdrop-blur-sm border-r min-h-[calc(100vh-4rem)] p-4 shadow-sm transition-colors duration-300" style={{
+      <div className="flex relative">
+        {/* Sidebar navigation - hidden on mobile, visible on desktop - STICKY */}
+        <aside className="hidden md:block w-64 shrink-0 backdrop-blur-sm border-r h-[calc(100vh-4rem)] p-4 shadow-sm transition-colors duration-300 fixed left-0 top-16 z-40 overflow-y-auto" style={{
           backgroundColor: 'var(--card)',
           borderColor: 'var(--border)'
         }}>
@@ -154,7 +154,7 @@ export default function DashboardLayout({ children }) {
         </aside>
 
         {/* Main content area - where page content goes */}
-        <main className="flex-1 p-4 sm:p-6">
+        <main className="flex-1 p-4 sm:p-6 pt-6 md:ml-64">
           {/* Content container with max width for better readability */}
           <div className="mx-auto max-w-7xl">
             {/* children represents the actual page content (like dashboard, incidents, etc.) */}

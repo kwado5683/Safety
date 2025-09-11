@@ -1,95 +1,199 @@
 /*
 Description: Incident reporting form built with react-hook-form and yup.
-- Captures title, date, description.
-- Integrates RiskMatrix to pick severity and likelihood (1-5 each).
+- Captures incident type, severity, reported by, timestamps, location, description.
+- Matches database schema with proper field validation.
 - Validates inputs; exposes final data via onSubmit prop.
 
 Pseudocode:
 - Define validation schema with yup for all fields
 - Initialize form with yupResolver
-- When RiskMatrix changes, set hidden severity/likelihood fields
-- Render inputs with error messages
+- Render form inputs with proper validation
 - On submit, call onSubmit with validated data
 */
 import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
-import RiskMatrix from './RiskMatrix'
+import { useState } from 'react'
+import ImageUpload from './ImageUpload'
 
 const schema = yup.object({
-  title: yup.string().required('Title is required'),
+  incidentType: yup.string().required('Incident type is required'),
+  severity: yup.string().required('Severity is required'),
+  reportedBy: yup.string().required('Reported by is required'),
+  reporterPhone: yup.string().required('Reporter phone number is required'),
+  timeOfIncident: yup.string().required('Time of incident is required'),
+  location: yup.string().required('Location is required'),
   description: yup.string().required('Description is required'),
-  date: yup.string().required('Date is required'),
-  severity: yup.number().min(1).max(5).required('Select severity'),
-  likelihood: yup.number().min(1).max(5).required('Select likelihood'),
 })
 
 export default function IncidentForm({ onSubmit }) {
   const {
     register,
     handleSubmit,
-    setValue,
     formState: { errors, isSubmitting },
   } = useForm({ resolver: yupResolver(schema) })
 
-  function handleMatrixChange(next) {
-    setValue('severity', next.severity, { shouldValidate: true })
-    setValue('likelihood', next.likelihood, { shouldValidate: true })
+  // Image upload state
+  const [imageUrl, setImageUrl] = useState(null)
+
+  // Image upload handlers
+  const handleImageUpload = (url) => {
+    setImageUrl(url)
+  }
+
+  const handleImageRemove = () => {
+    setImageUrl(null)
+  }
+
+  // Enhanced submit handler to include image URL
+  const handleFormSubmit = (data) => {
+    const formDataWithImage = {
+      ...data,
+      imageUrl: imageUrl
+    }
+    onSubmit(formDataWithImage)
   }
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+    <form onSubmit={handleSubmit(handleFormSubmit)} className="space-y-6">
+      {/* Incident Type and Severity Row */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div>
-          <label className="block text-sm font-medium text-neutral-700">Title</label>
+          <label className="block text-sm font-medium text-neutral-700 mb-2">
+            Incident Type <span className="text-red-500">*</span>
+          </label>
+          <select
+            {...register('incidentType')}
+            className="mt-1 w-full rounded-md border border-neutral-300 bg-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+          >
+            <option value="">Select incident type</option>
+            <option value="Nearmiss">Nearmiss</option>
+            <option value="Accident">Accident</option>
+            <option value="Dangerous occurence">Dangerous occurence</option>
+          </select>
+          {errors.incidentType && (
+            <p className="mt-1 text-xs text-rose-600">{errors.incidentType.message}</p>
+          )}
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium text-neutral-700 mb-2">
+            Severity <span className="text-red-500">*</span>
+          </label>
+          <select
+            {...register('severity')}
+            className="mt-1 w-full rounded-md border border-neutral-300 bg-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+          >
+            <option value="">Select severity</option>
+            <option value="1">1 - Very Low</option>
+            <option value="2">2 - Low</option>
+            <option value="3">3 - Medium</option>
+            <option value="4">4 - High</option>
+            <option value="5">5 - Very High</option>
+          </select>
+          {errors.severity && (
+            <p className="mt-1 text-xs text-rose-600">{errors.severity.message}</p>
+          )}
+        </div>
+      </div>
+
+      {/* Reported By and Phone Number Row */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div>
+          <label className="block text-sm font-medium text-neutral-700 mb-2">
+            Reported By <span className="text-red-500">*</span>
+          </label>
           <input
             type="text"
-            {...register('title')}
+            {...register('reportedBy')}
+            placeholder="Enter reporter's name"
             className="mt-1 w-full rounded-md border border-neutral-300 bg-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
           />
-          {errors.title && <p className="mt-1 text-xs text-rose-600">{errors.title.message}</p>}
+          {errors.reportedBy && (
+            <p className="mt-1 text-xs text-rose-600">{errors.reportedBy.message}</p>
+          )}
         </div>
+
         <div>
-          <label className="block text-sm font-medium text-neutral-700">Date</label>
+          <label className="block text-sm font-medium text-neutral-700 mb-2">
+            Phone Number <span className="text-red-500">*</span>
+          </label>
           <input
-            type="date"
-            {...register('date')}
+            type="tel"
+            {...register('reporterPhone')}
+            placeholder="Enter phone number"
             className="mt-1 w-full rounded-md border border-neutral-300 bg-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
           />
-          {errors.date && <p className="mt-1 text-xs text-rose-600">{errors.date.message}</p>}
+          {errors.reporterPhone && (
+            <p className="mt-1 text-xs text-rose-600">{errors.reporterPhone.message}</p>
+          )}
         </div>
       </div>
 
+      {/* Time of Incident Row */}
       <div>
-        <label className="block text-sm font-medium text-neutral-700">Description</label>
-        <textarea
-          rows={4}
-          {...register('description')}
+        <label className="block text-sm font-medium text-neutral-700 mb-2">
+          Time of Incident <span className="text-red-500">*</span>
+        </label>
+        <input
+          type="datetime-local"
+          {...register('timeOfIncident')}
           className="mt-1 w-full rounded-md border border-neutral-300 bg-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
         />
-        {errors.description && <p className="mt-1 text-xs text-rose-600">{errors.description.message}</p>}
-      </div>
-
-      <div>
-        <RiskMatrix onChange={handleMatrixChange} />
-        <input type="hidden" {...register('severity')} />
-        <input type="hidden" {...register('likelihood')} />
-        {(errors.severity || errors.likelihood) && (
-          <p className="mt-1 text-xs text-rose-600">Select severity and likelihood</p>
+        {errors.timeOfIncident && (
+          <p className="mt-1 text-xs text-rose-600">{errors.timeOfIncident.message}</p>
         )}
       </div>
 
-      <div className="flex justify-end gap-2">
+      {/* Location */}
+      <div>
+        <label className="block text-sm font-medium text-neutral-700 mb-2">
+          Location <span className="text-red-500">*</span>
+        </label>
+        <input
+          type="text"
+          {...register('location')}
+          placeholder="Enter incident location"
+          className="mt-1 w-full rounded-md border border-neutral-300 bg-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+        />
+        {errors.location && (
+          <p className="mt-1 text-xs text-rose-600">{errors.location.message}</p>
+        )}
+      </div>
+
+      {/* Description */}
+      <div>
+        <label className="block text-sm font-medium text-neutral-700 mb-2">
+          Description <span className="text-red-500">*</span>
+        </label>
+        <textarea
+          rows={4}
+          {...register('description')}
+          placeholder="Provide detailed description of the incident"
+          className="mt-1 w-full rounded-md border border-neutral-300 bg-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+        />
+        {errors.description && (
+          <p className="mt-1 text-xs text-rose-600">{errors.description.message}</p>
+        )}
+      </div>
+
+      {/* Image Upload */}
+      <ImageUpload 
+        onImageUpload={handleImageUpload}
+        onImageRemove={handleImageRemove}
+        initialImage={imageUrl}
+      />
+
+      {/* Submit Button */}
+      <div className="flex justify-center sm:justify-end gap-2 pt-4">
         <button
           type="submit"
           disabled={isSubmitting}
-          className="inline-flex items-center rounded-full bg-indigo-600 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-500 disabled:opacity-50"
+          className="w-full sm:w-auto inline-flex items-center justify-center rounded-lg bg-indigo-600 px-6 py-3 text-sm font-medium text-white hover:bg-indigo-500 disabled:opacity-50 transition-colors touch-manipulation"
         >
-          Submit Incident
+          {isSubmitting ? 'Submitting...' : 'Submit Incident'}
         </button>
       </div>
     </form>
   )
 }
-
-

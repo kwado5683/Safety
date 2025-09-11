@@ -1,13 +1,34 @@
 /*
-Description: Small KPI/stat card showing a label, main value, and optional delta.
-- Colors delta green if positive, red if negative, neutral otherwise.
+Description: Enhanced KPI card with trend indicators, percentages, and industry-standard styling.
+- Shows label, main value, trend indicators, and optional delta
+- Supports percentage displays and trend arrows
+- Industry-standard safety dashboard styling
 
 Pseudocode:
-- Compute deltaColor from delta sign
-- Render label and optional icon in header row
-- Render main value and delta side-by-side
+- Compute trend indicators and colors
+- Render label with optional icon
+- Display main value with trend arrows
+- Show percentage or delta information
 */
-export default function KPI({ label, value, delta, icon = null, color = 'indigo' }) {
+export default function KPI({ 
+  label, 
+  value, 
+  delta, 
+  trend, 
+  percentage, 
+  subtitle,
+  icon = null, 
+  color = 'indigo' 
+}) {
+  // Trend indicator logic
+  const getTrendIndicator = (trend) => {
+    if (trend === 'up') return { icon: '↗', color: 'text-emerald-600', bg: 'bg-emerald-100 dark:bg-emerald-900/20' }
+    if (trend === 'down') return { icon: '↘', color: 'text-red-600', bg: 'bg-red-100 dark:bg-red-900/20' }
+    if (trend === 'stable') return { icon: '→', color: 'text-gray-600', bg: 'bg-gray-100 dark:bg-gray-700' }
+    return null
+  }
+
+  const trendInfo = getTrendIndicator(trend)
   const deltaColor = delta > 0 ? 'text-emerald-600' : delta < 0 ? 'text-rose-600' : 'text-slate-600'
   
   const colorClasses = {
@@ -24,14 +45,41 @@ export default function KPI({ label, value, delta, icon = null, color = 'indigo'
       borderColor: 'var(--border)'
     }}>
       <div className="flex items-center justify-between mb-3">
-        <div className="text-sm font-medium uppercase tracking-wide" style={{ color: 'var(--muted-foreground)' }}>{label}</div>
+        <div>
+          <div className="text-sm font-medium uppercase tracking-wide" style={{ color: 'var(--muted-foreground)' }}>
+            {label}
+          </div>
+          {subtitle && (
+            <div className="text-xs" style={{ color: 'var(--muted-foreground)' }}>
+              {subtitle}
+            </div>
+          )}
+        </div>
         {icon && <div className="text-2xl">{icon}</div>}
       </div>
-      <div className="flex items-baseline gap-2">
-        <div className="text-3xl font-bold tracking-tight" style={{ color: 'var(--foreground)' }}>{value}</div>
-        {delta !== undefined && (
+      
+      <div className="flex items-baseline gap-2 mb-2">
+        <div className="text-3xl font-bold tracking-tight" style={{ color: 'var(--foreground)' }}>
+          {value}
+        </div>
+        {percentage && (
+          <div className="text-lg font-semibold" style={{ color: 'var(--muted-foreground)' }}>
+            %
+          </div>
+        )}
+      </div>
+
+      {/* Trend and Delta Information */}
+      <div className="flex items-center gap-2">
+        {trendInfo && (
+          <div className={`flex items-center gap-1 px-2 py-1 rounded-full text-xs font-semibold ${trendInfo.bg}`}>
+            <span className={trendInfo.color}>{trendInfo.icon}</span>
+            <span className={trendInfo.color}>from last month</span>
+          </div>
+        )}
+        {delta !== undefined && !trendInfo && (
           <div className={`text-xs font-semibold px-2 py-1 rounded-full ${delta > 0 ? 'bg-emerald-100 dark:bg-emerald-900/20 text-emerald-700 dark:text-emerald-300' : delta < 0 ? 'bg-rose-100 dark:bg-rose-900/20 text-rose-700 dark:text-rose-300' : 'bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-300'}`}>
-            {delta > 0 ? `+${delta}` : delta}
+            {delta > 0 ? `+${delta}%` : `${delta}%`}
           </div>
         )}
       </div>

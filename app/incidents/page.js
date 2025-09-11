@@ -24,6 +24,7 @@ PSEUDOCODE:
 
 // Import React hooks for managing component state
 import { useEffect, useState } from 'react'
+import Link from 'next/link'  // Add this import
 
 // Import our custom components
 import DashboardLayout from '@/components/DashboardLayout'
@@ -87,14 +88,29 @@ export default function IncidentsPage() {
   // Main incidents page content
   return (
     <DashboardLayout>
-      {/* Page header */}
+      {/* Page header with action button */}
       <div className="mb-6">
-        <h1 className="text-3xl font-bold text-slate-800 mb-2">Incidents Management</h1>
-        <p className="text-slate-600">Track and manage safety incidents across your organization</p>
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+          <div>
+            <h1 className="text-2xl sm:text-3xl font-bold text-slate-800 mb-2">Incidents Management</h1>
+            <p className="text-sm sm:text-base text-slate-600">Track and manage safety incidents across your organization</p>
+          </div>
+          <div className="flex-shrink-0">
+            <Link
+              href="/incidents/new"
+              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition-colors text-sm font-medium touch-manipulation"
+            >
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+              </svg>
+              Report New Incident
+            </Link>
+          </div>
+        </div>
       </div>
 
       {/* Filters section */}
-      <div className="mb-6 p-4 bg-white/80 backdrop-blur-sm rounded-xl border border-slate-200/60 shadow-sm">
+      <div className="mb-6 p-3 sm:p-4 bg-white/80 backdrop-blur-sm rounded-xl border border-slate-200/60 shadow-sm">
         <h3 className="text-sm font-semibold text-slate-700 mb-3 uppercase tracking-wide">Filters</h3>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           {/* Status filter */}
@@ -103,7 +119,7 @@ export default function IncidentsPage() {
             placeholder="Filter by status"
             value={statusFilter}
             onChange={(e) => setStatusFilter(e.target.value)}
-            className="rounded-lg border border-slate-300 bg-white px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all duration-200"
+            className="rounded-lg border border-slate-300 bg-white px-3 sm:px-4 py-2 sm:py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all duration-200"
           />
           
           {/* Category filter */}
@@ -112,7 +128,7 @@ export default function IncidentsPage() {
             placeholder="Filter by category"
             value={categoryFilter}
             onChange={(e) => setCategoryFilter(e.target.value)}
-            className="rounded-lg border border-slate-300 bg-white px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all duration-200"
+            className="rounded-lg border border-slate-300 bg-white px-3 sm:px-4 py-2 sm:py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all duration-200"
           />
         </div>
       </div>

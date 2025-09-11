@@ -31,8 +31,8 @@ export default function PublicLayout({ children }) {
       background: 'linear-gradient(to bottom right, var(--background), var(--muted), var(--primary))',
       color: 'var(--foreground)'
     }}>
-      {/* Header - contains app title and authentication buttons */}
-      <header className="h-16 backdrop-blur-sm border-b flex items-center justify-between px-4 sm:px-6 shadow-sm transition-colors duration-300" style={{
+      {/* Header - contains app title and authentication buttons - STICKY */}
+      <header className="sticky top-0 z-50 h-16 backdrop-blur-sm border-b flex items-center justify-between px-4 sm:px-6 shadow-sm transition-colors duration-300" style={{
         backgroundColor: 'var(--card)',
         borderColor: 'var(--border)'
       }}>
@@ -61,7 +61,7 @@ export default function PublicLayout({ children }) {
       </header>
 
       {/* Main content area - where page content goes */}
-      <main className="p-4 sm:p-6">
+      <main className="p-4 sm:p-6 pt-6">
         {/* Content container with max width for better readability */}
         <div className="mx-auto max-w-7xl">
           {/* children represents the actual page content (dashboard) */}
