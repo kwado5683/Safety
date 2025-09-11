@@ -28,6 +28,8 @@ import Link from 'next/link'  // Add this import
 
 // Import our custom components
 import DashboardLayout from '@/components/DashboardLayout'
+import ImageModal from '@/components/ImageModal'
+import ReadMore from '@/components/ReadMore'
 
 // Main incidents page component
 export default function IncidentsPage() {
@@ -37,6 +39,7 @@ export default function IncidentsPage() {
   const [statusFilter, setStatusFilter] = useState('')  // Filter by incident type
   const [categoryFilter, setCategoryFilter] = useState('') // Filter by severity
   const [locationFilter, setLocationFilter] = useState('') // Filter by location
+  const [imageModal, setImageModal] = useState({ isOpen: false, imageData: null }) // Image modal state
 
   // useEffect runs when the component first loads
   useEffect(() => {
@@ -72,6 +75,15 @@ export default function IncidentsPage() {
     // Call the function to fetch incidents
     fetchIncidents()
   }, [statusFilter, categoryFilter, locationFilter]) // Re-run when filters change
+
+  // Handle image modal
+  const handleImageClick = (imageData) => {
+    setImageModal({ isOpen: true, imageData })
+  }
+
+  const handleCloseImageModal = () => {
+    setImageModal({ isOpen: false, imageData: null })
+  }
 
   // Show loading message while fetching data
   if (loading) {
@@ -158,12 +170,14 @@ export default function IncidentsPage() {
           {/* Table header */}
           <thead className="bg-gradient-to-r from-slate-50 to-blue-50">
             <tr>
-              <th className="text-left px-3 sm:px-6 py-4 text-xs font-semibold text-slate-700 uppercase tracking-wider">Image</th>
               <th className="text-left px-3 sm:px-6 py-4 text-xs font-semibold text-slate-700 uppercase tracking-wider">Type</th>
               <th className="text-left px-3 sm:px-6 py-4 text-xs font-semibold text-slate-700 uppercase tracking-wider">Severity</th>
               <th className="text-left px-3 sm:px-6 py-4 text-xs font-semibold text-slate-700 uppercase tracking-wider">Location</th>
+              <th className="text-left px-3 sm:px-6 py-4 text-xs font-semibold text-slate-700 uppercase tracking-wider">Description</th>
               <th className="text-left px-3 sm:px-6 py-4 text-xs font-semibold text-slate-700 uppercase tracking-wider">Reported By</th>
               <th className="text-left px-3 sm:px-6 py-4 text-xs font-semibold text-slate-700 uppercase tracking-wider">Date</th>
+              <th className="text-left px-3 sm:px-6 py-4 text-xs font-semibold text-slate-700 uppercase tracking-wider">Image</th>
+              <th className="text-left px-3 sm:px-6 py-4 text-xs font-semibold text-slate-700 uppercase tracking-wider">Corrective Action</th>
             </tr>
           </thead>
           
@@ -172,7 +186,7 @@ export default function IncidentsPage() {
             {incidents.length === 0 ? (
               // Show message when no incidents found
               <tr>
-                <td className="px-3 sm:px-6 py-8 text-center text-slate-500" colSpan={6}>
+                <td className="px-3 sm:px-6 py-8 text-center text-slate-500" colSpan={8}>
                   No incidents found
                 </td>
               </tr>
@@ -180,26 +194,6 @@ export default function IncidentsPage() {
               // Show incidents list
               incidents.map((incident) => (
                 <tr key={incident.id} className="hover:bg-slate-50 transition-colors duration-150">
-                  {/* Image Preview Column */}
-                  <td className="px-3 sm:px-6 py-4">
-                    {incident.hasImage ? (
-                      <div className="relative">
-                        <img
-                          src={incident.imagePreview.url}
-                          alt={incident.imagePreview.alt}
-                          className="w-12 h-12 sm:w-16 sm:h-16 object-cover rounded-lg border border-slate-200"
-                        />
-                        <div className="absolute -top-1 -right-1 w-4 h-4 bg-green-500 rounded-full border-2 border-white"></div>
-                      </div>
-                    ) : (
-                      <div className="w-12 h-12 sm:w-16 sm:h-16 bg-slate-100 rounded-lg border border-slate-200 flex items-center justify-center">
-                        <svg className="w-6 h-6 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                        </svg>
-                      </div>
-                    )}
-                  </td>
-                  
                   {/* Incident Type Column */}
                   <td className="px-3 sm:px-6 py-4">
                     <span className="font-medium text-slate-900 text-sm sm:text-base">
@@ -227,6 +221,18 @@ export default function IncidentsPage() {
                     </span>
                   </td>
                   
+                  {/* Description Column */}
+                  <td className="px-3 sm:px-6 py-4">
+                    <div className="max-w-xs">
+                      <ReadMore 
+                        text={incident.description} 
+                        maxLength={80}
+                        className=""
+                        buttonClassName="text-indigo-600 hover:text-indigo-700"
+                      />
+                    </div>
+                  </td>
+                  
                   {/* Reported By Column */}
                   <td className="px-3 sm:px-6 py-4">
                     <div>
@@ -252,6 +258,46 @@ export default function IncidentsPage() {
                       </div>
                     </div>
                   </td>
+                  
+                  {/* Image Column */}
+                  <td className="px-3 sm:px-6 py-4">
+                    {incident.hasImage ? (
+                      <button
+                        onClick={() => handleImageClick(incident.imagePreview)}
+                        className="relative group"
+                      >
+                        <img
+                          src={incident.imagePreview.url}
+                          alt={incident.imagePreview.alt}
+                          className="w-12 h-12 sm:w-16 sm:h-16 object-cover rounded-lg border border-slate-200 hover:border-indigo-300 transition-colors cursor-pointer"
+                        />
+                        <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-20 rounded-lg transition-all duration-200 flex items-center justify-center">
+                          <svg className="w-4 h-4 text-white opacity-0 group-hover:opacity-100 transition-opacity" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7" />
+                          </svg>
+                        </div>
+                      </button>
+                    ) : (
+                      <div className="w-12 h-12 sm:w-16 sm:h-16 bg-slate-100 rounded-lg border border-slate-200 flex items-center justify-center">
+                        <svg className="w-6 h-6 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                        </svg>
+                      </div>
+                    )}
+                  </td>
+                  
+                  {/* Corrective Action Column */}
+                  <td className="px-3 sm:px-6 py-4">
+                    <Link
+                      href={`/incidents/${incident.id}/corrective-action`}
+                      className="inline-flex items-center px-3 py-1 text-sm text-indigo-600 hover:text-indigo-700 hover:bg-indigo-50 rounded-lg transition-colors"
+                    >
+                      <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                      </svg>
+                      Action Plan
+                    </Link>
+                  </td>
                 </tr>
               ))
             )}
@@ -263,6 +309,13 @@ export default function IncidentsPage() {
       <div className="mt-4 text-sm text-slate-600">
         Showing {incidents.length} incident{incidents.length !== 1 ? 's' : ''}
       </div>
+
+      {/* Image Modal */}
+      <ImageModal
+        isOpen={imageModal.isOpen}
+        onClose={handleCloseImageModal}
+        imageData={imageModal.imageData}
+      />
     </DashboardLayout>
   )
 }
