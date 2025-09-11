@@ -29,6 +29,7 @@ import { useUser } from '@clerk/nextjs'
 import Link from 'next/link'
 import { useState, useEffect, useCallback } from 'react'
 import DashboardLayout from '@/components/DashboardLayout'
+import DocumentViewer from '@/components/DocumentViewer'
 
 export default function DocumentsPage() {
   // Get the current signed-in user from Clerk
@@ -40,6 +41,10 @@ export default function DocumentsPage() {
   const [uploadProgress, setUploadProgress] = useState(0)
   const [isUploading, setIsUploading] = useState(false)
   const [dragActive, setDragActive] = useState(false)
+  
+  // Document viewer state
+  const [viewerOpen, setViewerOpen] = useState(false)
+  const [selectedDocument, setSelectedDocument] = useState(null)
 
   // Fetch documents from API
   const fetchDocuments = useCallback(async () => {
@@ -103,6 +108,23 @@ export default function DocumentsPage() {
     }
   }
 
+  // Handle document viewing
+  const handleDocumentView = (document) => {
+    setSelectedDocument(document)
+    setViewerOpen(true)
+  }
+
+  // Handle document download
+  const handleDocumentDownload = (documentId, documentName, version = 'latest') => {
+    const downloadUrl = `/api/documents/view?id=${documentId}&version=${version}&action=download`
+    const link = document.createElement('a')
+    link.href = downloadUrl
+    link.download = documentName || 'document'
+    document.body.appendChild(link)
+    link.click()
+    document.body.removeChild(link)
+  }
+
   // Handle document deletion
   const handleDocumentDelete = async (documentId) => {
     if (!confirm('Are you sure you want to delete this document? This action cannot be undone.')) {
@@ -127,6 +149,15 @@ export default function DocumentsPage() {
       console.error('Delete error:', error)
       alert('Delete failed: ' + error.message)
     }
+  }
+
+  // Get file type from document name
+  const getFileType = (filename) => {
+    const extension = filename.split('.').pop().toLowerCase()
+    if (extension === 'pdf') return 'pdf'
+    if (['jpg', 'jpeg', 'png', 'gif', 'webp'].includes(extension)) return 'image'
+    if (['txt', 'md'].includes(extension)) return 'text'
+    return 'other'
   }
 
   // Handle drag and drop
@@ -359,6 +390,30 @@ export default function DocumentsPage() {
                       </div>
                     </div>
                     <div className="flex items-center space-x-2">
+                      {/* View Button */}
+                      <button
+                        onClick={() => handleDocumentView(document)}
+                        className="inline-flex items-center px-3 py-1 text-sm text-blue-600 hover:text-blue-700 hover:bg-blue-50 rounded transition-colors"
+                      >
+                        <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                        </svg>
+                        View
+                      </button>
+                      
+                      {/* Download Button */}
+                      <button
+                        onClick={() => handleDocumentDownload(document.id, document.name)}
+                        className="inline-flex items-center px-3 py-1 text-sm text-green-600 hover:text-green-700 hover:bg-green-50 rounded transition-colors"
+                      >
+                        <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                        </svg>
+                        Download
+                      </button>
+                      
+                      {/* Delete Button */}
                       <button
                         onClick={() => handleDocumentDelete(document.id)}
                         className="inline-flex items-center px-3 py-1 text-sm text-red-600 hover:text-red-700 hover:bg-red-50 rounded transition-colors"
@@ -375,15 +430,26 @@ export default function DocumentsPage() {
                   {document.document_versions && document.document_versions.length > 0 && (
                     <div className="mt-3 pt-3 border-t border-gray-100">
                       <h4 className="text-sm font-medium text-gray-700 mb-2">Versions:</h4>
-                      <div className="space-y-1">
+                      <div className="space-y-2">
                         {document.document_versions.map((version, index) => (
                           <div key={version.id} className="flex items-center justify-between text-sm">
-                            <span className="text-gray-600">
-                              v{version.version} - {version.storage_path.split('/').pop()}
-                            </span>
-                            <span className="text-gray-500">
-                              {new Date(version.uploaded_at).toLocaleDateString()}
-                            </span>
+                            <div className="flex-1">
+                              <span className="text-gray-600">
+                                v{version.version} - {version.storage_path.split('/').pop()}
+                              </span>
+                              <div className="text-gray-500 text-xs">
+                                {new Date(version.uploaded_at).toLocaleDateString()}
+                              </div>
+                            </div>
+                            <button
+                              onClick={() => handleDocumentDownload(document.id, document.name, version.version)}
+                              className="ml-2 inline-flex items-center px-2 py-1 text-xs text-green-600 hover:text-green-700 hover:bg-green-50 rounded transition-colors"
+                            >
+                              <svg className="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                              </svg>
+                              Download
+                            </button>
                           </div>
                         ))}
                       </div>
@@ -395,6 +461,21 @@ export default function DocumentsPage() {
           )}
         </div>
       </div>
+
+      {/* Document Viewer Modal */}
+      {selectedDocument && (
+        <DocumentViewer
+          isOpen={viewerOpen}
+          onClose={() => {
+            setViewerOpen(false)
+            setSelectedDocument(null)
+          }}
+          documentId={selectedDocument.id}
+          documentName={selectedDocument.name}
+          version="latest"
+          fileType={getFileType(selectedDocument.name)}
+        />
+      )}
     </DashboardLayout>
   )
 }
