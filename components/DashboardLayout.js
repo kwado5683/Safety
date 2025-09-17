@@ -27,6 +27,7 @@ import { useState } from 'react'
 import { useUser, useClerk } from '@clerk/nextjs'
 import Link from 'next/link'
 import ThemeToggle from './ThemeToggle'
+import RoleGate from './auth/RoleGate'
 
 // DashboardLayout component - wraps all dashboard pages
 export default function DashboardLayout({ children }) {
@@ -136,6 +137,9 @@ export default function DashboardLayout({ children }) {
               Risk Management
             </Link>
             
+            {/* Admin link - only visible to admin users */}
+            <AdminLink />
+            
             {/* Settings link */}
             <Link href="/settings" className="block px-3 py-2 text-sm text-slate-700 dark:text-slate-300 hover:bg-gradient-to-r hover:from-slate-50 hover:to-gray-50 dark:hover:from-slate-800/20 dark:hover:to-gray-800/20 rounded-lg transition-all duration-200 hover:shadow-sm">
               Settings
@@ -153,5 +157,19 @@ export default function DashboardLayout({ children }) {
         </main>
       </div>
     </div>
+  )
+}
+
+/**
+ * AdminLink component - Only shows admin link to admin users
+ * Uses RoleGate to conditionally render the admin navigation link
+ */
+function AdminLink() {
+  return (
+    <RoleGate roles={['admin']} fallbackMessage="">
+      <Link href="/admin" className="block px-3 py-2 text-sm text-slate-700 dark:text-slate-300 hover:bg-gradient-to-r hover:from-red-50 hover:to-rose-50 dark:hover:from-red-900/20 dark:hover:to-rose-900/20 rounded-lg transition-all duration-200 hover:shadow-sm">
+        Admin Panel
+      </Link>
+    </RoleGate>
   )
 }
