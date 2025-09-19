@@ -21,6 +21,7 @@ PSEUDOCODE:
 
 import { getAuth } from '@clerk/nextjs/server'
 import { supabaseServer } from '@/lib/supabaseServer'
+import { sendActionAssignedEmail } from '@/lib/email'
 
 export async function POST(request) {
   try {
@@ -85,6 +86,50 @@ export async function POST(request) {
     if (insertError) {
       console.error('Database error:', insertError)
       return Response.json({ error: 'Failed to create corrective action' }, { status: 500 })
+    }
+
+    // Send assignment email if responsible officer has an email
+    try {
+      // Get incident details for email
+      const { data: incidentDetails, error: incidentError } = await supabaseServer
+        .from('incident')
+        .select('incidenttype, location')
+        .eq('id', incidentId)
+        .single()
+
+      if (incidentDetails && !incidentError) {
+        // Check if responsible officer is a user with email
+        const { data: userProfile, error: userError } = await supabaseServer
+          .from('user_profiles')
+          .select('user_id')
+          .eq('full_name', responsibleOfficer)
+          .single()
+
+        if (userProfile && !userError) {
+          // For now, we'll use the user_id as email since we don't have email in user_profiles
+          // In a real implementation, you'd want to store email addresses
+          const assigneeEmail = userProfile.user_id // This would be the actual email in production
+          
+          // Generate action details for email
+          const actionTitle = `${incidentDetails.incidenttype} - ${incidentDetails.location}`
+          const incidentRef = `INC-${incidentId}`
+          const actionLink = `${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/incidents/${incidentId}`
+          
+          // Send assignment email
+          const emailResult = await sendActionAssignedEmail({
+            toEmail: assigneeEmail,
+            title: actionTitle,
+            dueDate: targetDate,
+            incidentRef: incidentRef,
+            link: actionLink
+          })
+
+          console.log('Action assignment email result:', emailResult)
+        }
+      }
+    } catch (emailError) {
+      // Don't fail the API call if email sending fails
+      console.error('Error sending action assignment email:', emailError)
     }
 
     return Response.json({ 

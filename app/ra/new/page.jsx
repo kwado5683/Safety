@@ -145,12 +145,17 @@ export default function NewRiskAssessmentPage() {
     }
   }
 
-  // Auto-save on step change
+  // Auto-save only on step changes, not on individual field changes
   useEffect(() => {
-    if (currentStep > 1 && raData.title) {
-      saveDraft()
+    // Only auto-save when moving to step 2 or higher and we have basic details
+    if (currentStep >= 2 && raData.title && raData.activity && raData.location && raData.assessor_id) {
+      const timeoutId = setTimeout(() => {
+        saveDraft()
+      }, 2000) // Debounce for 2 seconds
+      
+      return () => clearTimeout(timeoutId)
     }
-  }, [currentStep, raData])
+  }, [currentStep]) // Only depend on currentStep, not individual fields
 
   // Navigate to next step
   const nextStep = () => {

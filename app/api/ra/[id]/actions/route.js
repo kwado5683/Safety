@@ -96,7 +96,7 @@ export async function POST(request, { params }) {
           .from('corrective_actions')
           .insert({
             incident_id: null, // No specific incident, created from RA
-            action_plan: `Risk Assessment Action: ${hazard.hazard}`,
+            action_plan: `Risk Assessment Action: ${hazard.hazard} - Created from RA: ${ra.title} (ID: ${raId})`,
             corrective_action: hazard.additional_controls,
             responsible_officer: null, // Unassigned for now
             target_date: new Date(Date.now() + 14 * 24 * 60 * 60 * 1000).toISOString(), // 14 days from now
@@ -105,9 +105,7 @@ export async function POST(request, { params }) {
             attachments: [],
             created_by: userId,
             created_at: new Date().toISOString(),
-            updated_at: new Date().toISOString(),
-            // Add reference to RA in notes or custom field
-            notes: `Created from Risk Assessment: ${ra.title} (ID: ${raId})`
+            updated_at: new Date().toISOString()
           })
 
         if (!actionError) {
