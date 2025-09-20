@@ -26,6 +26,7 @@ PSEUDOCODE:
 import { useState } from 'react'
 import { useUser, useClerk } from '@clerk/nextjs'
 import Link from 'next/link'
+import { usePathname } from 'next/navigation'
 import ThemeToggle from './ThemeToggle'
 import RoleGate from './auth/RoleGate'
 
@@ -37,6 +38,9 @@ export default function DashboardLayout({ children }) {
   // Get Clerk functions like signOut
   const { signOut } = useClerk()
   
+  // Get current pathname for active link highlighting
+  const pathname = usePathname()
+  
   // Local state for mobile sidebar
   const [sidebarOpen, setSidebarOpen] = useState(false)
 
@@ -47,6 +51,17 @@ export default function DashboardLayout({ children }) {
     } catch (error) {
       console.error('Sign out error:', error)
     }
+  }
+
+  // Helper function to get link classes based on active state
+  const getLinkClasses = (href, baseClasses = '') => {
+    const isActive = pathname === href
+    const activeClasses = 'bg-indigo-50 dark:bg-indigo-900/20 text-indigo-700 dark:text-indigo-300 font-medium border-r-2 border-indigo-600 dark:border-indigo-400'
+    const inactiveClasses = 'text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700'
+    
+    return `${baseClasses} block px-3 py-2 text-sm rounded-lg transition-all duration-200 hover:shadow-sm ${
+      isActive ? activeClasses : inactiveClasses
+    }`
   }
 
   // Show loading state while Clerk is loading user data
@@ -108,32 +123,32 @@ export default function DashboardLayout({ children }) {
           {/* Navigation menu */}
           <nav className="space-y-2">
             {/* Dashboard link */}
-            <Link href="/" className="block px-3 py-2 text-sm text-slate-700 dark:text-slate-200 rounded-lg transition-all duration-200 hover:shadow-sm hover:bg-slate-100 dark:hover:bg-slate-700">
+            <Link href="/" className={getLinkClasses('/')}>
               Dashboard
             </Link>
             
             {/* Incidents link */}
-            <Link href="/incidents" className="block px-3 py-2 text-sm text-slate-700 dark:text-slate-300 hover:bg-gradient-to-r hover:from-red-50 hover:to-pink-50 dark:hover:from-red-900/20 dark:hover:to-pink-900/20 rounded-lg transition-all duration-200 hover:shadow-sm">
+            <Link href="/incidents" className={getLinkClasses('/incidents')}>
               Incidents
             </Link>
             
             {/* Inspections link */}
-            <Link href="/inspections" className="block px-3 py-2 text-sm text-slate-700 dark:text-slate-300 hover:bg-gradient-to-r hover:from-yellow-50 hover:to-orange-50 dark:hover:from-yellow-900/20 dark:hover:to-orange-900/20 rounded-lg transition-all duration-200 hover:shadow-sm">
+            <Link href="/inspections" className={getLinkClasses('/inspections')}>
               Inspections
             </Link>
             
             {/* Training link */}
-            <Link href="/training" className="block px-3 py-2 text-sm text-slate-700 dark:text-slate-300 hover:bg-gradient-to-r hover:from-green-50 hover:to-emerald-50 dark:hover:from-green-900/20 dark:hover:to-emerald-900/20 rounded-lg transition-all duration-200 hover:shadow-sm">
+            <Link href="/training" className={getLinkClasses('/training')}>
               Training
             </Link>
             
             {/* Documents link */}
-            <Link href="/documents" className="block px-3 py-2 text-sm text-slate-700 dark:text-slate-300 hover:bg-gradient-to-r hover:from-purple-50 hover:to-violet-50 dark:hover:from-purple-900/20 dark:hover:to-violet-900/20 rounded-lg transition-all duration-200 hover:shadow-sm">
+            <Link href="/documents" className={getLinkClasses('/documents')}>
               Documents
             </Link>
             
             {/* Risk Management link - shown to all users for now */}
-            <Link href="/risk" className="block px-3 py-2 text-sm text-slate-700 dark:text-slate-300 hover:bg-gradient-to-r hover:from-amber-50 hover:to-orange-50 dark:hover:from-amber-900/20 dark:hover:to-orange-900/20 rounded-lg transition-all duration-200 hover:shadow-sm">
+            <Link href="/risk" className={getLinkClasses('/risk')}>
               Risk Management
             </Link>
             
@@ -141,7 +156,7 @@ export default function DashboardLayout({ children }) {
             <AdminLink />
             
             {/* Settings link */}
-            <Link href="/settings" className="block px-3 py-2 text-sm text-slate-700 dark:text-slate-300 hover:bg-gradient-to-r hover:from-slate-50 hover:to-gray-50 dark:hover:from-slate-800/20 dark:hover:to-gray-800/20 rounded-lg transition-all duration-200 hover:shadow-sm">
+            <Link href="/settings" className={getLinkClasses('/settings')}>
               Settings
             </Link>
           </nav>
@@ -165,9 +180,21 @@ export default function DashboardLayout({ children }) {
  * Uses RoleGate to conditionally render the admin navigation link
  */
 function AdminLink() {
+  const pathname = usePathname()
+  
+  const getLinkClasses = (href) => {
+    const isActive = pathname === href
+    const activeClasses = 'bg-indigo-50 dark:bg-indigo-900/20 text-indigo-700 dark:text-indigo-300 font-medium border-r-2 border-indigo-600 dark:border-indigo-400'
+    const inactiveClasses = 'text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700'
+    
+    return `block px-3 py-2 text-sm rounded-lg transition-all duration-200 hover:shadow-sm ${
+      isActive ? activeClasses : inactiveClasses
+    }`
+  }
+  
   return (
     <RoleGate roles={['admin']} fallbackMessage="">
-      <Link href="/admin" className="block px-3 py-2 text-sm text-slate-700 dark:text-slate-300 hover:bg-gradient-to-r hover:from-red-50 hover:to-rose-50 dark:hover:from-red-900/20 dark:hover:to-rose-900/20 rounded-lg transition-all duration-200 hover:shadow-sm">
+      <Link href="/admin" className={getLinkClasses('/admin')}>
         Admin Panel
       </Link>
     </RoleGate>

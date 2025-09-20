@@ -29,7 +29,8 @@ PSEUDOCODE:
 'use client'
 
 import { useState, useEffect } from 'react'
-import { useRouter } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
+import DashboardLayout from '@/components/DashboardLayout'
 import Link from 'next/link'
 
 /**
@@ -37,12 +38,18 @@ import Link from 'next/link'
  */
 export default function NewRiskAssessmentPage() {
   const router = useRouter()
+  const searchParams = useSearchParams()
   const [currentStep, setCurrentStep] = useState(1)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isPublishing, setIsPublishing] = useState(false)
   const [error, setError] = useState(null)
   const [success, setSuccess] = useState(false)
   const [raId, setRaId] = useState(null)
+
+  // Determine back navigation based on referrer or URL parameter
+  const fromAdmin = searchParams.get('from') === 'admin'
+  const backHref = fromAdmin ? '/admin/risk-assessments' : '/risk'
+  const backText = fromAdmin ? 'Back to Admin Risk Assessments' : 'Back to Risk Management'
 
   // Form state
   const [raData, setRaData] = useState({
@@ -249,21 +256,22 @@ export default function NewRiskAssessmentPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 dark:from-slate-900 dark:via-slate-800 dark:to-indigo-900">
-      {/* Header */}
-      <div className="bg-white dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700 sticky top-0 z-10">
-        <div className="px-4 py-4">
-          <div className="flex items-center justify-between">
-            <Link href="/admin" className="text-indigo-600 dark:text-indigo-400 hover:text-indigo-700 dark:hover:text-indigo-300 transition-colors">
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-              </svg>
-            </Link>
-            <h1 className="text-lg font-semibold text-slate-800 dark:text-slate-100">New Risk Assessment</h1>
-            <div className="w-6"></div>
-          </div>
+    <DashboardLayout>
+      <div className="space-y-6">
+        {/* Page Header */}
+        <div className="flex items-center gap-4">
+          <Link
+            href={backHref}
+            className="inline-flex items-center text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-slate-100 transition-colors"
+          >
+            <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+            </svg>
+            {backText}
+          </Link>
         </div>
-      </div>
+
+        <h1 className="text-3xl font-bold text-slate-900 dark:text-slate-100">New Risk Assessment</h1>
 
       {/* Stepper */}
       <div className="bg-white dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700">
@@ -707,6 +715,7 @@ export default function NewRiskAssessmentPage() {
           </button>
         </div>
       </div>
-    </div>
+      </div>
+    </DashboardLayout>
   )
 }

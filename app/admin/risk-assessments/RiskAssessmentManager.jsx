@@ -53,29 +53,18 @@ export default function RiskAssessmentManager({ riskAssessments }) {
   }
 
   return (
-    <div className="p-4 space-y-6">
-      {/* Header */}
-      <div className="bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-slate-200 dark:border-slate-700 p-6">
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-          <div>
-            <h1 className="text-2xl font-bold text-slate-800 dark:text-slate-100 mb-2">
-              Risk Assessments
-            </h1>
-            <p className="text-slate-600 dark:text-slate-300">
-              Manage and create risk assessments for safety activities.
-            </p>
-          </div>
-          
-          <Link
-            href="/ra/new"
-            className="bg-indigo-600 text-white px-6 py-3 rounded-lg hover:bg-indigo-700 transition-colors duration-200 font-medium inline-flex items-center justify-center"
-          >
-            <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
-            </svg>
-            Create New RA
-          </Link>
-        </div>
+    <div className="space-y-6">
+      {/* Create New Button */}
+      <div className="flex justify-end">
+        <Link
+          href="/ra/new?from=admin"
+          className="bg-indigo-600 text-white px-6 py-3 rounded-lg hover:bg-indigo-700 transition-colors duration-200 font-medium inline-flex items-center justify-center"
+        >
+          <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+          </svg>
+          Create New RA
+        </Link>
       </div>
 
       {/* Risk Assessments List */}

@@ -31,6 +31,7 @@ import { getMyRole, getAllUsers } from '@/lib/users'
 
 // Import client component for role management
 import UserRoleManager from './UserRoleManager'
+import DashboardLayout from '@/components/DashboardLayout'
 
 /**
  * Admin users management page - Server component with role-based access
@@ -44,19 +45,17 @@ export default async function AdminUsersPage() {
     // If no user is logged in, show access denied
     if (!userId) {
       return (
-        <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 dark:from-slate-900 dark:via-slate-800 dark:to-indigo-900 flex items-center justify-center">
-          <div className="bg-white dark:bg-slate-800 rounded-xl shadow-lg p-8 max-w-md w-full mx-4">
-            <div className="text-center">
-              <h2 className="text-2xl font-bold text-slate-800 dark:text-slate-100 mb-4">Access Denied</h2>
-              <p className="text-slate-600 dark:text-slate-300 mb-6">
-                You must be logged in to access the admin panel.
-              </p>
-              <Link href="/sign-in" className="bg-indigo-600 text-white px-6 py-3 rounded-lg hover:bg-indigo-700 transition-colors duration-200">
-                Sign In
-              </Link>
-            </div>
+        <DashboardLayout>
+          <div className="text-center py-12">
+            <h2 className="text-2xl font-bold text-slate-800 dark:text-slate-100 mb-4">Access Denied</h2>
+            <p className="text-slate-600 dark:text-slate-300 mb-6">
+              You must be logged in to access the admin panel.
+            </p>
+            <Link href="/sign-in" className="bg-indigo-600 text-white px-6 py-3 rounded-lg hover:bg-indigo-700 transition-colors duration-200">
+              Sign In
+            </Link>
           </div>
-        </div>
+        </DashboardLayout>
       )
     }
 
@@ -66,19 +65,17 @@ export default async function AdminUsersPage() {
     if (!myRole) {
       console.error('Admin users page error fetching role: No role returned')
       return (
-        <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 dark:from-slate-900 dark:via-slate-800 dark:to-indigo-900 flex items-center justify-center">
-          <div className="bg-white dark:bg-slate-800 rounded-xl shadow-lg p-8 max-w-md w-full mx-4">
-            <div className="text-center">
-              <h2 className="text-2xl font-bold text-slate-800 dark:text-slate-100 mb-4">Error</h2>
-              <p className="text-slate-600 dark:text-slate-300 mb-6">
-                Failed to retrieve your user role. Please try again.
-              </p>
-              <Link href="/" className="bg-indigo-600 text-white px-6 py-3 rounded-lg hover:bg-indigo-700 transition-colors duration-200">
-                Go to Dashboard
-              </Link>
-            </div>
+        <DashboardLayout>
+          <div className="text-center py-12">
+            <h2 className="text-2xl font-bold text-slate-800 dark:text-slate-100 mb-4">Error</h2>
+            <p className="text-slate-600 dark:text-slate-300 mb-6">
+              Failed to retrieve your user role. Please try again.
+            </p>
+            <Link href="/" className="bg-indigo-600 text-white px-6 py-3 rounded-lg hover:bg-indigo-700 transition-colors duration-200">
+              Go to Dashboard
+            </Link>
           </div>
-        </div>
+        </DashboardLayout>
       )
     }
 
@@ -87,19 +84,17 @@ export default async function AdminUsersPage() {
 
     if (!isAdmin) {
       return (
-        <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 dark:from-slate-900 dark:via-slate-800 dark:to-indigo-900 flex items-center justify-center">
-          <div className="bg-white dark:bg-slate-800 rounded-xl shadow-lg p-8 max-w-md w-full mx-4">
-            <div className="text-center">
-              <h2 className="text-2xl font-bold text-slate-800 dark:text-slate-100 mb-4">Permission Denied</h2>
-              <p className="text-slate-600 dark:text-slate-300 mb-6">
-                You do not have the necessary permissions to access the admin panel. Your current role is <span className="font-semibold capitalize">{myRole}</span>.
-              </p>
-              <Link href="/" className="bg-indigo-600 text-white px-6 py-3 rounded-lg hover:bg-indigo-700 transition-colors duration-200">
-                Go to Dashboard
-              </Link>
-            </div>
+        <DashboardLayout>
+          <div className="text-center py-12">
+            <h2 className="text-2xl font-bold text-slate-800 dark:text-slate-100 mb-4">Permission Denied</h2>
+            <p className="text-slate-600 dark:text-slate-300 mb-6">
+              You do not have the necessary permissions to access the admin panel. Your current role is <span className="font-semibold capitalize">{myRole}</span>.
+            </p>
+            <Link href="/" className="bg-indigo-600 text-white px-6 py-3 rounded-lg hover:bg-indigo-700 transition-colors duration-200">
+              Go to Dashboard
+            </Link>
           </div>
-        </div>
+        </DashboardLayout>
       )
     }
 
@@ -109,37 +104,36 @@ export default async function AdminUsersPage() {
     if (!usersSuccess || usersError) {
       console.error('Error fetching users:', usersError)
       return (
-        <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 dark:from-slate-900 dark:via-slate-800 dark:to-indigo-900 flex items-center justify-center">
-          <div className="bg-white dark:bg-slate-800 rounded-xl shadow-lg p-8 max-w-md w-full mx-4">
-            <div className="text-center">
-              <h2 className="text-2xl font-bold text-slate-800 dark:text-slate-100 mb-4">Error</h2>
-              <p className="text-slate-600 dark:text-slate-300 mb-6">
-                Failed to load users. Please try again.
-              </p>
-              <Link href="/admin" className="bg-indigo-600 text-white px-6 py-3 rounded-lg hover:bg-indigo-700 transition-colors duration-200">
-                Back to Admin
-              </Link>
-            </div>
+        <DashboardLayout>
+          <div className="text-center py-12">
+            <h2 className="text-2xl font-bold text-slate-800 dark:text-slate-100 mb-4">Error</h2>
+            <p className="text-slate-600 dark:text-slate-300 mb-6">
+              Failed to load users. Please try again.
+            </p>
+            <Link href="/admin" className="bg-indigo-600 text-white px-6 py-3 rounded-lg hover:bg-indigo-700 transition-colors duration-200">
+              Back to Admin
+            </Link>
           </div>
-        </div>
+        </DashboardLayout>
       )
     }
 
     // Render the admin users management interface
     return (
-      <div className="p-6 bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 dark:from-slate-900 dark:via-slate-800 dark:to-indigo-900 min-h-[calc(100vh-4rem)]">
-        {/* Page header */}
-        <div className="mb-8">
-          <div className="flex items-center gap-4 mb-4">
-            <Link href="/admin" className="text-indigo-600 dark:text-indigo-400 hover:text-indigo-700 dark:hover:text-indigo-300 transition-colors">
-              ← Back to Admin
-            </Link>
+      <DashboardLayout>
+        <div className="space-y-6">
+          {/* Page header */}
+          <div className="mb-8">
+            <div className="flex items-center gap-4 mb-4">
+              <Link href="/admin" className="text-indigo-600 dark:text-indigo-400 hover:text-indigo-700 dark:hover:text-indigo-300 transition-colors">
+                ← Back to Admin
+              </Link>
+            </div>
+            <h1 className="text-3xl font-bold text-slate-800 dark:text-slate-100 mb-2">User Management</h1>
+            <p className="text-slate-600 dark:text-slate-300">
+              Manage user roles and permissions. You can update user roles using the dropdown selectors below.
+            </p>
           </div>
-          <h1 className="text-3xl font-bold text-slate-800 dark:text-slate-100 mb-2">User Management</h1>
-          <p className="text-slate-600 dark:text-slate-300">
-            Manage user roles and permissions. You can update user roles using the dropdown selectors below.
-          </p>
-        </div>
 
         {/* Users table */}
         <div className="bg-white dark:bg-slate-800 rounded-xl shadow-lg overflow-hidden">
@@ -228,7 +222,8 @@ export default async function AdminUsersPage() {
             </Link>
           </div>
         </div>
-      </div>
+        </div>
+      </DashboardLayout>
     )
   }
 }

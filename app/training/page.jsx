@@ -31,6 +31,7 @@ import { createAdminClient } from '@/lib/supabaseServer'
 
 // Import client components
 import TrainingRecords from './TrainingRecords'
+import DashboardLayout from '@/components/DashboardLayout'
 
 /**
  * Server component to fetch training data
@@ -124,24 +125,8 @@ async function TrainingData() {
  */
 export default async function TrainingPage() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 dark:from-slate-900 dark:via-slate-800 dark:to-indigo-900">
-      {/* Header */}
-      <div className="bg-white dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700 sticky top-0 z-10">
-        <div className="px-4 py-4">
-          <div className="flex items-center justify-between">
-            <Link href="/" className="text-indigo-600 dark:text-indigo-400 hover:text-indigo-700 dark:hover:text-indigo-300 transition-colors">
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-              </svg>
-            </Link>
-            <h1 className="text-lg font-semibold text-slate-800 dark:text-slate-100">My Training</h1>
-            <div className="w-6"></div>
-          </div>
-        </div>
-      </div>
-
-      {/* Content */}
+    <DashboardLayout>
       <TrainingData />
-    </div>
+    </DashboardLayout>
   )
 }

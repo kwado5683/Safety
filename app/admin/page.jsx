@@ -31,6 +31,7 @@ import { getMyRole } from '@/lib/users'
 
 // Import RoleGate component for additional protection
 import RoleGate from '@/components/auth/RoleGate'
+import DashboardLayout from '@/components/DashboardLayout'
 
 /**
  * Admin dashboard page - Server component with role-based access
@@ -45,29 +46,27 @@ export default async function AdminPage() {
     // If no user is logged in, show access denied
     if (!userId) {
       return (
-        <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 dark:from-slate-900 dark:via-slate-800 dark:to-indigo-900 flex items-center justify-center">
-          <div className="bg-white dark:bg-slate-800 rounded-xl shadow-lg p-8 max-w-md w-full mx-4">
-            <div className="text-center">
-              <div className="w-16 h-16 bg-red-100 dark:bg-red-900 rounded-full flex items-center justify-center mx-auto mb-4">
-                <svg className="w-8 h-8 text-red-600 dark:text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z" />
-                </svg>
-              </div>
-              <h1 className="text-xl font-semibold text-slate-900 dark:text-slate-100 mb-2">
-                Access Denied
-              </h1>
-              <p className="text-slate-600 dark:text-slate-300 mb-6">
-                You must be logged in to access the admin panel.
-              </p>
-              <Link 
-                href="/"
-                className="inline-flex items-center px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors"
-              >
-                Go to Dashboard
-              </Link>
+        <DashboardLayout>
+          <div className="text-center py-12">
+            <div className="w-16 h-16 bg-red-100 dark:bg-red-900 rounded-full flex items-center justify-center mx-auto mb-4">
+              <svg className="w-8 h-8 text-red-600 dark:text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z" />
+              </svg>
             </div>
+            <h1 className="text-xl font-semibold text-slate-900 dark:text-slate-100 mb-2">
+              Access Denied
+            </h1>
+            <p className="text-slate-600 dark:text-slate-300 mb-6">
+              You must be logged in to access the admin panel.
+            </p>
+            <Link 
+              href="/"
+              className="inline-flex items-center px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors"
+            >
+              Go to Dashboard
+            </Link>
           </div>
-        </div>
+        </DashboardLayout>
       )
     }
     
@@ -77,39 +76,37 @@ export default async function AdminPage() {
     // If user is not admin, show access denied
     if (userRole !== 'admin') {
       return (
-        <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 dark:from-slate-900 dark:via-slate-800 dark:to-indigo-900 flex items-center justify-center">
-          <div className="bg-white dark:bg-slate-800 rounded-xl shadow-lg p-8 max-w-md w-full mx-4">
-            <div className="text-center">
-              <div className="w-16 h-16 bg-yellow-100 dark:bg-yellow-900 rounded-full flex items-center justify-center mx-auto mb-4">
-                <svg className="w-8 h-8 text-yellow-600 dark:text-yellow-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-                </svg>
-              </div>
-              <h1 className="text-xl font-semibold text-slate-900 dark:text-slate-100 mb-2">
-                Not Permitted
-              </h1>
-              <p className="text-slate-600 dark:text-slate-300 mb-2">
-                You need administrator privileges to access this page.
-              </p>
-              <p className="text-sm text-slate-500 dark:text-slate-400 mb-6">
-                Your current role: <span className="font-medium capitalize">{userRole}</span>
-              </p>
-              <Link 
-                href="/"
-                className="inline-flex items-center px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors"
-              >
-                Go to Dashboard
-              </Link>
+        <DashboardLayout>
+          <div className="text-center py-12">
+            <div className="w-16 h-16 bg-yellow-100 dark:bg-yellow-900 rounded-full flex items-center justify-center mx-auto mb-4">
+              <svg className="w-8 h-8 text-yellow-600 dark:text-yellow-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+              </svg>
             </div>
+            <h1 className="text-xl font-semibold text-slate-900 dark:text-slate-100 mb-2">
+              Not Permitted
+            </h1>
+            <p className="text-slate-600 dark:text-slate-300 mb-2">
+              You need administrator privileges to access this page.
+            </p>
+            <p className="text-sm text-slate-500 dark:text-slate-400 mb-6">
+              Your current role: <span className="font-medium capitalize">{userRole}</span>
+            </p>
+            <Link 
+              href="/"
+              className="inline-flex items-center px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors"
+            >
+              Go to Dashboard
+            </Link>
           </div>
-        </div>
+        </DashboardLayout>
       )
     }
     
     // User is admin - show admin dashboard
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 dark:from-slate-900 dark:via-slate-800 dark:to-indigo-900">
-        <div className="container mx-auto px-4 py-8">
+      <DashboardLayout>
+        <div className="space-y-6">
           {/* Admin Header */}
           <div className="mb-8">
             {/* Navigation breadcrumb */}
@@ -205,36 +202,38 @@ export default async function AdminPage() {
             </div>
           </div>
         </div>
-      </div>
+    </DashboardLayout>
     )
     
   } catch (error) {
     // Handle any unexpected errors
     console.error('Admin page error:', error)
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 dark:from-slate-900 dark:via-slate-800 dark:to-indigo-900 flex items-center justify-center">
-        <div className="bg-white dark:bg-slate-800 rounded-xl shadow-lg p-8 max-w-md w-full mx-4">
-          <div className="text-center">
-            <div className="w-16 h-16 bg-red-100 dark:bg-red-900 rounded-full flex items-center justify-center mx-auto mb-4">
-              <svg className="w-8 h-8 text-red-600 dark:text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-              </svg>
+        <DashboardLayout>
+            <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 dark:from-slate-900 dark:via-slate-800 dark:to-indigo-900 flex items-center justify-center">
+            <div className="bg-white dark:bg-slate-800 rounded-xl shadow-lg p-8 max-w-md w-full mx-4">
+            <div className="text-center">
+                <div className="w-16 h-16 bg-red-100 dark:bg-red-900 rounded-full flex items-center justify-center mx-auto mb-4">
+                <svg className="w-8 h-8 text-red-600 dark:text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                </div>
+                <h1 className="text-xl font-semibold text-slate-900 dark:text-slate-100 mb-2">
+                Error Loading Admin Panel
+                </h1>
+                <p className="text-slate-600 dark:text-slate-300 mb-6">
+                Something went wrong while loading the admin panel.
+                </p>
+                <Link 
+                href="/"
+                className="inline-flex items-center px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors"
+                >
+                Go to Dashboard
+                </Link>
             </div>
-            <h1 className="text-xl font-semibold text-slate-900 dark:text-slate-100 mb-2">
-              Error Loading Admin Panel
-            </h1>
-            <p className="text-slate-600 dark:text-slate-300 mb-6">
-              Something went wrong while loading the admin panel.
-            </p>
-            <Link 
-              href="/"
-              className="inline-flex items-center px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors"
-            >
-              Go to Dashboard
-            </Link>
-          </div>
-        </div>
-      </div>
+            </div>
+            </div>
+        </DashboardLayout>
     )
   }
 }

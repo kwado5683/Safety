@@ -31,6 +31,7 @@ import { getMyRole } from '@/lib/users'
 
 // Import client components for checklist management
 import ChecklistManager from './ChecklistManager'
+import DashboardLayout from '@/components/DashboardLayout'
 
 /**
  * Admin checklists management page - Server component with role-based access

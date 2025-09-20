@@ -33,7 +33,7 @@ import { createAdminClient } from '@/lib/supabaseServer'
 export async function POST(request) {
   try {
     // Get current user from Clerk
-    const { userId } = getAuth(request)
+    const { userId } = await getAuth(request)
     
     if (!userId) {
       return NextResponse.json(

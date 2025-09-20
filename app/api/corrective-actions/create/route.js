@@ -26,7 +26,7 @@ import { sendActionAssignedEmail } from '@/lib/email'
 export async function POST(request) {
   try {
     // Check authentication
-    const { userId } = getAuth(request)
+    const { userId } = await getAuth(request)
     if (!userId) {
       return Response.json({ error: 'Unauthorized' }, { status: 401 })
     }

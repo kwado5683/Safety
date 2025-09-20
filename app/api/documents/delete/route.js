@@ -28,7 +28,7 @@ import { NextResponse } from 'next/server'
 export async function DELETE(request) {
   try {
     // Get the authenticated user from Clerk
-    const { userId } = getAuth(request)
+    const { userId } = await getAuth(request)
     
     if (!userId) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })

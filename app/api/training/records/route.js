@@ -39,7 +39,7 @@ import { createAdminClient } from '@/lib/supabaseServer'
 export async function GET(request) {
   try {
     // Get current user from Clerk
-    const { userId } = getAuth(request)
+    const { userId } = await getAuth(request)
     
     if (!userId) {
       return NextResponse.json(
@@ -94,7 +94,7 @@ export async function GET(request) {
 export async function POST(request) {
   try {
     // Get current user from Clerk
-    const { userId } = getAuth(request)
+    const { userId } = await getAuth(request)
     
     if (!userId) {
       return NextResponse.json(

@@ -28,6 +28,7 @@ import { createAdminClient } from '@/lib/supabaseServer'
 
 // Import client components
 import RiskAssessmentManager from './RiskAssessmentManager'
+import DashboardLayout from '@/components/DashboardLayout'
 
 /**
  * Server component to fetch risk assessments data
@@ -54,16 +55,21 @@ async function RiskAssessmentData() {
     if (error) {
       console.error('Error fetching risk assessments:', error)
       return (
-        <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 dark:from-slate-900 dark:via-slate-800 dark:to-indigo-900 flex items-center justify-center p-4">
-          <div className="bg-white dark:bg-slate-800 rounded-xl shadow-lg p-8 max-w-md w-full text-center">
-            <h2 className="text-2xl font-bold text-slate-800 dark:text-slate-100 mb-4">Error</h2>
-            <p className="text-slate-600 dark:text-slate-300 mb-6">
-              Failed to load risk assessments. Please try again.
-            </p>
-            <Link href="/admin" className="bg-indigo-600 text-white px-6 py-3 rounded-lg hover:bg-indigo-700 transition-colors duration-200">
-              Back to Admin
-            </Link>
+        <div className="text-center py-12">
+          <div className="w-16 h-16 bg-red-100 dark:bg-red-900 rounded-full flex items-center justify-center mx-auto mb-4">
+            <svg className="w-8 h-8 text-red-600 dark:text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
           </div>
+          <h2 className="text-xl font-semibold text-slate-900 dark:text-slate-100 mb-2">
+            Error Loading Risk Assessments
+          </h2>
+          <p className="text-slate-600 dark:text-slate-300 mb-6">
+            Failed to load risk assessments. Please try again.
+          </p>
+          <Link href="/admin" className="inline-flex items-center px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors">
+            Back to Admin Dashboard
+          </Link>
         </div>
       )
     }
@@ -72,16 +78,21 @@ async function RiskAssessmentData() {
   } catch (error) {
     console.error('Error in RiskAssessmentData:', error)
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 dark:from-slate-900 dark:via-slate-800 dark:to-indigo-900 flex items-center justify-center p-4">
-        <div className="bg-white dark:bg-slate-800 rounded-xl shadow-lg p-8 max-w-md w-full text-center">
-          <h2 className="text-2xl font-bold text-slate-800 dark:text-slate-100 mb-4">Error</h2>
-          <p className="text-slate-600 dark:text-slate-300 mb-6">
-            An unexpected error occurred while loading risk assessments.
-          </p>
-          <Link href="/admin" className="bg-indigo-600 text-white px-6 py-3 rounded-lg hover:bg-indigo-700 transition-colors duration-200">
-            Back to Admin
-          </Link>
+      <div className="text-center py-12">
+        <div className="w-16 h-16 bg-red-100 dark:bg-red-900 rounded-full flex items-center justify-center mx-auto mb-4">
+          <svg className="w-8 h-8 text-red-600 dark:text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
         </div>
+        <h2 className="text-xl font-semibold text-slate-900 dark:text-slate-100 mb-2">
+          Unexpected Error
+        </h2>
+        <p className="text-slate-600 dark:text-slate-300 mb-6">
+          An unexpected error occurred while loading risk assessments.
+        </p>
+        <Link href="/admin" className="inline-flex items-center px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors">
+          Back to Admin Dashboard
+        </Link>
       </div>
     )
   }
@@ -92,24 +103,31 @@ async function RiskAssessmentData() {
  */
 export default function RiskAssessmentsAdminPage() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 dark:from-slate-900 dark:via-slate-800 dark:to-indigo-900">
-      {/* Header */}
-      <div className="bg-white dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700 sticky top-0 z-10">
-        <div className="px-4 py-4">
-          <div className="flex items-center justify-between">
-            <Link href="/admin" className="text-indigo-600 dark:text-indigo-400 hover:text-indigo-700 dark:hover:text-indigo-300 transition-colors">
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-              </svg>
-            </Link>
-            <h1 className="text-lg font-semibold text-slate-800 dark:text-slate-100">Risk Assessments</h1>
-            <div className="w-6"></div>
-          </div>
+    <DashboardLayout>
+      <div className="space-y-6">
+        {/* Page Header */}
+        <div className="flex items-center gap-4">
+          <Link
+            href="/admin"
+            className="inline-flex items-center text-indigo-600 dark:text-indigo-400 hover:text-indigo-700 dark:hover:text-indigo-300 transition-colors text-sm font-medium"
+          >
+            <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+            </svg>
+            Back to Admin Dashboard
+          </Link>
         </div>
-      </div>
+        
+        <h1 className="text-3xl font-bold text-slate-900 dark:text-slate-100 mb-2">
+          Risk Assessments
+        </h1>
+        <p className="text-slate-600 dark:text-slate-300">
+          Manage and create risk assessments for safety activities.
+        </p>
 
-      {/* Content */}
-      <RiskAssessmentData />
-    </div>
+        {/* Content */}
+        <RiskAssessmentData />
+      </div>
+    </DashboardLayout>
   )
 }

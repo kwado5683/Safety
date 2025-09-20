@@ -31,6 +31,7 @@ import { createAdminClient } from '@/lib/supabaseServer'
 
 // Import client components
 import InspectionForm from './InspectionForm'
+import DashboardLayout from '@/components/DashboardLayout'
 
 /**
  * Server component to fetch checklist data
@@ -98,8 +99,8 @@ export default async function NewInspectionPage({ searchParams }) {
 
   if (!checklistId) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 dark:from-slate-900 dark:via-slate-800 dark:to-indigo-900 flex items-center justify-center p-4">
-        <div className="bg-white dark:bg-slate-800 rounded-xl shadow-lg p-8 max-w-md w-full text-center">
+      <DashboardLayout>
+        <div className="text-center py-12">
           <h2 className="text-2xl font-bold text-slate-800 dark:text-slate-100 mb-4">Missing Checklist</h2>
           <p className="text-slate-600 dark:text-slate-300 mb-6">
             Please select a checklist to start an inspection.
@@ -108,35 +109,39 @@ export default async function NewInspectionPage({ searchParams }) {
             Select Checklist
           </Link>
         </div>
-      </div>
+      </DashboardLayout>
     )
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 dark:from-slate-900 dark:via-slate-800 dark:to-indigo-900">
-      {/* Header */}
-      <div className="bg-white dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700 sticky top-0 z-10">
-        <div className="px-4 py-4">
-          <div className="flex items-center justify-between">
-            <Link href="/admin/checklists" className="text-indigo-600 dark:text-indigo-400 hover:text-indigo-700 dark:hover:text-indigo-300 transition-colors">
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-              </svg>
-            </Link>
-            <h1 className="text-lg font-semibold text-slate-800 dark:text-slate-100">New Inspection</h1>
-            <div className="w-6"></div> {/* Spacer for centering */}
-          </div>
+    <DashboardLayout>
+      <div className="space-y-6">
+        {/* Page Header */}
+        <div className="flex items-center gap-4">
+          <Link
+            href="/admin/checklists"
+            className="inline-flex items-center text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-slate-100 transition-colors"
+          >
+            <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+            </svg>
+            Back to Checklists
+          </Link>
         </div>
-      </div>
 
-      {/* Content */}
-      <Suspense fallback={
-        <div className="flex items-center justify-center p-8">
-          <div className="text-slate-600 dark:text-slate-300">Loading checklist...</div>
-        </div>
-      }>
-        <ChecklistData checklistId={checklistId} />
-      </Suspense>
-    </div>
+        <h1 className="text-3xl font-bold text-slate-900 dark:text-slate-100">New Inspection</h1>
+
+        {/* Content */}
+        <Suspense fallback={
+          <div className="animate-pulse space-y-4">
+            <div className="h-4 bg-slate-200 dark:bg-slate-700 rounded mb-4"></div>
+            <div className="h-4 bg-slate-200 dark:bg-slate-700 rounded mb-4 w-3/4"></div>
+            <div className="h-4 bg-slate-200 dark:bg-slate-700 rounded mb-4 w-1/2"></div>
+          </div>
+        }>
+          <ChecklistData checklistId={checklistId} />
+        </Suspense>
+      </div>
+    </DashboardLayout>
   )
 }

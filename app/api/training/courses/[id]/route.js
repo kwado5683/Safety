@@ -82,7 +82,7 @@ export async function GET(request, { params }) {
 export async function PATCH(request, { params }) {
   try {
     // Get current user from Clerk
-    const { userId } = getAuth(request)
+    const { userId } = await getAuth(request)
     
     if (!userId) {
       return NextResponse.json(
@@ -152,7 +152,7 @@ export async function PATCH(request, { params }) {
 export async function DELETE(request, { params }) {
   try {
     // Get current user from Clerk
-    const { userId } = getAuth(request)
+    const { userId } = await getAuth(request)
     
     if (!userId) {
       return NextResponse.json(
