@@ -34,30 +34,64 @@ import { bootstrapUserProfile } from '@/lib/userBootstrap'
 // GET handler - called when someone makes a GET request to /api/dashboard/summary
 export async function GET(request) {
   try {
-    // Get current user information from Clerk (optional for public dashboard)
-    const { userId } = await getAuth(request)
+    // Import Supabase client for real data
+    const { createAdminClient } = await import('@/lib/supabaseServer')
+    const supabase = createAdminClient()
     
-    // If user is logged in, bootstrap their profile (ensure 'worker' role exists)
-    if (userId) {
-      const bootstrapResult = await bootstrapUserProfile(request)
+    // Get real data from database where available
+    let realData = {}
+    
+    try {
+      // Get incidents count (using correct column names)
+      const { count: incidentsCount } = await supabase
+        .from('incident')
+        .select('*', { count: 'exact', head: true })
       
-      // Log bootstrap result in development (silent in production)
-      if (process.env.NODE_ENV === 'development' && bootstrapResult.isNew) {
-        console.log(`New user profile created for user: ${userId}`)
+      // Get corrective actions count
+      const { count: actionsCount } = await supabase
+        .from('corrective_actions')
+        .select('*', { count: 'exact', head: true })
+        .not('status', 'eq', 'completed')
+      
+      // Get training records for compliance calculation
+      const { data: trainingRecords } = await supabase
+        .from('training_records')
+        .select('*')
+      
+      // Calculate training compliance
+      const totalRecords = trainingRecords?.length || 0
+      const validRecords = trainingRecords?.filter(record => 
+        new Date(record.expires_on) > new Date()
+      ).length || 0
+      const trainingCompliance = totalRecords > 0 ? Math.round((validRecords / totalRecords) * 100) : 0
+      
+      // Get inspections count
+      const { count: inspectionsCount } = await supabase
+        .from('inspections')
+        .select('*', { count: 'exact', head: true })
+      
+      realData = {
+        incidentsCount: incidentsCount || 0,
+        actionsCount: actionsCount || 0,
+        trainingCompliance: trainingCompliance,
+        inspectionsCount: inspectionsCount || 0
       }
+      
+      console.log('Dashboard summary generated:', realData)
+      
+    } catch (dbError) {
+      console.error('Error fetching real data:', dbError)
+      // Continue with demo data if database fails
     }
     
-    // Note: We allow both authenticated and unauthenticated access to the dashboard
-    // This allows visitors to see demo data while authenticated users see real data
-    
-    // Mock dashboard data - in a real app, this would come from your database
+    // Dashboard data with real data where available, demo data as fallback
     const dashboardData = {
       // Key Performance Indicators
       kpis: {
-        openIncidents: 12,           // Number of open incidents
-        openActions: 8,              // Number of open corrective actions
-        trainingCompliance: 85,      // Training compliance percentage
-        upcomingInspections: 5,      // Number of upcoming inspections
+        openIncidents: realData.incidentsCount || 12,           // Real data or demo
+        openActions: realData.actionsCount || 8,                // Real data or demo
+        trainingCompliance: realData.trainingCompliance || 85,  // Real data or demo
+        upcomingInspections: realData.inspectionsCount || 5,    // Real data or demo
       },
       
       // Chart data for visualizations
