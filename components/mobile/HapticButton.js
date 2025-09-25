@@ -118,7 +118,7 @@ export default function HapticButton({
       className={`${baseClasses} ${focusClasses[variant] || focusClasses.primary}`}
       onClick={handleClick}
       onTouchStart={handleTouchStart}
-      disabled={disabled}
+      disabled={!!disabled}
       {...props}
     >
       {children}

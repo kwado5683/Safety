@@ -32,6 +32,7 @@ import MobileNavigation from './MobileNavigation'
 import { initMobileEnhancements, isMobileDevice } from '@/lib/mobileUtils'
 import { useHaptic } from '@/lib/hooks/useHaptic'
 import { useNotifications } from '@/lib/hooks/useNotifications'
+import { registerServiceWorker } from '@/lib/notifications'
 
 // DashboardLayout component - wraps all dashboard pages
 export default function DashboardLayout({ children }) {
@@ -56,6 +57,18 @@ export default function DashboardLayout({ children }) {
   // Initialize mobile enhancements and notifications on mount
   useEffect(() => {
     initMobileEnhancements()
+    
+    // Register Service Worker for push notifications
+    const initServiceWorker = async () => {
+      try {
+        await registerServiceWorker()
+        console.log('Service Worker registered successfully')
+      } catch (error) {
+        console.error('Service Worker registration failed:', error)
+      }
+    }
+    
+    initServiceWorker()
     
     // Initialize notifications for authenticated users
     if (user && notifications.isSupported && notifications.permission === 'default') {

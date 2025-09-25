@@ -19,14 +19,22 @@ PSEUDOCODE:
 
 'use client'
 
-export default function DepartmentRanking({ title = "Department Safety Ranking" }) {
-  // Sample department data
-  const departments = [
+export default function DepartmentRanking({ title = "Department Safety Ranking", departmentData = [] }) {
+  // Use real department data or fallback to sample data
+  const departments = departmentData.length > 0 ? departmentData : [
     { name: 'Sales', score: 95, color: 'bg-green-500' },
     { name: 'Engineering', score: 78, color: 'bg-yellow-500' },
     { name: 'HR', score: 65, color: 'bg-orange-500' },
     { name: 'Maintenance', score: 45, color: 'bg-red-500' }
   ]
+
+  // Add color based on score if not provided
+  const departmentsWithColors = departments.map(dept => ({
+    ...dept,
+    color: dept.color || (dept.score >= 90 ? 'bg-green-500' : 
+                         dept.score >= 70 ? 'bg-yellow-500' : 
+                         dept.score >= 50 ? 'bg-orange-500' : 'bg-red-500')
+  }))
 
   const getScoreColor = (score) => {
     if (score >= 90) return 'text-green-600'
@@ -52,7 +60,7 @@ export default function DepartmentRanking({ title = "Department Safety Ranking" 
       </h3>
       
       <div className="space-y-4">
-        {departments.map((dept, index) => (
+        {departmentsWithColors.map((dept, index) => (
           <div key={dept.name} className="flex items-center gap-3">
             {/* Department Name */}
             <div className="w-20 text-sm font-medium" style={{ color: 'var(--foreground)' }}>

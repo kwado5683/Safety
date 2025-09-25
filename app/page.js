@@ -21,7 +21,7 @@ PSEUDOCODE:
 'use client' // This tells Next.js to run this component in the browser, not on the server
 
 // Import React hooks for managing component state and side effects
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useCallback } from 'react'
 import Link from 'next/link'
 
 // Import our custom components
@@ -40,8 +40,42 @@ import PullToRefresh from '@/components/mobile/PullToRefresh'
 
 // Main dashboard component
 export default function Dashboard() {
+  const [dateFilter, setDateFilter] = useState(null)
+
+  // Handle date filter changes with useCallback to prevent infinite loops
+  const handleDateFilterChange = useCallback((dateRange, filterType) => {
+    console.log('Dashboard: Date filter changed:', filterType, dateRange)
+    
+    // Convert date range to filter object
+    const filter = {
+      filterType,
+      startDate: dateRange.start.toISOString().split('T')[0],
+      endDate: dateRange.end.toISOString().split('T')[0]
+    }
+    
+    console.log('Dashboard: Setting dateFilter to:', filter)
+    setDateFilter(filter)
+  }, [])
+
+  // Initialize with today filter on mount - but don't reset if already set
+  useEffect(() => {
+    if (!dateFilter) {
+      const today = new Date()
+      const todayStart = new Date(today.getFullYear(), today.getMonth(), today.getDate())
+      const todayEnd = new Date(todayStart.getTime() + 24 * 60 * 60 * 1000 - 1)
+      
+      const initialFilter = {
+        filterType: 'today',
+        startDate: todayStart.toISOString().split('T')[0],
+        endDate: todayEnd.toISOString().split('T')[0]
+      }
+      
+      setDateFilter(initialFilter)
+    }
+  }, []) // Remove dateFilter dependency to prevent resets
+
   return (
-    <DashboardClient>
+    <DashboardClient dateFilter={dateFilter}>
       {({ data, loading, error, user, isLoaded }) => {
         // Demo data for charts (will be replaced with real data later)
         const demoCharts = {
@@ -78,11 +112,6 @@ export default function Dashboard() {
           }
         }
 
-        // Handle date filter changes
-        const handleDateFilterChange = (dateRange, filterType) => {
-          console.log('Date filter changed:', filterType, dateRange)
-          // TODO: Implement date filtering with real data
-        }
 
         // Choose the appropriate layout based on authentication status
         const Layout = user ? DashboardLayout : PublicLayout
@@ -130,8 +159,8 @@ export default function Dashboard() {
           )
         }
 
-        // Extract KPI and chart data from API response, or use empty objects if not available
-        const { kpis = {}, charts = {} } = data || {}
+        // Extract KPI, chart, and analytics data from API response, or use empty objects if not available
+        const { kpis = {}, charts = {}, analytics = {} } = data || {}
 
         // Main dashboard content
         return (
@@ -245,14 +274,23 @@ export default function Dashboard() {
 
             {/* Second Row - Heat Map and Department Rankings */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
-              <HeatMapWidget title="Incident Heat Map" />
-              <DepartmentRanking title="Department Safety Ranking" />
+              <HeatMapWidget 
+                title="Incident Heat Map" 
+                locationData={analytics.locationIncidents || {}}
+              />
+              <DepartmentRanking 
+                title="Department Safety Ranking" 
+                departmentData={analytics.departmentScores || []}
+              />
             </div>
 
             {/* Third Row - Task Management and Alerts */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
               <TaskManagement title="Tasks" />
-              <AlertSystem title="Alerts" />
+              <AlertSystem 
+                title="Alerts" 
+                alertsData={analytics.alerts || []}
+              />
             </div>
 
             {/* Bottom Row - Additional Charts */}
@@ -265,35 +303,63 @@ export default function Dashboard() {
                 />
               )}
 
-              {/* Top Causes Chart */}
+              {/* Top Causes Chart - NOW USING REAL DATA */}
               <div className="rounded-xl border p-6 shadow-lg hover:shadow-xl transition-all duration-300 bg-white border-slate-200">
                 <h3 className="text-lg font-semibold mb-4 text-slate-900">
                   Top Causes of Incidents
                 </h3>
                 <div className="space-y-4">
-                  {[
-                    { cause: 'Slips', percentage: 85, color: 'bg-gray-600' },
-                    { cause: 'Electrical', percentage: 60, color: 'bg-gray-500' },
-                    { cause: 'Manual Handling', percentage: 55, color: 'bg-gray-400' },
-                    { cause: 'Other', percentage: 30, color: 'bg-gray-300' }
-                  ].map((item, index) => (
-                    <div key={index} className="flex items-center gap-3">
-                      <div className="w-20 text-sm font-medium text-slate-900">
-                        {item.cause}
-                      </div>
-                      <div className="flex-1">
-                        <div className="w-full bg-gray-200 rounded-full h-3">
-                          <div
-                            className={`h-3 rounded-full transition-all duration-1000 ${item.color}`}
-                            style={{ width: `${item.percentage}%` }}
-                          />
+                  {(() => {
+                    const causeData = analytics.causeAnalysis || {
+                      'Slips': 0,
+                      'Electrical': 0,
+                      'Manual Handling': 0,
+                      'Other': 0
+                    }
+                    
+                    // Calculate total incidents for percentage calculation
+                    const totalIncidents = Object.values(causeData).reduce((sum, count) => sum + count, 0)
+                    
+                    // Convert to percentage and sort by count
+                    const causeItems = Object.entries(causeData)
+                      .map(([cause, count]) => ({
+                        cause,
+                        count,
+                        percentage: totalIncidents > 0 ? Math.round((count / totalIncidents) * 100) : 0
+                      }))
+                      .sort((a, b) => b.count - a.count)
+                      .slice(0, 4) // Top 4 causes
+                    
+                    // Fallback to demo data if no real data
+                    const fallbackData = [
+                      { cause: 'Slips', percentage: 85, color: 'bg-gray-600' },
+                      { cause: 'Electrical', percentage: 60, color: 'bg-gray-500' },
+                      { cause: 'Manual Handling', percentage: 55, color: 'bg-gray-400' },
+                      { cause: 'Other', percentage: 30, color: 'bg-gray-300' }
+                    ]
+                    
+                    const displayData = causeItems.length > 0 ? causeItems : fallbackData
+                    const colors = ['bg-gray-600', 'bg-gray-500', 'bg-gray-400', 'bg-gray-300']
+                    
+                    return displayData.map((item, index) => (
+                      <div key={index} className="flex items-center gap-3">
+                        <div className="w-20 text-sm font-medium text-slate-900">
+                          {item.cause}
+                        </div>
+                        <div className="flex-1">
+                          <div className="w-full bg-gray-200 rounded-full h-3">
+                            <div
+                              className={`h-3 rounded-full transition-all duration-1000 ${item.color || colors[index]}`}
+                              style={{ width: `${item.percentage}%` }}
+                            />
+                          </div>
+                        </div>
+                        <div className="w-12 text-right text-sm font-semibold text-slate-600">
+                          {item.percentage}%
                         </div>
                       </div>
-                      <div className="w-12 text-right text-sm font-semibold text-slate-600">
-                        {item.percentage}%
-                      </div>
-                    </div>
-                  ))}
+                    ))
+                  })()}
                 </div>
               </div>
             </div>

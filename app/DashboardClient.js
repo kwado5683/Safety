@@ -8,20 +8,45 @@ DESCRIPTION: Client-side dashboard component that handles data fetching and stat
 
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useMemo } from 'react'
 import { useUser } from '@clerk/nextjs'
 
-export default function DashboardClient({ children }) {
+export default function DashboardClient({ children, dateFilter = null }) {
   const { user, isLoaded } = useUser()
   const [data, setData] = useState(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
 
+  // Memoize the dateFilter to prevent unnecessary re-renders
+  const memoizedDateFilter = useMemo(() => dateFilter, [
+    dateFilter?.filterType,
+    dateFilter?.startDate,
+    dateFilter?.endDate
+  ])
+
   useEffect(() => {
     async function fetchDashboardData() {
       try {
         setLoading(true)
-        const response = await fetch('/api/dashboard/summary')
+        
+        // Build query parameters for date filtering
+        let url = '/api/dashboard/summary'
+        if (memoizedDateFilter) {
+          const params = new URLSearchParams()
+          params.append('filterType', memoizedDateFilter.filterType)
+          if (memoizedDateFilter.startDate) {
+            params.append('startDate', memoizedDateFilter.startDate)
+          }
+          if (memoizedDateFilter.endDate) {
+            params.append('endDate', memoizedDateFilter.endDate)
+          }
+          url += `?${params.toString()}`
+        }
+        
+        console.log('DashboardClient: Fetching data from:', url)
+        console.log('DashboardClient: Date filter params:', memoizedDateFilter)
+        
+        const response = await fetch(url)
         
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`)
@@ -42,7 +67,7 @@ export default function DashboardClient({ children }) {
     if (isLoaded) {
       fetchDashboardData()
     }
-  }, [isLoaded])
+  }, [isLoaded, memoizedDateFilter])
 
   // Pass data and states to children
   return children({

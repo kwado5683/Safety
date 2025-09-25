@@ -19,9 +19,14 @@ PSEUDOCODE:
 
 'use client'
 
-export default function AlertSystem({ title = "Alerts" }) {
-  // Sample alert data
-  const alerts = [
+import { useState, useEffect } from 'react'
+import { useRouter } from 'next/navigation'
+
+export default function AlertSystem({ title = "Alerts", alertsData = [] }) {
+  const router = useRouter()
+  
+  // Default alerts data
+  const defaultAlerts = [
     {
       id: 1,
       title: 'Overdue Inspection',
@@ -60,6 +65,15 @@ export default function AlertSystem({ title = "Alerts" }) {
     }
   ]
 
+  const [alerts, setAlerts] = useState(alertsData.length > 0 ? alertsData : defaultAlerts)
+
+  // Update alerts when props change
+  useEffect(() => {
+    if (alertsData.length > 0) {
+      setAlerts(alertsData)
+    }
+  }, [alertsData])
+
   const getPriorityColor = (priority) => {
     switch (priority) {
       case 'critical': return 'bg-red-100 text-red-800'
@@ -90,6 +104,34 @@ export default function AlertSystem({ title = "Alerts" }) {
     }
   }
 
+  // Handle individual alert actions
+  const handleAlertAction = (alert) => {
+    switch (alert.type) {
+      case 'inspection':
+        router.push('/inspections')
+        break
+      case 'training':
+        router.push('/training')
+        break
+      case 'hazard':
+        router.push('/incidents')
+        break
+      case 'maintenance':
+        router.push('/admin')
+        break
+      default:
+        console.log('Alert action:', alert.action)
+    }
+  }
+
+
+  // Handle "Mark All Read" action
+  const handleMarkAllRead = () => {
+    // Remove all alerts (simulate marking as read)
+    setAlerts([])
+    console.log('All alerts marked as read')
+  }
+
   return (
     <div className="rounded-xl border p-6 shadow-lg hover:shadow-xl transition-all duration-300" style={{
       backgroundColor: 'var(--card)',
@@ -104,10 +146,15 @@ export default function AlertSystem({ title = "Alerts" }) {
           <span className="text-sm" style={{ color: 'var(--muted-foreground)' }}>
             {alerts.length} active
           </span>
+          {alerts.length > 4 && (
+            <span className="text-xs text-blue-600 ml-2">
+              (scroll to see more)
+            </span>
+          )}
         </div>
       </div>
       
-      <div className="space-y-3">
+      <div className="space-y-3 max-h-80 overflow-y-auto pr-2 scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100">
         {alerts.map((alert) => (
           <div key={alert.id} className="flex items-start gap-3 p-3 rounded-lg hover:bg-gray-50 transition-colors">
             {/* Alert Icon */}
@@ -132,7 +179,10 @@ export default function AlertSystem({ title = "Alerts" }) {
                 <span className="text-xs" style={{ color: 'var(--muted-foreground)' }}>
                   {alert.timestamp}
                 </span>
-                <button className="text-xs font-medium text-blue-600 hover:text-blue-700 transition-colors">
+                <button 
+                  onClick={() => handleAlertAction(alert)}
+                  className="text-xs font-medium text-blue-600 hover:text-blue-700 transition-colors cursor-pointer"
+                >
                   {alert.action}
                 </button>
               </div>
@@ -142,16 +192,18 @@ export default function AlertSystem({ title = "Alerts" }) {
       </div>
 
       {/* Action Buttons */}
-      <div className="mt-4 pt-4 border-t" style={{ borderColor: 'var(--border)' }}>
-        <div className="flex gap-2">
-          <button className="flex-1 px-3 py-2 text-sm font-medium text-blue-600 hover:bg-blue-50 rounded-lg transition-colors">
-            View All Alerts
-          </button>
-          <button className="flex-1 px-3 py-2 text-sm font-medium bg-blue-600 text-white hover:bg-blue-700 rounded-lg transition-colors">
-            Mark All Read
-          </button>
+      {alerts.length > 0 && (
+        <div className="mt-4 pt-4 border-t" style={{ borderColor: 'var(--border)' }}>
+          <div className="flex justify-center">
+            <button 
+              onClick={handleMarkAllRead}
+              className="px-4 py-2 text-sm font-medium bg-blue-600 text-white hover:bg-blue-700 rounded-lg transition-colors cursor-pointer"
+            >
+              Mark All Read
+            </button>
+          </div>
         </div>
-      </div>
+      )}
     </div>
   )
 }

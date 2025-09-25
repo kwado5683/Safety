@@ -97,7 +97,7 @@ export default function EnhancedHeader({ onDateFilterChange, notificationCount =
 
           {/* Center - Date Filter (hidden on mobile) */}
           <div className="hidden md:block">
-            <DateFilter onChange={onDateFilterChange} />
+            <DateFilter key="desktop-date-filter" onChange={onDateFilterChange} />
           </div>
 
           {/* Right side - Notifications and User */}
@@ -115,7 +115,7 @@ export default function EnhancedHeader({ onDateFilterChange, notificationCount =
 
         {/* Mobile Date Filter */}
         <div className="md:hidden pb-4">
-          <DateFilter onChange={onDateFilterChange} />
+          <DateFilter key="mobile-date-filter" onChange={onDateFilterChange} />
         </div>
       </div>
     </header>

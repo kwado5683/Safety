@@ -19,14 +19,41 @@ PSEUDOCODE:
 
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
+import { useHaptic } from '@/lib/hooks/useHaptic'
+import { useDateFilter } from '@/lib/hooks/useDateFilter'
 
 export default function DateFilter({ onChange, initialFilter = 'today' }) {
-  const [selectedFilter, setSelectedFilter] = useState(initialFilter)
+  // Use custom hook for stable state management
+  const { selectedFilter, updateFilter } = useDateFilter(initialFilter)
+  
   const [customDates, setCustomDates] = useState({
     start: new Date().toISOString().split('T')[0],
     end: new Date().toISOString().split('T')[0]
   })
+  
+  // Add haptic feedback for mobile interactions
+  const haptic = useHaptic()
+
+  // Debug logging to track state changes
+  useEffect(() => {
+    console.log('DateFilter selectedFilter changed to:', selectedFilter)
+  }, [selectedFilter])
+
+  // Trigger onChange on mount with the persisted filter
+  useEffect(() => {
+    const dateRange = getDateRange(selectedFilter)
+    onChange?.(dateRange, selectedFilter)
+  }, []) // Only run on mount
+
+  // Handle filter clicks with stable state management
+  const handleFilterClick = useCallback((filterKey) => {
+    console.log('DateFilter: Clicking filter:', filterKey, 'Current selected:', selectedFilter)
+    updateFilter(filterKey)
+    const dateRange = getDateRange(filterKey)
+    console.log('DateFilter: Sending date range to parent:', dateRange, 'Filter type:', filterKey)
+    onChange?.(dateRange, filterKey)
+  }, [onChange, selectedFilter, updateFilter])
 
   // Calculate date ranges
   const getDateRange = (filter) => {
@@ -61,11 +88,15 @@ export default function DateFilter({ onChange, initialFilter = 'today' }) {
     }
   }
 
-  // Notify parent component when filter changes
+  // Don't call onChange on mount - let the parent handle initial state
+
+  // Notify parent component when custom dates change
   useEffect(() => {
-    const dateRange = getDateRange(selectedFilter)
-    onChange?.(dateRange, selectedFilter)
-  }, [selectedFilter, customDates])
+    if (selectedFilter === 'custom') {
+      const dateRange = getDateRange(selectedFilter)
+      onChange?.(dateRange, selectedFilter)
+    }
+  }, [customDates, selectedFilter, onChange])
 
   const filters = [
     { key: 'today', label: 'Today' },
@@ -75,44 +106,54 @@ export default function DateFilter({ onChange, initialFilter = 'today' }) {
   ]
 
   return (
-    <div className="flex items-center gap-2">
-      {filters.map((filter) => (
-        <button
-          key={filter.key}
-          onClick={() => setSelectedFilter(filter.key)}
-          className={`px-3 py-1.5 text-sm font-medium rounded-lg transition-colors ${
-            selectedFilter === filter.key
-              ? 'bg-blue-600 text-white'
-              : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-          }`}
-          style={{
-            backgroundColor: selectedFilter === filter.key ? 'var(--primary)' : 'var(--muted)',
-            color: selectedFilter === filter.key ? 'var(--primary-foreground)' : 'var(--muted-foreground)'
-          }}
-        >
-          {filter.label}
-        </button>
-      ))}
+    <div className="flex items-center gap-2" data-testid="date-filter-container">
+      {filters.map((filter) => {
+        const isActive = selectedFilter === filter.key
+        console.log(`Filter ${filter.key}: isActive=${isActive}, selectedFilter=${selectedFilter}`)
+        return (
+          <button
+            key={filter.key}
+            data-testid={`date-filter-${filter.key}`}
+            onClick={() => {
+              haptic.light() // Add haptic feedback for mobile
+              handleFilterClick(filter.key)
+            }}
+            className={`px-4 py-2 text-sm font-medium rounded-lg transition-all duration-200 ease-in-out transform touch-friendly cursor-pointer ${
+              isActive
+                ? 'bg-orange-600 text-white shadow-lg shadow-orange-200 scale-105 ring-2 ring-orange-300'
+                : 'bg-gray-100 text-gray-700 hover:bg-orange-500 hover:text-white hover:shadow-lg hover:shadow-orange-200 hover:scale-110 active:bg-orange-700 active:scale-95'
+            }`}
+          >
+            {filter.label}
+          </button>
+        )
+      })}
       
       {selectedFilter === 'custom' && (
         <div className="flex items-center gap-2 ml-2">
           <input
             type="date"
             value={customDates.start}
-            onChange={(e) => setCustomDates(prev => ({ ...prev, start: e.target.value }))}
-            className="px-2 py-1 text-sm border rounded"
+            onChange={(e) => {
+              haptic.light() // Add haptic feedback for mobile
+              setCustomDates(prev => ({ ...prev, start: e.target.value }))
+            }}
+            className="px-3 py-2 text-sm border rounded-lg transition-all duration-200 ease-in-out hover:shadow-md hover:border-orange-300 focus:shadow-lg focus:scale-105 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 touch-friendly cursor-pointer"
             style={{
               backgroundColor: 'var(--background)',
               borderColor: 'var(--border)',
               color: 'var(--foreground)'
             }}
           />
-          <span className="text-sm" style={{ color: 'var(--muted-foreground)' }}>to</span>
+          <span className="text-sm font-medium" style={{ color: 'var(--muted-foreground)' }}>to</span>
           <input
             type="date"
             value={customDates.end}
-            onChange={(e) => setCustomDates(prev => ({ ...prev, end: e.target.value }))}
-            className="px-2 py-1 text-sm border rounded"
+            onChange={(e) => {
+              haptic.light() // Add haptic feedback for mobile
+              setCustomDates(prev => ({ ...prev, end: e.target.value }))
+            }}
+            className="px-3 py-2 text-sm border rounded-lg transition-all duration-200 ease-in-out hover:shadow-md hover:border-orange-300 focus:shadow-lg focus:scale-105 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 touch-friendly cursor-pointer"
             style={{
               backgroundColor: 'var(--background)',
               borderColor: 'var(--border)',

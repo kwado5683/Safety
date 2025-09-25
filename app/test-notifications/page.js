@@ -53,6 +53,12 @@ export default function TestNotificationsPage() {
   } = useNotificationTemplates()
 
   const [testResults, setTestResults] = useState([])
+  const [hasPermission, setHasPermission] = useState(false)
+
+  // Update permission state on client side to avoid hydration mismatch
+  useEffect(() => {
+    setHasPermission(hasNotificationPermission())
+  }, [permission])
 
   const addTestResult = (type, success, message) => {
     setTestResults(prev => [...prev, {
@@ -64,9 +70,9 @@ export default function TestNotificationsPage() {
     }])
   }
 
-  const handleTestIncident = () => {
+  const handleTestIncident = async () => {
     try {
-      const result = showIncidentNotification({
+      const result = await showIncidentNotification({
         id: 'test-123',
         type: 'Test Incident',
         location: 'Test Location',
@@ -78,9 +84,9 @@ export default function TestNotificationsPage() {
     }
   }
 
-  const handleTestAction = () => {
+  const handleTestAction = async () => {
     try {
-      const result = showActionNotification({
+      const result = await showActionNotification({
         id: 'test-456',
         title: 'Test Corrective Action',
         incidentId: 'test-123',
@@ -92,9 +98,9 @@ export default function TestNotificationsPage() {
     }
   }
 
-  const handleTestInspection = () => {
+  const handleTestInspection = async () => {
     try {
-      const result = showInspectionNotification({
+      const result = await showInspectionNotification({
         id: 'test-789',
         criticalFails: 2
       })
@@ -104,9 +110,9 @@ export default function TestNotificationsPage() {
     }
   }
 
-  const handleTestTraining = () => {
+  const handleTestTraining = async () => {
     try {
-      const result = showTrainingNotification({
+      const result = await showTrainingNotification({
         id: 'test-101',
         courseName: 'Test Safety Course',
         expiresOn: '2024-12-31'
@@ -117,9 +123,9 @@ export default function TestNotificationsPage() {
     }
   }
 
-  const handleTestSystem = () => {
+  const handleTestSystem = async () => {
     try {
-      const result = showSystemNotification({
+      const result = await showSystemNotification({
         id: 'test-202',
         message: 'This is a test system notification',
         urgent: false,
@@ -341,7 +347,7 @@ export default function TestNotificationsPage() {
                 <div className="grid grid-cols-1 gap-2">
                   <HapticButton
                     onClick={handleTestIncident}
-                    disabled={!hasNotificationPermission()}
+                    disabled={!hasPermission}
                     className="w-full"
                     variant="danger"
                     hapticType="medium"
@@ -350,7 +356,7 @@ export default function TestNotificationsPage() {
                   </HapticButton>
                   <HapticButton
                     onClick={handleTestAction}
-                    disabled={!hasNotificationPermission()}
+                    disabled={!hasPermission}
                     className="w-full"
                     variant="warning"
                     hapticType="medium"
@@ -359,7 +365,7 @@ export default function TestNotificationsPage() {
                   </HapticButton>
                   <HapticButton
                     onClick={handleTestInspection}
-                    disabled={!hasNotificationPermission()}
+                    disabled={!hasPermission}
                     className="w-full"
                     variant="warning"
                     hapticType="medium"
@@ -368,7 +374,7 @@ export default function TestNotificationsPage() {
                   </HapticButton>
                   <HapticButton
                     onClick={handleTestTraining}
-                    disabled={!hasNotificationPermission()}
+                    disabled={!hasPermission}
                     className="w-full"
                     variant="secondary"
                     hapticType="light"
@@ -377,7 +383,7 @@ export default function TestNotificationsPage() {
                   </HapticButton>
                   <HapticButton
                     onClick={handleTestSystem}
-                    disabled={!hasNotificationPermission()}
+                    disabled={!hasPermission}
                     className="w-full"
                     variant="secondary"
                     hapticType="light"
