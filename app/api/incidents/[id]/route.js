@@ -25,12 +25,12 @@ import { supabaseServer } from '@/lib/supabaseServer'
 export async function GET(request, { params }) {
   try {
     // Check authentication
-    const { userId } = getAuth(request)
+    const { userId } = await getAuth(request)
     if (!userId) {
       return Response.json({ error: 'Unauthorized' }, { status: 401 })
     }
 
-    const incidentId = params.id
+    const { id: incidentId } = await params
 
     if (!incidentId) {
       return Response.json({ error: 'Incident ID is required' }, { status: 400 })

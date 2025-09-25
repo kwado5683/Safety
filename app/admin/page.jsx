@@ -1,0 +1,239 @@
+/*
+DESCRIPTION: Admin dashboard page with role-based access control.
+- Server component that checks user role before rendering
+- Shows "Not permitted" message for non-admin users
+- Displays admin tabs: Users, Checklists, Training
+- Uses getMyRole() to determine user permissions
+
+WHAT EACH PART DOES:
+1. getAuth() - Clerk function to get current user information
+2. getMyRole() - Gets user's role from database
+3. Role validation - Checks if user has 'admin' role
+4. Conditional rendering - Shows admin interface or access denied
+5. Tab navigation - Provides access to different admin sections
+
+PSEUDOCODE:
+- Get current user from Clerk authentication
+- Get user's role from database
+- If role is not 'admin', show "Not permitted" message
+- If role is 'admin', show admin dashboard with tabs
+- Handle loading and error states gracefully
+*/
+
+// Import Next.js utilities
+import Link from 'next/link'
+
+// Import Clerk's authentication function
+import { auth } from '@clerk/nextjs/server'
+
+// Import user role management function
+import { getMyRole } from '@/lib/users'
+
+// Import RoleGate component for additional protection
+import RoleGate from '@/components/auth/RoleGate'
+import DashboardLayout from '@/components/DashboardLayout'
+
+/**
+ * Admin dashboard page - Server component with role-based access
+ * Only users with 'admin' role can access this page
+ */
+export default async function AdminPage() {
+  try {
+    // Get current user information from Clerk
+    // Note: In server components, we use auth() instead of getAuth()
+    const { userId } = await auth()
+    
+    // If no user is logged in, show access denied
+    if (!userId) {
+      return (
+        <DashboardLayout>
+          <div className="text-center py-12">
+            <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
+              <svg className="w-8 h-8 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z" />
+              </svg>
+            </div>
+            <h1 className="text-xl font-semibold text-slate-900 mb-2">
+              Access Denied
+            </h1>
+            <p className="text-slate-600 mb-6">
+              You must be logged in to access the admin panel.
+            </p>
+            <Link 
+              href="/"
+              className="inline-flex items-center px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors"
+            >
+              Go to Dashboard
+            </Link>
+          </div>
+        </DashboardLayout>
+      )
+    }
+    
+    // Get user's role from database
+    const userRole = await getMyRole(userId)
+    
+    // If user is not admin, show access denied
+    if (userRole !== 'admin') {
+      return (
+        <DashboardLayout>
+          <div className="text-center py-12">
+            <div className="w-16 h-16 bg-yellow-100 rounded-full flex items-center justify-center mx-auto mb-4">
+              <svg className="w-8 h-8 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+              </svg>
+            </div>
+            <h1 className="text-xl font-semibold text-slate-900 mb-2">
+              Not Permitted
+            </h1>
+            <p className="text-slate-600 mb-2">
+              You need administrator privileges to access this page.
+            </p>
+            <p className="text-sm text-slate-500 mb-6">
+              Your current role: <span className="font-medium capitalize">{userRole}</span>
+            </p>
+            <Link 
+              href="/"
+              className="inline-flex items-center px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors"
+            >
+              Go to Dashboard
+            </Link>
+          </div>
+        </DashboardLayout>
+      )
+    }
+    
+    // User is admin - show admin dashboard
+    return (
+      <DashboardLayout>
+        <div className="space-y-6">
+          {/* Admin Header */}
+          <div className="mb-8">
+            {/* Navigation breadcrumb */}
+            <div className="mb-4">
+              <Link href="/" className="inline-flex items-center text-indigo-600 hover:text-indigo-700 transition-colors text-sm font-medium">
+                <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                </svg>
+                Back to Safety Dashboard
+              </Link>
+            </div>
+            
+            <h1 className="text-3xl font-bold text-slate-900 mb-2">
+              Admin Dashboard
+            </h1>
+            <p className="text-slate-600">
+              Manage users, checklists, training programs, and risk assessments
+            </p>
+          </div>
+          
+          {/* Admin Tabs */}
+          <div className="bg-white rounded-xl shadow-lg overflow-hidden">
+            <div className="border-b border-slate-200">
+              <nav className="flex space-x-8 px-6" aria-label="Admin Tabs">
+                <Link
+                  href="/admin/users"
+                  className="py-4 px-1 border-b-2 border-transparent font-medium text-sm text-slate-500 hover:text-slate-700 hover:border-slate-300"
+                >
+                  Users
+                </Link>
+                <Link
+                  href="/admin/checklists"
+                  className="py-4 px-1 border-b-2 border-transparent font-medium text-sm text-slate-500 hover:text-slate-700 hover:border-slate-300"
+                >
+                  Checklists
+                </Link>
+                <Link
+                  href="/admin/training"
+                  className="py-4 px-1 border-b-2 border-transparent font-medium text-sm text-slate-500 hover:text-slate-700 hover:border-slate-300"
+                >
+                  Training
+                </Link>
+                <Link
+                  href="/admin/risk-assessments"
+                  className="py-4 px-1 border-b-2 border-transparent font-medium text-sm text-slate-500 hover:text-slate-700 hover:border-slate-300"
+                >
+                  Risk Assessments
+                </Link>
+              </nav>
+            </div>
+            
+            {/* Admin Content */}
+            <div className="p-6">
+              <div className="text-center py-12">
+                <div className="w-16 h-16 bg-indigo-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <svg className="w-8 h-8 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                </div>
+                <h2 className="text-xl font-semibold text-slate-900 mb-2">
+                  Welcome to Admin Panel
+                </h2>
+                <p className="text-slate-600 mb-6">
+                  Select a tab above to manage different aspects of the system.
+                </p>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 max-w-4xl mx-auto">
+                  <div className="bg-slate-50 rounded-lg p-4">
+                    <h3 className="font-medium text-slate-900 mb-2">Users</h3>
+                    <p className="text-sm text-slate-600">
+                      Manage user accounts and roles
+                    </p>
+                  </div>
+                  <div className="bg-slate-50 rounded-lg p-4">
+                    <h3 className="font-medium text-slate-900 mb-2">Checklists</h3>
+                    <p className="text-sm text-slate-600">
+                      Create and manage inspection checklists
+                    </p>
+                  </div>
+                  <div className="bg-slate-50 rounded-lg p-4">
+                    <h3 className="font-medium text-slate-900 mb-2">Training</h3>
+                    <p className="text-sm text-slate-600">
+                      Manage training programs and records
+                    </p>
+                  </div>
+                  <div className="bg-slate-50 rounded-lg p-4">
+                    <h3 className="font-medium text-slate-900 mb-2">Risk Assessments</h3>
+                    <p className="text-sm text-slate-600">
+                      Create and manage risk assessments
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+    </DashboardLayout>
+    )
+    
+  } catch (error) {
+    // Handle any unexpected errors
+    console.error('Admin page error:', error)
+    return (
+        <DashboardLayout>
+            <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 flex items-center justify-center">
+            <div className="bg-white rounded-xl shadow-lg p-8 max-w-md w-full mx-4">
+            <div className="text-center">
+                <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <svg className="w-8 h-8 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                </div>
+                <h1 className="text-xl font-semibold text-slate-900 mb-2">
+                Error Loading Admin Panel
+                </h1>
+                <p className="text-slate-600 mb-6">
+                Something went wrong while loading the admin panel.
+                </p>
+                <Link 
+                href="/"
+                className="inline-flex items-center px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors"
+                >
+                Go to Dashboard
+                </Link>
+            </div>
+            </div>
+            </div>
+        </DashboardLayout>
+    )
+  }
+}

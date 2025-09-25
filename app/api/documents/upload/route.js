@@ -32,7 +32,7 @@ import { v4 as uuidv4 } from 'uuid'
 export async function POST(request) {
   try {
     // Get the authenticated user from Clerk
-    const { userId } = getAuth(request)
+    const { userId } = await getAuth(request)
     
     if (!userId) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })

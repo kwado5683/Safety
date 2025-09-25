@@ -54,7 +54,7 @@ export default function GaugeChart({
             stroke="currentColor"
             strokeWidth={strokeWidth}
             fill="none"
-            className="text-gray-200 dark:text-gray-700"
+            className="text-gray-200"
           />
           {/* Progress circle */}
           <circle

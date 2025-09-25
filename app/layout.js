@@ -19,7 +19,6 @@ PSEUDOCODE:
 
 import { ClerkProvider } from '@clerk/nextjs'
 import { Geist, Geist_Mono } from 'next/font/google'
-import { ThemeProvider } from '@/lib/ThemeContext'
 import './globals.css'
 
 // Load Google Fonts - these fonts will be available throughout the app
@@ -37,6 +36,19 @@ const geistMono = Geist_Mono({
 export const metadata = {
   title: 'Safety Dashboard',           // Browser tab title
   description: 'Safety management system for organizations', // Search result description
+  manifest: '/manifest.json',          // Web app manifest for PWA
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: 'default',
+    title: 'Safety Dashboard'
+  }
+}
+
+// Viewport configuration - moved to separate export as required by Next.js 15
+export const viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  themeColor: '#4f46e5'
 }
 
 // Root layout component - this wraps EVERY page in the app
@@ -48,11 +60,8 @@ export default function RootLayout({ children }) {
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         {/* ClerkProvider wraps the entire app to enable authentication */}
         <ClerkProvider>
-          {/* ThemeProvider wraps the app to enable theme management */}
-          <ThemeProvider>
-            {/* children represents whatever page is being displayed */}
-            {children}
-          </ThemeProvider>
+          {/* children represents whatever page is being displayed */}
+          {children}
         </ClerkProvider>
       </body>
     </html>

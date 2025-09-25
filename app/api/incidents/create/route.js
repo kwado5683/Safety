@@ -29,6 +29,9 @@ import { getAuth } from '@clerk/nextjs/server'
 // Import Supabase server client
 import { supabaseServer } from '@/lib/supabaseServer'
 
+// Import email notification function
+import { sendIncidentReportedEmail } from '@/lib/email'
+
 // POST handler - called when someone makes a POST request to /api/incidents/create
 export async function POST(request) {
   try {
@@ -110,6 +113,40 @@ export async function POST(request) {
         { error: 'Failed to create incident' },
         { status: 500 }
       )
+    }
+
+    // Send incident reported email notification
+    try {
+      // Get admin users to notify
+      const { data: adminUsers, error: adminError } = await supabaseServer
+        .from('user_profiles')
+        .select('user_id, full_name')
+        .in('role', ['admin', 'owner', 'manager'])
+
+      if (adminUsers && !adminError) {
+        const incidentRef = `INC-${data.id}`
+        const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'
+        const incidentLink = `${baseUrl}/incidents/${data.id}`
+
+        // Send email to each admin user
+        for (const admin of adminUsers) {
+          // For now, we'll use user_id as email since we don't have email in user_profiles
+          // In a real implementation, you'd want to get email from Clerk or user_profiles
+          const adminEmail = `${admin.user_id}@example.com` // Replace with actual email lookup
+          
+          await sendIncidentReportedEmail({
+            toEmail: adminEmail,
+            incidentType: incidentType,
+            location: location,
+            reportedBy: reportedBy,
+            incidentRef: incidentRef,
+            link: incidentLink
+          })
+        }
+      }
+    } catch (emailError) {
+      // Don't fail the incident creation if email fails
+      console.error('Error sending incident reported email:', emailError)
     }
     
     // Return success response with created incident data

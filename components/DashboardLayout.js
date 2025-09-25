@@ -23,10 +23,16 @@ PSEUDOCODE:
 'use client' // This tells Next.js to run this component in the browser
 
 // Import React hooks and Clerk hooks
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useUser, useClerk } from '@clerk/nextjs'
 import Link from 'next/link'
-import ThemeToggle from './ThemeToggle'
+import { usePathname } from 'next/navigation'
+import RoleGate from './auth/RoleGate'
+import MobileNavigation from './MobileNavigation'
+import { initMobileEnhancements, isMobileDevice } from '@/lib/mobileUtils'
+import { useHaptic } from '@/lib/hooks/useHaptic'
+import { useNotifications } from '@/lib/hooks/useNotifications'
+import { registerServiceWorker } from '@/lib/notifications'
 
 // DashboardLayout component - wraps all dashboard pages
 export default function DashboardLayout({ children }) {
@@ -36,16 +42,66 @@ export default function DashboardLayout({ children }) {
   // Get Clerk functions like signOut
   const { signOut } = useClerk()
   
+  // Get current pathname for active link highlighting
+  const pathname = usePathname()
+  
   // Local state for mobile sidebar
   const [sidebarOpen, setSidebarOpen] = useState(false)
+  
+  // Initialize mobile enhancements
+  const haptic = useHaptic()
+  
+  // Initialize notifications
+  const notifications = useNotifications()
+  
+  // Initialize mobile enhancements and notifications on mount
+  useEffect(() => {
+    initMobileEnhancements()
+    
+    // Register Service Worker for push notifications
+    const initServiceWorker = async () => {
+      try {
+        await registerServiceWorker()
+        console.log('Service Worker registered successfully')
+      } catch (error) {
+        console.error('Service Worker registration failed:', error)
+      }
+    }
+    
+    initServiceWorker()
+    
+    // Initialize notifications for authenticated users
+    if (user && notifications.isSupported && notifications.permission === 'default') {
+      // Auto-request permission for authenticated users
+      notifications.requestPermission()
+    }
+  }, [user, notifications.isSupported, notifications.permission, notifications.requestPermission])
 
   // Function to handle user sign out
   const handleSignOut = async () => {
     try {
+      haptic.medium() // Provide haptic feedback
       await signOut({ redirectUrl: '/sign-in' })
     } catch (error) {
       console.error('Sign out error:', error)
+      haptic.error() // Error feedback
     }
+  }
+
+  // Helper function to get link classes based on active state
+  const getLinkClasses = (href, baseClasses = '') => {
+    const isActive = pathname === href
+    const activeClasses = 'bg-indigo-50 text-indigo-700 font-medium border-r-2 border-indigo-600'
+    const inactiveClasses = 'text-slate-700 hover:bg-slate-100'
+    
+    return `${baseClasses} block px-3 py-2 text-sm rounded-lg transition-all duration-200 hover:shadow-sm touch-friendly haptic-feedback ${
+      isActive ? activeClasses : inactiveClasses
+    }`
+  }
+
+  // Handle navigation with haptic feedback
+  const handleNavigation = (e) => {
+    haptic.light()
   }
 
   // Show loading state while Clerk is loading user data
@@ -77,77 +133,85 @@ export default function DashboardLayout({ children }) {
 
   // Main layout structure
   return (
-    <div className="min-h-screen transition-colors duration-300" style={{ 
-      background: 'linear-gradient(to bottom right, var(--background), var(--muted), var(--primary))',
-      color: 'var(--foreground)'
-    }}>
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50">
       {/* Header - contains app title and user actions - STICKY */}
-      <header className="sticky top-0 z-50 h-16 backdrop-blur-sm border-b flex items-center justify-between px-4 sm:px-6 shadow-sm transition-colors duration-300" style={{
-        backgroundColor: 'var(--card)',
-        borderColor: 'var(--border)'
-      }}>
+      <header className="sticky top-0 z-50 h-16 backdrop-blur-md bg-white/70 flex items-center justify-between px-4 sm:px-6 shadow-lg">
         {/* App title with gradient text */}
         <div className="font-bold text-xl tracking-tight bg-gradient-to-r from-indigo-600 to-blue-600 bg-clip-text text-transparent">
           Safety Dashboard
         </div>
         
-        {/* User actions - theme toggle, settings and sign out */}
+        {/* User actions - settings and sign out */}
         <div className="flex items-center gap-3">
-          <ThemeToggle />
-          <Link href="/settings" className="text-sm transition-colors" style={{ color: 'var(--muted-foreground)' }}>
-            Settings
-          </Link>
-          <button 
-            onClick={handleSignOut}
-            className="text-sm transition-colors"
-            style={{ color: 'var(--muted-foreground)' }}
-          >
-            Sign Out
-          </button>
+          {/* Mobile navigation button */}
+          <MobileNavigation />
+          
+          {/* Desktop user actions */}
+          <div className="hidden md:flex items-center gap-3">
+            <Link href="/settings" className="text-sm text-slate-600 hover:text-slate-900 transition-colors">
+              Settings
+            </Link>
+            <button 
+              onClick={handleSignOut}
+              className="text-sm text-slate-600 hover:text-slate-900 transition-colors"
+            >
+              Sign Out
+            </button>
+          </div>
+          
+          {/* Mobile user actions */}
+          <div className="md:hidden flex items-center gap-2">
+            <button 
+              onClick={handleSignOut}
+              className="text-sm text-slate-600 hover:text-slate-900 transition-colors px-2 py-1 rounded"
+            >
+              Sign Out
+            </button>
+          </div>
         </div>
       </header>
 
       {/* Main content area with sidebar and page content */}
       <div className="flex relative">
         {/* Sidebar navigation - hidden on mobile, visible on desktop - STICKY */}
-        <aside className="hidden md:block w-64 shrink-0 backdrop-blur-sm border-r h-[calc(100vh-4rem)] p-4 shadow-sm transition-colors duration-300 fixed left-0 top-16 z-40 overflow-y-auto" style={{
-          backgroundColor: 'var(--card)',
-          borderColor: 'var(--border)'
-        }}>
+        <aside className="hidden md:block w-64 shrink-0 backdrop-blur-md bg-white/60 h-[calc(100vh-4rem)] p-4 shadow-xl fixed left-0 top-16 z-40 overflow-y-auto">
           {/* Navigation menu */}
           <nav className="space-y-2">
             {/* Dashboard link */}
-            <Link href="/" className="block px-3 py-2 text-sm rounded-lg transition-all duration-200 hover:shadow-sm" style={{ color: 'var(--foreground)' }}>
+            <Link href="/" className={getLinkClasses('/')} onClick={handleNavigation}>
               Dashboard
             </Link>
             
             {/* Incidents link */}
-            <Link href="/incidents" className="block px-3 py-2 text-sm text-slate-700 dark:text-slate-300 hover:bg-gradient-to-r hover:from-red-50 hover:to-pink-50 dark:hover:from-red-900/20 dark:hover:to-pink-900/20 rounded-lg transition-all duration-200 hover:shadow-sm">
+            <Link href="/incidents" className={getLinkClasses('/incidents')} onClick={handleNavigation}>
               Incidents
             </Link>
             
             {/* Inspections link */}
-            <Link href="/inspections" className="block px-3 py-2 text-sm text-slate-700 dark:text-slate-300 hover:bg-gradient-to-r hover:from-yellow-50 hover:to-orange-50 dark:hover:from-yellow-900/20 dark:hover:to-orange-900/20 rounded-lg transition-all duration-200 hover:shadow-sm">
+            <Link href="/inspections" className={getLinkClasses('/inspections')} onClick={handleNavigation}>
               Inspections
             </Link>
             
             {/* Training link */}
-            <Link href="/training" className="block px-3 py-2 text-sm text-slate-700 dark:text-slate-300 hover:bg-gradient-to-r hover:from-green-50 hover:to-emerald-50 dark:hover:from-green-900/20 dark:hover:to-emerald-900/20 rounded-lg transition-all duration-200 hover:shadow-sm">
+            <Link href="/training" className={getLinkClasses('/training')} onClick={handleNavigation}>
               Training
             </Link>
             
             {/* Documents link */}
-            <Link href="/documents" className="block px-3 py-2 text-sm text-slate-700 dark:text-slate-300 hover:bg-gradient-to-r hover:from-purple-50 hover:to-violet-50 dark:hover:from-purple-900/20 dark:hover:to-violet-900/20 rounded-lg transition-all duration-200 hover:shadow-sm">
+            <Link href="/documents" className={getLinkClasses('/documents')} onClick={handleNavigation}>
               Documents
             </Link>
             
             {/* Risk Management link - shown to all users for now */}
-            <Link href="/risk" className="block px-3 py-2 text-sm text-slate-700 dark:text-slate-300 hover:bg-gradient-to-r hover:from-amber-50 hover:to-orange-50 dark:hover:from-amber-900/20 dark:hover:to-orange-900/20 rounded-lg transition-all duration-200 hover:shadow-sm">
+            <Link href="/risk" className={getLinkClasses('/risk')} onClick={handleNavigation}>
               Risk Management
             </Link>
             
+            {/* Admin link - only visible to admin users */}
+            <AdminLink onNavigation={handleNavigation} />
+            
             {/* Settings link */}
-            <Link href="/settings" className="block px-3 py-2 text-sm text-slate-700 dark:text-slate-300 hover:bg-gradient-to-r hover:from-slate-50 hover:to-gray-50 dark:hover:from-slate-800/20 dark:hover:to-gray-800/20 rounded-lg transition-all duration-200 hover:shadow-sm">
+            <Link href="/settings" className={getLinkClasses('/settings')} onClick={handleNavigation}>
               Settings
             </Link>
           </nav>
@@ -163,5 +227,31 @@ export default function DashboardLayout({ children }) {
         </main>
       </div>
     </div>
+  )
+}
+
+/**
+ * AdminLink component - Only shows admin link to admin users
+ * Uses RoleGate to conditionally render the admin navigation link
+ */
+function AdminLink({ onNavigation }) {
+  const pathname = usePathname()
+  
+  const getLinkClasses = (href) => {
+    const isActive = pathname === href
+    const activeClasses = 'bg-indigo-50 text-indigo-700 font-medium border-r-2 border-indigo-600'
+    const inactiveClasses = 'text-slate-700 hover:bg-slate-100'
+    
+    return `block px-3 py-2 text-sm rounded-lg transition-all duration-200 hover:shadow-sm touch-friendly haptic-feedback ${
+      isActive ? activeClasses : inactiveClasses
+    }`
+  }
+  
+  return (
+    <RoleGate roles={['admin']} fallbackMessage="">
+      <Link href="/admin" className={getLinkClasses('/admin')} onClick={onNavigation}>
+        Admin Panel
+      </Link>
+    </RoleGate>
   )
 }

@@ -20,183 +20,34 @@ PSEUDOCODE:
 /* Import Tailwind CSS - this gives us access to all utility classes like bg-blue-500, text-xl, etc. */
 @import "tailwindcss";
 
-/* Define custom CSS variables for consistent theming throughout the app */
+/* Simplified CSS variables */
 :root {
-  /* Light theme colors with proper contrast ratios (WCAG AA compliant) */
-  --background: #ffffff;
-  --foreground: #0f172a;        /* High contrast dark text on light background */
-  --card: #ffffff;
-  --card-foreground: #0f172a;
-  --popover: #ffffff;
-  --popover-foreground: #0f172a;
-  --primary: #3b82f6;           /* Blue for primary actions */
-  --primary-foreground: #ffffff; /* White text on blue background */
-  --secondary: #f1f5f9;         /* Light gray for secondary elements */
-  --secondary-foreground: #0f172a;
-  --muted: #f8fafc;             /* Very light gray for muted elements */
-  --muted-foreground: #64748b;  /* Medium gray for muted text */
-  --accent: #f1f5f9;            /* Light accent color */
-  --accent-foreground: #0f172a;
-  --destructive: #ef4444;       /* Red for destructive actions */
-  --destructive-foreground: #ffffff;
-  --border: #e2e8f0;            /* Light border color */
-  --input: #e2e8f0;             /* Input border color */
-  --ring: #3b82f6;              /* Focus ring color */
-  
-  /* Status colors with proper contrast */
-  --success: #10b981;           /* Green for success states */
-  --success-foreground: #ffffff;
-  --warning: #f59e0b;           /* Orange for warning states */
-  --warning-foreground: #ffffff;
-  --info: #06b6d4;              /* Cyan for info states */
-  --info-foreground: #ffffff;
-
-  /* Font families - these will be set by Next.js font loading */
   --font-geist-sans: 'Geist', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   --font-geist-mono: 'Geist Mono', 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', monospace;
 }
 
-/* Dark theme colors with proper contrast ratios (WCAG AA compliant) */
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0f172a;        /* Dark background */
-    --foreground: #f8fafc;        /* Light text on dark background */
-    --card: #1e293b;              /* Dark card background */
-    --card-foreground: #f8fafc;
-    --popover: #1e293b;
-    --popover-foreground: #f8fafc;
-    --primary: #3b82f6;           /* Same blue for consistency */
-    --primary-foreground: #ffffff;
-    --secondary: #334155;         /* Dark gray for secondary elements */
-    --secondary-foreground: #f8fafc;
-    --muted: #334155;             /* Dark muted background */
-    --muted-foreground: #94a3b8;  /* Light gray for muted text */
-    --accent: #334155;            /* Dark accent color */
-    --accent-foreground: #f8fafc;
-    --destructive: #ef4444;       /* Same red for consistency */
-    --destructive-foreground: #ffffff;
-    --border: #334155;            /* Dark border color */
-    --input: #334155;             /* Dark input border */
-    --ring: #3b82f6;              /* Same focus ring color */
-    
-    /* Status colors with proper contrast in dark mode */
-    --success: #10b981;
-    --success-foreground: #ffffff;
-    --warning: #f59e0b;
-    --warning-foreground: #ffffff;
-    --info: #06b6d4;
-    --info-foreground: #ffffff;
-  }
-}
-
-/* Manual dark mode override */
-.dark {
-  --background: #0f172a;        /* Dark background */
-  --foreground: #f8fafc;        /* Light text on dark background */
-  --card: #1e293b;              /* Dark card background */
-  --card-foreground: #f8fafc;
-  --popover: #1e293b;
-  --popover-foreground: #f8fafc;
-  --primary: #3b82f6;           /* Same blue for consistency */
-  --primary-foreground: #ffffff;
-  --secondary: #334155;         /* Dark gray for secondary elements */
-  --secondary-foreground: #f8fafc;
-  --muted: #334155;             /* Dark muted background */
-  --muted-foreground: #94a3b8;  /* Light gray for muted text */
-  --accent: #334155;            /* Dark accent color */
-  --accent-foreground: #f8fafc;
-  --destructive: #ef4444;       /* Same red for consistency */
-  --destructive-foreground: #ffffff;
-  --border: #334155;            /* Dark border color */
-  --input: #334155;             /* Dark input border */
-  --ring: #3b82f6;              /* Same focus ring color */
-  
-  /* Status colors with proper contrast in dark mode */
-  --success: #10b981;
-  --success-foreground: #ffffff;
-  --warning: #f59e0b;
-  --warning-foreground: #ffffff;
-  --info: #06b6d4;
-  --info-foreground: #ffffff;
-}
-
 /* Base body styles - applied to the entire app */
 body {
-  /* Use the custom background and foreground colors we defined above */
-  background: var(--background);
-  color: var(--foreground);
-
   /* Set default font family - this will be overridden by Tailwind classes */
   font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
 
   /* Smooth scrolling for better user experience */
   scroll-behavior: smooth;
-  
-  /* Smooth theme transitions */
-  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-/* Custom utility classes for our app */
-.glass-effect {
-  /* Creates a modern glass-like appearance that adapts to theme */
-  background: var(--card);
-  backdrop-filter: blur(10px);
-  border: 1px solid var(--border);
-  transition: background-color 0.3s ease, border-color 0.3s ease;
-}
-
-.gradient-text {
-  /* Creates text with a gradient color effect */
-  background: linear-gradient(135deg, var(--primary) 0%, #8b5cf6 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-/* Theme-aware utility classes */
-.theme-card {
-  background: var(--card);
-  color: var(--card-foreground);
-  border: 1px solid var(--border);
-  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
-}
-
-.theme-text {
-  color: var(--foreground);
-  transition: color 0.3s ease;
-}
-
-.theme-muted {
-  color: var(--muted-foreground);
-  transition: color 0.3s ease;
-}
-
-.theme-primary {
-  background: var(--primary);
-  color: var(--primary-foreground);
-  transition: background-color 0.3s ease, color 0.3s ease;
-}
-
-.theme-secondary {
-  background: var(--secondary);
-  color: var(--secondary-foreground);
-  transition: background-color 0.3s ease, color 0.3s ease;
-}
-
-/* Custom scrollbar styling for better appearance with theme support */
+/* Custom scrollbar styling */
 ::-webkit-scrollbar {
   width: 8px;
 }
 
 ::-webkit-scrollbar-track {
-  background: var(--muted);
+  @apply bg-slate-100;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--muted-foreground);
-  border-radius: 4px;
+  @apply bg-slate-400 rounded;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--foreground);
+  @apply bg-slate-500;
 }

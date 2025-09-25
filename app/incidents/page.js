@@ -131,7 +131,7 @@ export default function IncidentsPage() {
           <select
             value={statusFilter}
             onChange={(e) => setStatusFilter(e.target.value)}
-            className="rounded-lg border border-slate-300 bg-white px-3 sm:px-4 py-2 sm:py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all duration-200"
+            className="rounded-lg border border-slate-300 bg-white text-slate-900 px-3 sm:px-4 py-2 sm:py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all duration-200"
           >
             <option value="">All Incident Types</option>
             <option value="Nearmiss">Nearmiss</option>
@@ -143,7 +143,7 @@ export default function IncidentsPage() {
           <select
             value={categoryFilter}
             onChange={(e) => setCategoryFilter(e.target.value)}
-            className="rounded-lg border border-slate-300 bg-white px-3 sm:px-4 py-2 sm:py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all duration-200"
+            className="rounded-lg border border-slate-300 bg-white text-slate-900 px-3 sm:px-4 py-2 sm:py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all duration-200"
           >
             <option value="">All Severity Levels</option>
             <option value="1">Severity 1 (Low)</option>
@@ -159,7 +159,7 @@ export default function IncidentsPage() {
             placeholder="Filter by location"
             value={locationFilter}
             onChange={(e) => setLocationFilter(e.target.value)}
-            className="rounded-lg border border-slate-300 bg-white px-3 sm:px-4 py-2 sm:py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all duration-200"
+            className="rounded-lg border border-slate-300 bg-white text-slate-900 placeholder-slate-500 px-3 sm:px-4 py-2 sm:py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all duration-200"
           />
         </div>
       </div>
@@ -177,7 +177,7 @@ export default function IncidentsPage() {
               <th className="text-left px-3 sm:px-6 py-4 text-xs font-semibold text-slate-700 uppercase tracking-wider">Reported By</th>
               <th className="text-left px-3 sm:px-6 py-4 text-xs font-semibold text-slate-700 uppercase tracking-wider">Date</th>
               <th className="text-left px-3 sm:px-6 py-4 text-xs font-semibold text-slate-700 uppercase tracking-wider">Image</th>
-              <th className="text-left px-3 sm:px-6 py-4 text-xs font-semibold text-slate-700 uppercase tracking-wider">Corrective Action</th>
+              <th className="text-left px-3 sm:px-6 py-4 text-xs font-semibold text-slate-700 uppercase tracking-wider">Actions</th>
             </tr>
           </thead>
           
@@ -286,17 +286,29 @@ export default function IncidentsPage() {
                     )}
                   </td>
                   
-                  {/* Corrective Action Column */}
+                  {/* Actions Column */}
                   <td className="px-3 sm:px-6 py-4">
-                    <Link
-                      href={`/incidents/${incident.id}/corrective-action`}
-                      className="inline-flex items-center px-3 py-1 text-sm text-indigo-600 hover:text-indigo-700 hover:bg-indigo-50 rounded-lg transition-colors"
-                    >
-                      <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                      </svg>
-                      Action Plan
-                    </Link>
+                    <div className="flex flex-col gap-1">
+                      <Link
+                        href={`/incidents/${incident.id}`}
+                        className="inline-flex items-center px-3 py-1 text-sm text-indigo-600 hover:text-indigo-700 hover:bg-indigo-50 rounded-lg transition-colors"
+                      >
+                        <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                        </svg>
+                        View Details
+                      </Link>
+                      <Link
+                        href={`/incidents/${incident.id}/corrective-action`}
+                        className="inline-flex items-center px-3 py-1 text-sm text-green-600 hover:text-green-700 hover:bg-green-50 rounded-lg transition-colors"
+                      >
+                        <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                        </svg>
+                        Action Plan
+                      </Link>
+                    </div>
                   </td>
                 </tr>
               ))
@@ -306,9 +318,9 @@ export default function IncidentsPage() {
       </div>
 
       {/* Summary information */}
-      <div className="mt-4 text-sm text-slate-600">
-        Showing {incidents.length} incident{incidents.length !== 1 ? 's' : ''}
-      </div>
+        <div className="mt-4 text-sm text-slate-600">
+          <span className="text-slate-600">Showing {incidents.length} incident{incidents.length !== 1 ? 's' : ''}</span>
+        </div>
 
       {/* Image Modal */}
       <ImageModal
