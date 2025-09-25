@@ -44,11 +44,11 @@ export default function RiskAssessmentManager({ riskAssessments }) {
   const getStatusColor = (status) => {
     switch (status) {
       case 'draft':
-        return 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/40 dark:text-yellow-200'
+        return 'bg-yellow-100 text-yellow-800'
       case 'published':
-        return 'bg-green-100 text-green-800 dark:bg-green-900/40 dark:text-green-200'
+        return 'bg-green-100 text-green-800'
       default:
-        return 'bg-slate-100 text-slate-800 dark:bg-slate-700 dark:text-slate-200'
+        return 'bg-slate-100 text-slate-800'
     }
   }
 
@@ -71,11 +71,11 @@ export default function RiskAssessmentManager({ riskAssessments }) {
       {riskAssessments.length > 0 ? (
         <div className="space-y-4">
           {riskAssessments.map((ra) => (
-            <div key={ra.id} className="bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-slate-200 dark:border-slate-700 p-6">
+            <div key={ra.id} className="bg-white rounded-lg shadow-sm border border-slate-200 p-6">
               <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
                 <div className="flex-1">
                   <div className="flex items-start justify-between mb-3">
-                    <h3 className="text-lg font-semibold text-slate-800 dark:text-slate-100">
+                    <h3 className="text-lg font-semibold text-slate-800">
                       {ra.title}
                     </h3>
                     <span className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(ra.status)}`}>
@@ -83,14 +83,14 @@ export default function RiskAssessmentManager({ riskAssessments }) {
                     </span>
                   </div>
                   
-                  <div className="space-y-2 text-sm text-slate-600 dark:text-slate-300">
+                  <div className="space-y-2 text-sm text-slate-600">
                     <p><span className="font-medium">Activity:</span> {ra.activity}</p>
                     <p><span className="font-medium">Location:</span> {ra.location}</p>
                     <p><span className="font-medium">Assessor:</span> {ra.assessor_id}</p>
                     <p><span className="font-medium">Version:</span> {ra.version}</p>
                   </div>
                   
-                  <div className="flex flex-col sm:flex-row sm:items-center gap-4 mt-4 text-xs text-slate-500 dark:text-slate-400">
+                  <div className="flex flex-col sm:flex-row sm:items-center gap-4 mt-4 text-xs text-slate-500">
                     <span>Created: {formatDate(ra.created_at)}</span>
                   </div>
                 </div>
@@ -99,7 +99,7 @@ export default function RiskAssessmentManager({ riskAssessments }) {
                   {ra.status === 'draft' && (
                     <Link
                       href={`/ra/new?id=${ra.id}`}
-                      className="bg-slate-200 dark:bg-slate-600 text-slate-700 dark:text-slate-200 px-4 py-2 rounded-lg hover:bg-slate-300 dark:hover:bg-slate-500 transition-colors text-sm font-medium text-center"
+                      className="bg-slate-200 text-slate-700 px-4 py-2 rounded-lg hover:bg-slate-300 transition-colors text-sm font-medium text-center"
                     >
                       Continue Editing
                     </Link>
@@ -107,7 +107,7 @@ export default function RiskAssessmentManager({ riskAssessments }) {
                   
                   <Link
                     href={`/ra/view/${ra.id}`}
-                    className="bg-indigo-100 dark:bg-indigo-900/40 text-indigo-700 dark:text-indigo-200 px-4 py-2 rounded-lg hover:bg-indigo-200 dark:hover:bg-indigo-900/60 transition-colors text-sm font-medium text-center"
+                    className="bg-indigo-100 text-indigo-700 px-4 py-2 rounded-lg hover:bg-indigo-200 transition-colors text-sm font-medium text-center"
                   >
                     View Details
                   </Link>
@@ -117,16 +117,16 @@ export default function RiskAssessmentManager({ riskAssessments }) {
           ))}
         </div>
       ) : (
-        <div className="bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-slate-200 dark:border-slate-700 p-12 text-center">
-          <div className="w-16 h-16 bg-slate-100 dark:bg-slate-700 rounded-full flex items-center justify-center mx-auto mb-4">
+        <div className="bg-white rounded-lg shadow-sm border border-slate-200 p-12 text-center">
+          <div className="w-16 h-16 bg-slate-100 rounded-full flex items-center justify-center mx-auto mb-4">
             <svg className="w-8 h-8 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
             </svg>
           </div>
-          <h3 className="text-lg font-semibold text-slate-800 dark:text-slate-100 mb-2">
+          <h3 className="text-lg font-semibold text-slate-800 mb-2">
             No Risk Assessments Yet
           </h3>
-          <p className="text-slate-600 dark:text-slate-300 mb-6">
+          <p className="text-slate-600 mb-6">
             Create your first risk assessment to get started with safety management.
           </p>
           <Link

@@ -42,10 +42,10 @@ async function TrainingData() {
     
     if (!userId) {
       return (
-        <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 dark:from-slate-900 dark:via-slate-800 dark:to-indigo-900 flex items-center justify-center p-4">
-          <div className="bg-white dark:bg-slate-800 rounded-xl shadow-lg p-8 max-w-md w-full text-center">
-            <h2 className="text-2xl font-bold text-slate-800 dark:text-slate-100 mb-4">Access Denied</h2>
-            <p className="text-slate-600 dark:text-slate-300 mb-6">
+        <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 flex items-center justify-center p-4">
+          <div className="bg-white rounded-xl shadow-lg p-8 max-w-md w-full text-center">
+            <h2 className="text-2xl font-bold text-slate-800 mb-4">Access Denied</h2>
+            <p className="text-slate-600 mb-6">
               You must be logged in to view training records.
             </p>
             <Link href="/" className="bg-indigo-600 text-white px-6 py-3 rounded-lg hover:bg-indigo-700 transition-colors duration-200">
@@ -105,10 +105,10 @@ async function TrainingData() {
   } catch (error) {
     console.error('Error in TrainingData:', error)
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 dark:from-slate-900 dark:via-slate-800 dark:to-indigo-900 flex items-center justify-center p-4">
-        <div className="bg-white dark:bg-slate-800 rounded-xl shadow-lg p-8 max-w-md w-full text-center">
-          <h2 className="text-2xl font-bold text-slate-800 dark:text-slate-100 mb-4">Error</h2>
-          <p className="text-slate-600 dark:text-slate-300 mb-6">
+      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 flex items-center justify-center p-4">
+        <div className="bg-white rounded-xl shadow-lg p-8 max-w-md w-full text-center">
+          <h2 className="text-2xl font-bold text-slate-800 mb-4">Error</h2>
+          <p className="text-slate-600 mb-6">
             An unexpected error occurred while loading training data.
           </p>
           <Link href="/" className="bg-indigo-600 text-white px-6 py-3 rounded-lg hover:bg-indigo-700 transition-colors duration-200">

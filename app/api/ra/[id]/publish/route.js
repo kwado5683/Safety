@@ -26,6 +26,9 @@ import { getAuth } from '@clerk/nextjs/server'
 // Import database functions
 import { createAdminClient } from '@/lib/supabaseServer'
 
+// Import email notification function
+import { sendRiskAssessmentPublishedEmail } from '@/lib/email'
+
 /**
  * POST handler - Publish Risk Assessment
  */
@@ -90,6 +93,45 @@ export async function POST(request, { params }) {
         { error: 'Failed to publish risk assessment' },
         { status: 500 }
       )
+    }
+
+    // Send risk assessment published email notification
+    try {
+      // Get admin users to notify
+      const { data: adminUsers, error: adminError } = await supabase
+        .from('user_profiles')
+        .select('user_id, full_name')
+        .in('role', ['admin', 'owner', 'manager'])
+
+      if (adminUsers && !adminError) {
+        const raRef = `RA-${updatedRa.id}`
+        const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'
+        const raLink = `${baseUrl}/ra/${updatedRa.id}`
+
+        // Get assessor name from user profiles
+        const { data: assessorProfile } = await supabase
+          .from('user_profiles')
+          .select('full_name')
+          .eq('user_id', userId)
+          .single()
+
+        // Send email to each admin user
+        for (const admin of adminUsers) {
+          // For now, we'll use user_id as email since we don't have email in user_profiles
+          const adminEmail = `${admin.user_id}@example.com` // Replace with actual email lookup
+          
+          await sendRiskAssessmentPublishedEmail({
+            toEmail: adminEmail,
+            raTitle: updatedRa.title,
+            assessorName: assessorProfile?.full_name || 'Unknown Assessor',
+            raRef: raRef,
+            link: raLink
+          })
+        }
+      }
+    } catch (emailError) {
+      // Don't fail the RA publishing if email fails
+      console.error('Error sending risk assessment published email:', emailError)
     }
 
     return NextResponse.json({

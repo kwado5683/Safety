@@ -45,11 +45,11 @@ export default function RiskAssessmentView({ ra, hazards }) {
   const getStatusColor = (status) => {
     switch (status) {
       case 'draft':
-        return 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/40 dark:text-yellow-200'
+        return 'bg-yellow-100 text-yellow-800'
       case 'published':
-        return 'bg-green-100 text-green-800 dark:bg-green-900/40 dark:text-green-200'
+        return 'bg-green-100 text-green-800'
       default:
-        return 'bg-slate-100 text-slate-800 dark:bg-slate-700 dark:text-slate-200'
+        return 'bg-slate-100 text-slate-800'
     }
   }
 
@@ -72,11 +72,11 @@ export default function RiskAssessmentView({ ra, hazards }) {
   return (
     <div className="p-4 space-y-6">
       {/* Risk Assessment Header */}
-      <div className="bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-slate-200 dark:border-slate-700 p-6">
+      <div className="bg-white rounded-lg shadow-sm border border-slate-200 p-6">
         <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
           <div className="flex-1">
             <div className="flex items-center gap-3 mb-3">
-              <h1 className="text-2xl font-bold text-slate-800 dark:text-slate-100">
+              <h1 className="text-2xl font-bold text-slate-800">
                 {ra.title}
               </h1>
               <span className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(ra.status)}`}>
@@ -84,7 +84,7 @@ export default function RiskAssessmentView({ ra, hazards }) {
               </span>
             </div>
             
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm text-slate-600 dark:text-slate-300">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm text-slate-600">
               <div>
                 <span className="font-medium">Activity:</span> {ra.activity}
               </div>
@@ -107,7 +107,7 @@ export default function RiskAssessmentView({ ra, hazards }) {
             {ra.status === 'draft' && (
               <Link
                 href={`/ra/new?id=${ra.id}`}
-                className="bg-slate-200 dark:bg-slate-600 text-slate-700 dark:text-slate-200 px-4 py-2 rounded-lg hover:bg-slate-300 dark:hover:bg-slate-500 transition-colors text-sm font-medium text-center"
+                className="bg-slate-200 text-slate-700 px-4 py-2 rounded-lg hover:bg-slate-300 transition-colors text-sm font-medium text-center"
               >
                 Continue Editing
               </Link>
@@ -117,7 +117,7 @@ export default function RiskAssessmentView({ ra, hazards }) {
               href={`/reports/ra/${ra.id}`}
               target="_blank"
               rel="noopener noreferrer"
-              className="bg-red-100 dark:bg-red-900/40 text-red-700 dark:text-red-200 px-4 py-2 rounded-lg hover:bg-red-200 dark:hover:bg-red-900/60 transition-colors text-sm font-medium text-center inline-flex items-center justify-center gap-2"
+              className="bg-red-100 text-red-700 px-4 py-2 rounded-lg hover:bg-red-200 transition-colors text-sm font-medium text-center inline-flex items-center justify-center gap-2"
             >
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
@@ -127,7 +127,7 @@ export default function RiskAssessmentView({ ra, hazards }) {
             
             <Link
               href="/admin/risk-assessments"
-              className="bg-indigo-100 dark:bg-indigo-900/40 text-indigo-700 dark:text-indigo-200 px-4 py-2 rounded-lg hover:bg-indigo-200 dark:hover:bg-indigo-900/60 transition-colors text-sm font-medium text-center"
+              className="bg-indigo-100 text-indigo-700 px-4 py-2 rounded-lg hover:bg-indigo-200 transition-colors text-sm font-medium text-center"
             >
               Back to List
             </Link>
@@ -136,57 +136,57 @@ export default function RiskAssessmentView({ ra, hazards }) {
       </div>
 
       {/* Hazards Summary */}
-      <div className="bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-slate-200 dark:border-slate-700 p-6">
-        <h2 className="text-xl font-semibold text-slate-800 dark:text-slate-100 mb-6">
+      <div className="bg-white rounded-lg shadow-sm border border-slate-200 p-6">
+        <h2 className="text-xl font-semibold text-slate-800 mb-6">
           Risk Assessment Summary
         </h2>
         
         {hazards.length > 0 ? (
           <div className="space-y-4">
             {hazards.map((hazard, index) => (
-              <div key={hazard.id} className="border border-slate-200 dark:border-slate-600 rounded-lg p-4">
-                <h3 className="font-medium text-slate-800 dark:text-slate-100 mb-3">
+              <div key={hazard.id} className="border border-slate-200 rounded-lg p-4">
+                <h3 className="font-medium text-slate-800 mb-3">
                   Hazard {index + 1}: {hazard.hazard}
                 </h3>
                 
                 <div className="space-y-3 text-sm">
                   <p>
-                    <span className="font-medium text-slate-700 dark:text-slate-300">Who might be harmed:</span>
-                    <span className="text-slate-600 dark:text-slate-400 ml-2">{hazard.who_might_be_harmed}</span>
+                    <span className="font-medium text-slate-700">Who might be harmed:</span>
+                    <span className="text-slate-600 ml-2">{hazard.who_might_be_harmed}</span>
                   </p>
                   
                   <p>
-                    <span className="font-medium text-slate-700 dark:text-slate-300">Existing controls:</span>
-                    <span className="text-slate-600 dark:text-slate-400 ml-2">{hazard.existing_controls}</span>
+                    <span className="font-medium text-slate-700">Existing controls:</span>
+                    <span className="text-slate-600 ml-2">{hazard.existing_controls}</span>
                   </p>
                   
                   {hazard.additional_controls && (
                     <p>
-                      <span className="font-medium text-slate-700 dark:text-slate-300">Additional controls:</span>
-                      <span className="text-slate-600 dark:text-slate-400 ml-2">{hazard.additional_controls}</span>
+                      <span className="font-medium text-slate-700">Additional controls:</span>
+                      <span className="text-slate-600 ml-2">{hazard.additional_controls}</span>
                     </p>
                   )}
                 </div>
                 
                 {/* Risk Scores */}
                 <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <div className="bg-slate-50 dark:bg-slate-700 rounded-lg p-3">
-                    <h4 className="font-medium text-slate-800 dark:text-slate-100 mb-2">Before Controls</h4>
+                  <div className="bg-slate-50 rounded-lg p-3">
+                    <h4 className="font-medium text-slate-800 mb-2">Before Controls</h4>
                     <div className="text-sm space-y-1">
                       <div>Likelihood: {hazard.likelihood_before}/5</div>
                       <div>Severity: {hazard.severity_before}/5</div>
-                      <div className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-${getRiskColor(hazard.risk_before)}-100 text-${getRiskColor(hazard.risk_before)}-800 dark:bg-${getRiskColor(hazard.risk_before)}-900/40 dark:text-${getRiskColor(hazard.risk_before)}-200`}>
+                      <div className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-${getRiskColor(hazard.risk_before)}-100 text-${getRiskColor(hazard.risk_before)}-800${getRiskColor(hazard.risk_before)}-900/40${getRiskColor(hazard.risk_before)}-200`}>
                         Risk: {hazard.risk_before} ({getRiskLevel(hazard.risk_before)})
                       </div>
                     </div>
                   </div>
                   
-                  <div className="bg-slate-50 dark:bg-slate-700 rounded-lg p-3">
-                    <h4 className="font-medium text-slate-800 dark:text-slate-100 mb-2">After Controls</h4>
+                  <div className="bg-slate-50 rounded-lg p-3">
+                    <h4 className="font-medium text-slate-800 mb-2">After Controls</h4>
                     <div className="text-sm space-y-1">
                       <div>Likelihood: {hazard.likelihood_after}/5</div>
                       <div>Severity: {hazard.severity_after}/5</div>
-                      <div className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-${getRiskColor(hazard.risk_after)}-100 text-${getRiskColor(hazard.risk_after)}-800 dark:bg-${getRiskColor(hazard.risk_after)}-900/40 dark:text-${getRiskColor(hazard.risk_after)}-200`}>
+                      <div className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-${getRiskColor(hazard.risk_after)}-100 text-${getRiskColor(hazard.risk_after)}-800${getRiskColor(hazard.risk_after)}-900/40${getRiskColor(hazard.risk_after)}-200`}>
                         Risk: {hazard.risk_after} ({getRiskLevel(hazard.risk_after)})
                       </div>
                     </div>
@@ -196,7 +196,7 @@ export default function RiskAssessmentView({ ra, hazards }) {
             ))}
           </div>
         ) : (
-          <div className="text-center py-8 text-slate-500 dark:text-slate-400">
+          <div className="text-center py-8 text-slate-500">
             <p>No hazards have been identified for this risk assessment.</p>
           </div>
         )}

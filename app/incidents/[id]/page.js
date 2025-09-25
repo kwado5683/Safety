@@ -94,8 +94,8 @@ export default function IncidentDetailPage() {
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
           </div>
-          <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-2">Error</h2>
-          <p className="text-gray-600 dark:text-gray-300 mb-6">{error}</p>
+          <h2 className="text-2xl font-bold text-gray-900 mb-2">Error</h2>
+          <p className="text-gray-600 mb-6">{error}</p>
           <button
             onClick={() => router.push('/incidents')}
             className="inline-flex items-center px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors"
@@ -113,10 +113,10 @@ export default function IncidentDetailPage() {
         {/* Page Header */}
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           <div>
-            <h1 className="text-2xl sm:text-3xl font-bold text-slate-800 dark:text-slate-100 mb-2">
+            <h1 className="text-2xl sm:text-3xl font-bold text-slate-800 mb-2">
               Incident #{incidentId}
             </h1>
-            <p className="text-sm sm:text-base text-slate-600 dark:text-slate-300">
+            <p className="text-sm sm:text-base text-slate-600">
               {incident?.incidentType} • {incident?.location}
             </p>
           </div>
@@ -141,7 +141,7 @@ export default function IncidentDetailPage() {
             </Link>
             <button
               onClick={() => router.push('/incidents')}
-              className="inline-flex items-center px-4 py-2 text-sm font-medium text-slate-700 dark:text-slate-300 bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-600 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors"
+              className="inline-flex items-center px-4 py-2 text-sm font-medium text-slate-700 bg-white border border-slate-300 rounded-lg hover:bg-slate-50 transition-colors"
             >
               <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
@@ -152,25 +152,25 @@ export default function IncidentDetailPage() {
         </div>
 
         {/* Incident Details Section */}
-        <div className="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 shadow-lg p-6">
-          <h2 className="text-xl font-semibold text-slate-800 dark:text-slate-100 mb-6">Incident Details</h2>
+        <div className="bg-white rounded-xl border border-slate-200 shadow-lg p-6">
+          <h2 className="text-xl font-semibold text-slate-800 mb-6">Incident Details</h2>
           
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
             {/* Left Column */}
             <div className="space-y-6">
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Incident Type</label>
-                  <p className="text-slate-900 dark:text-slate-100 font-medium">{incident?.incidentType}</p>
+                  <label className="block text-sm font-medium text-slate-700 mb-1">Incident Type</label>
+                  <p className="text-slate-900 font-medium">{incident?.incidentType}</p>
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Severity</label>
+                  <label className="block text-sm font-medium text-slate-700 mb-1">Severity</label>
                   <span className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-medium ${
-                    incident?.severity === '5' ? 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200' :
-                    incident?.severity === '4' ? 'bg-orange-100 text-orange-800 dark:bg-orange-900 dark:text-orange-200' :
-                    incident?.severity === '3' ? 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200' :
-                    incident?.severity === '2' ? 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200' :
-                    'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200'
+                    incident?.severity === '5' ? 'bg-red-100 text-red-800' :
+                    incident?.severity === '4' ? 'bg-orange-100 text-orange-800' :
+                    incident?.severity === '3' ? 'bg-yellow-100 text-yellow-800' :
+                    incident?.severity === '2' ? 'bg-blue-100 text-blue-800' :
+                    'bg-green-100 text-green-800'
                   }`}>
                     {incident?.severity}
                   </span>
@@ -178,26 +178,26 @@ export default function IncidentDetailPage() {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Location</label>
-                <p className="text-slate-900 dark:text-slate-100">{incident?.location}</p>
+                <label className="block text-sm font-medium text-slate-700 mb-1">Location</label>
+                <p className="text-slate-900">{incident?.location}</p>
               </div>
 
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Date of Incident</label>
-                  <p className="text-slate-900 dark:text-slate-100">
+                  <label className="block text-sm font-medium text-slate-700 mb-1">Date of Incident</label>
+                  <p className="text-slate-900">
                     {incident?.timeOfIncident ? new Date(incident.timeOfIncident).toLocaleDateString() : 'N/A'}
                   </p>
-                  <p className="text-xs text-slate-500 dark:text-slate-400">
+                  <p className="text-xs text-slate-500">
                     {incident?.timeOfIncident ? new Date(incident.timeOfIncident).toLocaleTimeString() : ''}
                   </p>
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Reported On</label>
-                  <p className="text-slate-900 dark:text-slate-100">
+                  <label className="block text-sm font-medium text-slate-700 mb-1">Reported On</label>
+                  <p className="text-slate-900">
                     {incident?.reportTimestamp ? new Date(incident.reportTimestamp).toLocaleDateString() : 'N/A'}
                   </p>
-                  <p className="text-xs text-slate-500 dark:text-slate-400">
+                  <p className="text-xs text-slate-500">
                     {incident?.reportTimestamp ? new Date(incident.reportTimestamp).toLocaleTimeString() : ''}
                   </p>
                 </div>
@@ -207,17 +207,17 @@ export default function IncidentDetailPage() {
             {/* Right Column */}
             <div className="space-y-6">
               <div>
-                <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Reported By</label>
-                <p className="text-slate-900 dark:text-slate-100 font-medium">{incident?.reportedBy}</p>
+                <label className="block text-sm font-medium text-slate-700 mb-1">Reported By</label>
+                <p className="text-slate-900 font-medium">{incident?.reportedBy}</p>
                 {incident?.reporterPhone && (
-                  <p className="text-slate-600 dark:text-slate-400 text-sm">{incident.reporterPhone}</p>
+                  <p className="text-slate-600 text-sm">{incident.reporterPhone}</p>
                 )}
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Description</label>
-                <div className="bg-slate-50 dark:bg-slate-700 p-4 rounded-lg">
-                  <p className="text-slate-900 dark:text-slate-100 leading-relaxed">
+                <label className="block text-sm font-medium text-slate-700 mb-2">Description</label>
+                <div className="bg-slate-50 p-4 rounded-lg">
+                  <p className="text-slate-900 leading-relaxed">
                     {incident?.description || 'No description provided'}
                   </p>
                 </div>
@@ -228,7 +228,7 @@ export default function IncidentDetailPage() {
           {/* Incident Image */}
           {incident?.hasImage && (
             <div className="mt-8">
-              <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-3">Incident Image</label>
+              <label className="block text-sm font-medium text-slate-700 mb-3">Incident Image</label>
               <div className="max-w-md">
                 <button
                   onClick={() => handleImageClick(incident.imagePreview)}
@@ -237,7 +237,7 @@ export default function IncidentDetailPage() {
                   <img
                     src={incident.imagePreview.url}
                     alt={incident.imagePreview.alt}
-                    className="w-full h-auto rounded-lg border border-slate-200 dark:border-slate-600 hover:border-indigo-300 dark:hover:border-indigo-500 transition-colors cursor-pointer"
+                    className="w-full h-auto rounded-lg border border-slate-200 hover:border-indigo-300 transition-colors cursor-pointer"
                   />
                   <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-20 rounded-lg transition-all duration-200 flex items-center justify-center">
                     <svg className="w-8 h-8 text-white opacity-0 group-hover:opacity-100 transition-opacity" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -245,58 +245,58 @@ export default function IncidentDetailPage() {
                     </svg>
                   </div>
                 </button>
-                <p className="text-xs text-slate-500 dark:text-slate-400 mt-2">Click to view full size</p>
+                <p className="text-xs text-slate-500 mt-2">Click to view full size</p>
               </div>
             </div>
           )}
         </div>
 
         {/* Quick Actions */}
-        <div className="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 shadow-lg p-6">
-          <h2 className="text-xl font-semibold text-slate-800 dark:text-slate-100 mb-4">Quick Actions</h2>
+        <div className="bg-white rounded-xl border border-slate-200 shadow-lg p-6">
+          <h2 className="text-xl font-semibold text-slate-800 mb-4">Quick Actions</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             <Link
               href={`/incidents/${incidentId}/corrective-action`}
-              className="flex items-center p-4 bg-indigo-50 dark:bg-indigo-900/20 rounded-lg hover:bg-indigo-100 dark:hover:bg-indigo-900/30 transition-colors"
+              className="flex items-center p-4 bg-indigo-50 rounded-lg hover:bg-indigo-100 transition-colors"
             >
               <div className="flex-shrink-0">
-                <svg className="w-8 h-8 text-indigo-600 dark:text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-8 h-8 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                 </svg>
               </div>
               <div className="ml-4">
-                <h3 className="text-sm font-medium text-indigo-900 dark:text-indigo-100">Create Corrective Action</h3>
-                <p className="text-xs text-indigo-600 dark:text-indigo-300">Add action plan and assign responsibilities</p>
+                <h3 className="text-sm font-medium text-indigo-900">Create Corrective Action</h3>
+                <p className="text-xs text-indigo-600">Add action plan and assign responsibilities</p>
               </div>
             </Link>
 
             <button
               onClick={() => window.open(`/reports/incident/${incidentId}`, '_blank')}
-              className="flex items-center p-4 bg-red-50 dark:bg-red-900/20 rounded-lg hover:bg-red-100 dark:hover:bg-red-900/30 transition-colors"
+              className="flex items-center p-4 bg-red-50 rounded-lg hover:bg-red-100 transition-colors"
             >
               <div className="flex-shrink-0">
-                <svg className="w-8 h-8 text-red-600 dark:text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-8 h-8 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                 </svg>
               </div>
               <div className="ml-4">
-                <h3 className="text-sm font-medium text-red-900 dark:text-red-100">Download PDF Report</h3>
-                <p className="text-xs text-red-600 dark:text-red-300">Generate professional incident report</p>
+                <h3 className="text-sm font-medium text-red-900">Download PDF Report</h3>
+                <p className="text-xs text-red-600">Generate professional incident report</p>
               </div>
             </button>
 
             <Link
               href="/incidents"
-              className="flex items-center p-4 bg-slate-50 dark:bg-slate-700 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-600 transition-colors"
+              className="flex items-center p-4 bg-slate-50 rounded-lg hover:bg-slate-100 transition-colors"
             >
               <div className="flex-shrink-0">
-                <svg className="w-8 h-8 text-slate-600 dark:text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-8 h-8 text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
                 </svg>
               </div>
               <div className="ml-4">
-                <h3 className="text-sm font-medium text-slate-900 dark:text-slate-100">View All Incidents</h3>
-                <p className="text-xs text-slate-600 dark:text-slate-300">Return to incidents list</p>
+                <h3 className="text-sm font-medium text-slate-900">View All Incidents</h3>
+                <p className="text-xs text-slate-600">Return to incidents list</p>
               </div>
             </Link>
           </div>

@@ -56,15 +56,15 @@ async function RiskAssessmentData() {
       console.error('Error fetching risk assessments:', error)
       return (
         <div className="text-center py-12">
-          <div className="w-16 h-16 bg-red-100 dark:bg-red-900 rounded-full flex items-center justify-center mx-auto mb-4">
-            <svg className="w-8 h-8 text-red-600 dark:text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
+            <svg className="w-8 h-8 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
           </div>
-          <h2 className="text-xl font-semibold text-slate-900 dark:text-slate-100 mb-2">
+          <h2 className="text-xl font-semibold text-slate-900 mb-2">
             Error Loading Risk Assessments
           </h2>
-          <p className="text-slate-600 dark:text-slate-300 mb-6">
+          <p className="text-slate-600 mb-6">
             Failed to load risk assessments. Please try again.
           </p>
           <Link href="/admin" className="inline-flex items-center px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors">
@@ -79,15 +79,15 @@ async function RiskAssessmentData() {
     console.error('Error in RiskAssessmentData:', error)
     return (
       <div className="text-center py-12">
-        <div className="w-16 h-16 bg-red-100 dark:bg-red-900 rounded-full flex items-center justify-center mx-auto mb-4">
-          <svg className="w-8 h-8 text-red-600 dark:text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
+          <svg className="w-8 h-8 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
           </svg>
         </div>
-        <h2 className="text-xl font-semibold text-slate-900 dark:text-slate-100 mb-2">
+        <h2 className="text-xl font-semibold text-slate-900 mb-2">
           Unexpected Error
         </h2>
-        <p className="text-slate-600 dark:text-slate-300 mb-6">
+        <p className="text-slate-600 mb-6">
           An unexpected error occurred while loading risk assessments.
         </p>
         <Link href="/admin" className="inline-flex items-center px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors">
@@ -109,7 +109,7 @@ export default function RiskAssessmentsAdminPage() {
         <div className="flex items-center gap-4">
           <Link
             href="/admin"
-            className="inline-flex items-center text-indigo-600 dark:text-indigo-400 hover:text-indigo-700 dark:hover:text-indigo-300 transition-colors text-sm font-medium"
+            className="inline-flex items-center text-indigo-600 hover:text-indigo-700 transition-colors text-sm font-medium"
           >
             <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
@@ -118,10 +118,10 @@ export default function RiskAssessmentsAdminPage() {
           </Link>
         </div>
         
-        <h1 className="text-3xl font-bold text-slate-900 dark:text-slate-100 mb-2">
+        <h1 className="text-3xl font-bold text-slate-900 mb-2">
           Risk Assessments
         </h1>
-        <p className="text-slate-600 dark:text-slate-300">
+        <p className="text-slate-600">
           Manage and create risk assessments for safety activities.
         </p>
 

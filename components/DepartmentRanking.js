@@ -36,10 +36,10 @@ export default function DepartmentRanking({ title = "Department Safety Ranking" 
   }
 
   const getScoreBgColor = (score) => {
-    if (score >= 90) return 'bg-green-100 dark:bg-green-900/20'
-    if (score >= 70) return 'bg-yellow-100 dark:bg-yellow-900/20'
-    if (score >= 50) return 'bg-orange-100 dark:bg-orange-900/20'
-    return 'bg-red-100 dark:bg-red-900/20'
+    if (score >= 90) return 'bg-green-100'
+    if (score >= 70) return 'bg-yellow-100'
+    if (score >= 50) return 'bg-orange-100'
+    return 'bg-red-100'
   }
 
   return (
@@ -61,7 +61,7 @@ export default function DepartmentRanking({ title = "Department Safety Ranking" 
             
             {/* Bar Chart */}
             <div className="flex-1">
-              <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-3">
+              <div className="w-full bg-gray-200 rounded-full h-3">
                 <div
                   className={`h-3 rounded-full transition-all duration-1000 ${dept.color}`}
                   style={{ width: `${dept.score}%` }}

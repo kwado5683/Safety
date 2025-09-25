@@ -62,11 +62,11 @@ export default function AlertSystem({ title = "Alerts" }) {
 
   const getPriorityColor = (priority) => {
     switch (priority) {
-      case 'critical': return 'bg-red-100 text-red-800 dark:bg-red-900/20 dark:text-red-300'
-      case 'high': return 'bg-orange-100 text-orange-800 dark:bg-orange-900/20 dark:text-orange-300'
-      case 'medium': return 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/20 dark:text-yellow-300'
-      case 'low': return 'bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-300'
-      default: return 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300'
+      case 'critical': return 'bg-red-100 text-red-800'
+      case 'high': return 'bg-orange-100 text-orange-800'
+      case 'medium': return 'bg-yellow-100 text-yellow-800'
+      case 'low': return 'bg-green-100 text-green-800'
+      default: return 'bg-gray-100 text-gray-800'
     }
   }
 
@@ -109,7 +109,7 @@ export default function AlertSystem({ title = "Alerts" }) {
       
       <div className="space-y-3">
         {alerts.map((alert) => (
-          <div key={alert.id} className="flex items-start gap-3 p-3 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors">
+          <div key={alert.id} className="flex items-start gap-3 p-3 rounded-lg hover:bg-gray-50 transition-colors">
             {/* Alert Icon */}
             <div className="text-lg">{getTypeIcon(alert.type)}</div>
             
@@ -144,7 +144,7 @@ export default function AlertSystem({ title = "Alerts" }) {
       {/* Action Buttons */}
       <div className="mt-4 pt-4 border-t" style={{ borderColor: 'var(--border)' }}>
         <div className="flex gap-2">
-          <button className="flex-1 px-3 py-2 text-sm font-medium text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded-lg transition-colors">
+          <button className="flex-1 px-3 py-2 text-sm font-medium text-blue-600 hover:bg-blue-50 rounded-lg transition-colors">
             View All Alerts
           </button>
           <button className="flex-1 px-3 py-2 text-sm font-medium bg-blue-600 text-white hover:bg-blue-700 rounded-lg transition-colors">

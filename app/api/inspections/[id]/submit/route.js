@@ -30,6 +30,9 @@ import { getAuth } from '@clerk/nextjs/server'
 // Import database functions
 import { createAdminClient } from '@/lib/supabaseServer'
 
+// Import email notification function
+import { sendInspectionFailedEmail } from '@/lib/email'
+
 /**
  * POST handler - Submit inspection responses
  */
@@ -179,6 +182,40 @@ export async function POST(request, { params }) {
         { error: 'Failed to update inspection status' },
         { status: 500 }
       )
+    }
+
+    // Send inspection failed email if there were critical failures
+    if (criticalFailures.length > 0) {
+      try {
+        // Get admin users to notify
+        const { data: adminUsers, error: adminError } = await supabase
+          .from('user_profiles')
+          .select('user_id, full_name')
+          .in('role', ['admin', 'owner', 'manager'])
+
+        if (adminUsers && !adminError) {
+          const inspectionRef = `INS-${inspectionId}`
+          const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'
+          const inspectionLink = `${baseUrl}/inspections/${inspectionId}`
+
+          // Send email to each admin user
+          for (const admin of adminUsers) {
+            // For now, we'll use user_id as email since we don't have email in user_profiles
+            const adminEmail = `${admin.user_id}@example.com` // Replace with actual email lookup
+            
+            await sendInspectionFailedEmail({
+              toEmail: adminEmail,
+              checklistName: inspection.checklists?.name || 'Unknown Checklist',
+              criticalFails: criticalFailures.length,
+              inspectionRef: inspectionRef,
+              link: inspectionLink
+            })
+          }
+        }
+      } catch (emailError) {
+        // Don't fail the inspection submission if email fails
+        console.error('Error sending inspection failed email:', emailError)
+      }
     }
 
     return NextResponse.json({

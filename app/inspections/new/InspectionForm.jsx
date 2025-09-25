@@ -228,16 +228,16 @@ export default function InspectionForm({ checklist }) {
   if (success) {
     return (
       <div className="p-4">
-        <div className="bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg p-6 text-center">
-          <div className="w-12 h-12 bg-green-100 dark:bg-green-900/40 rounded-full flex items-center justify-center mx-auto mb-4">
-            <svg className="w-6 h-6 text-green-600 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <div className="bg-green-50 border border-green-200 rounded-lg p-6 text-center">
+          <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+            <svg className="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
             </svg>
           </div>
-          <h3 className="text-lg font-semibold text-green-800 dark:text-green-200 mb-2">
+          <h3 className="text-lg font-semibold text-green-800 mb-2">
             Inspection Submitted Successfully!
           </h3>
-          <p className="text-green-600 dark:text-green-300">
+          <p className="text-green-600">
             Redirecting back to checklists...
           </p>
         </div>
@@ -248,19 +248,19 @@ export default function InspectionForm({ checklist }) {
   return (
     <div className="p-4 space-y-6">
       {/* Checklist Header */}
-      <div className="bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-slate-200 dark:border-slate-700 p-4">
-        <h2 className="text-xl font-semibold text-slate-800 dark:text-slate-100 mb-2">
+      <div className="bg-white rounded-lg shadow-sm border border-slate-200 p-4">
+        <h2 className="text-xl font-semibold text-slate-800 mb-2">
           {checklist.name}
         </h2>
-        <p className="text-sm text-slate-600 dark:text-slate-300">
+        <p className="text-sm text-slate-600">
           Category: {checklist.category}
         </p>
       </div>
 
       {/* Error Message */}
       {error && (
-        <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-4">
-          <p className="text-red-800 dark:text-red-200 text-sm">{error}</p>
+        <div className="bg-red-50 border border-red-200 rounded-lg p-4">
+          <p className="text-red-800 text-sm">{error}</p>
         </div>
       )}
 
@@ -270,15 +270,15 @@ export default function InspectionForm({ checklist }) {
           const response = getItemResponse(item.id)
           
           return (
-            <div key={item.id} className="bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-slate-200 dark:border-slate-700 p-4">
+            <div key={item.id} className="bg-white rounded-lg shadow-sm border border-slate-200 p-4">
               {/* Item Header */}
               <div className="flex items-start justify-between mb-4">
                 <div className="flex-1">
-                  <h3 className="text-lg font-medium text-slate-800 dark:text-slate-100 mb-1">
+                  <h3 className="text-lg font-medium text-slate-800 mb-1">
                     {index + 1}. {item.text}
                   </h3>
                   {item.critical && (
-                    <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-red-100 text-red-800 dark:bg-red-900/40 dark:text-red-200">
+                    <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-red-100 text-red-800">
                       Critical
                     </span>
                   )}
@@ -297,8 +297,8 @@ export default function InspectionForm({ checklist }) {
                     onClick={() => handleResponseChange(item.id, value)}
                     className={`py-3 px-4 rounded-lg font-medium text-sm transition-colors ${
                       response.result === value
-                        ? `bg-${color}-100 text-${color}-800 border-2 border-${color}-300 dark:bg-${color}-900/40 dark:text-${color}-200 dark:border-${color}-700`
-                        : 'bg-slate-100 text-slate-600 border-2 border-slate-200 hover:bg-slate-200 dark:bg-slate-700 dark:text-slate-300 dark:border-slate-600 dark:hover:bg-slate-600'
+                        ? `bg-${color}-100 text-${color}-800 border-2 border-${color}-300${color}-900/40${color}-200${color}-700`
+                        : 'bg-slate-100 text-slate-600 border-2 border-slate-200 hover:bg-slate-200'
                     }`}
                   >
                     {label}
@@ -308,21 +308,21 @@ export default function InspectionForm({ checklist }) {
 
               {/* Note Field */}
               <div className="mb-4">
-                <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
+                <label className="block text-sm font-medium text-slate-700 mb-2">
                   Notes (optional)
                 </label>
                 <textarea
                   value={response.note}
                   onChange={(e) => handleNoteChange(item.id, e.target.value)}
                   placeholder="Add any observations or notes..."
-                  className="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-slate-700 dark:text-slate-100 text-sm"
+                  className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-sm"
                   rows={3}
                 />
               </div>
 
               {/* Photo Capture */}
               <div className="space-y-3">
-                <label className="block text-sm font-medium text-slate-700 dark:text-slate-300">
+                <label className="block text-sm font-medium text-slate-700">
                   Photos (optional)
                 </label>
                 
@@ -338,7 +338,7 @@ export default function InspectionForm({ checklist }) {
                 
                 <button
                   onClick={() => fileInputRefs.current[item.id]?.click()}
-                  className="w-full py-3 px-4 bg-indigo-100 text-indigo-700 border-2 border-indigo-200 rounded-lg hover:bg-indigo-200 transition-colors dark:bg-indigo-900/40 dark:text-indigo-200 dark:border-indigo-700 dark:hover:bg-indigo-900/60"
+                  className="w-full py-3 px-4 bg-indigo-100 text-indigo-700 border-2 border-indigo-200 rounded-lg hover:bg-indigo-200 transition-colors"
                 >
                   📷 Take Photo
                 </button>
@@ -377,14 +377,14 @@ export default function InspectionForm({ checklist }) {
           className={`w-full py-4 px-6 rounded-lg font-semibold text-lg transition-colors ${
             allItemsResponded && !isSubmitting
               ? 'bg-indigo-600 text-white hover:bg-indigo-700'
-              : 'bg-slate-300 text-slate-500 cursor-not-allowed dark:bg-slate-600 dark:text-slate-400'
+              : 'bg-slate-300 text-slate-500 cursor-not-allowed'
           }`}
         >
           {isSubmitting ? 'Submitting...' : 'Submit Inspection'}
         </button>
         
         {!allItemsResponded && (
-          <p className="text-center text-sm text-slate-500 dark:text-slate-400 mt-2">
+          <p className="text-center text-sm text-slate-500 mt-2">
             Please respond to all items before submitting
           </p>
         )}

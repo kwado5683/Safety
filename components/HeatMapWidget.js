@@ -96,7 +96,7 @@ export default function HeatMapWidget({ title = "Heat Map" }) {
           return (
             <div
               key={index}
-              className="aspect-square bg-gray-100 dark:bg-gray-700 rounded-sm"
+              className="aspect-square bg-gray-100 rounded-sm"
             />
           )
         })}
@@ -120,7 +120,7 @@ export default function HeatMapWidget({ title = "Heat Map" }) {
 
       {/* Hover Information */}
       {hoveredArea && (
-        <div className="mt-4 p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
+        <div className="mt-4 p-3 bg-gray-50 rounded-lg">
           <div className="text-sm">
             <div className="font-semibold" style={{ color: 'var(--foreground)' }}>
               {hoveredArea.name}

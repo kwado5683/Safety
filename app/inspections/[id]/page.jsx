@@ -32,8 +32,8 @@ export default async function InspectionDetailPage({ params }) {
     return (
       <DashboardLayout>
         <div className="text-center py-12">
-          <h2 className="text-2xl font-bold text-slate-800 dark:text-slate-100 mb-4">Please Sign In</h2>
-          <p className="text-slate-600 dark:text-slate-300 mb-4">You need to be signed in to view inspection details.</p>
+          <h2 className="text-2xl font-bold text-slate-800 mb-4">Please Sign In</h2>
+          <p className="text-slate-600 mb-4">You need to be signed in to view inspection details.</p>
           <Link href="/sign-in" className="inline-block bg-indigo-600 text-white px-6 py-2 rounded-lg hover:bg-indigo-700 transition-colors">
             Sign In
           </Link>
@@ -69,10 +69,10 @@ export default async function InspectionDetailPage({ params }) {
     return (
       <DashboardLayout>
         <div className="text-center py-12">
-          <div className="text-red-600 dark:text-red-400 text-lg font-semibold mb-2">
+          <div className="text-red-600 text-lg font-semibold mb-2">
             Inspection Not Found
           </div>
-          <p className="text-slate-600 dark:text-slate-300 mb-6">
+          <p className="text-slate-600 mb-6">
             The requested inspection could not be found or you don't have permission to view it.
           </p>
           <Link
@@ -109,10 +109,10 @@ export default async function InspectionDetailPage({ params }) {
     return (
       <DashboardLayout>
         <div className="text-center py-12">
-          <div className="text-red-600 dark:text-red-400 text-lg font-semibold mb-2">
+          <div className="text-red-600 text-lg font-semibold mb-2">
             Error Loading Inspection Data
           </div>
-          <p className="text-slate-600 dark:text-slate-300 mb-6">
+          <p className="text-slate-600 mb-6">
             There was a problem loading the inspection responses.
           </p>
           <Link
@@ -134,7 +134,7 @@ export default async function InspectionDetailPage({ params }) {
           <div className="flex items-center gap-4">
             <Link
               href="/inspections"
-              className="inline-flex items-center text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-slate-100 transition-colors"
+              className="inline-flex items-center text-slate-600 hover:text-slate-900 transition-colors"
             >
               <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />

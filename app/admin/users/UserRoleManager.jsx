@@ -122,8 +122,8 @@ export default function UserRoleManager({ userId, currentRole, isCurrentUser }) 
         disabled={isLoading || isCurrentUser}
         className={`text-sm border rounded-md px-3 py-1 ${
           isCurrentUser 
-            ? 'bg-slate-100 dark:bg-slate-600 text-slate-500 dark:text-slate-400 cursor-not-allowed' 
-            : 'bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 border-slate-300 dark:border-slate-600 hover:border-indigo-500 dark:hover:border-indigo-400 focus:border-indigo-500 dark:focus:border-indigo-400 focus:ring-1 focus:ring-indigo-500 dark:focus:ring-indigo-400'
+            ? 'bg-slate-100 text-slate-500 cursor-not-allowed' 
+            : 'bg-white text-slate-900 border-slate-300 hover:border-indigo-500 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500'
         } transition-colors duration-200`}
       >
         {availableRoles.map((role) => (
@@ -135,7 +135,7 @@ export default function UserRoleManager({ userId, currentRole, isCurrentUser }) 
 
       {/* Loading indicator */}
       {isLoading && (
-        <div className="text-xs text-slate-500 dark:text-slate-400">
+        <div className="text-xs text-slate-500">
           Updating...
         </div>
       )}
@@ -144,8 +144,8 @@ export default function UserRoleManager({ userId, currentRole, isCurrentUser }) 
       {message && (
         <div className={`text-xs ${
           messageType === 'success' 
-            ? 'text-green-600 dark:text-green-400' 
-            : 'text-red-600 dark:text-red-400'
+            ? 'text-green-600' 
+            : 'text-red-600'
         }`}>
           {message}
         </div>
@@ -153,7 +153,7 @@ export default function UserRoleManager({ userId, currentRole, isCurrentUser }) 
 
       {/* Current user indicator */}
       {isCurrentUser && (
-        <div className="text-xs text-slate-500 dark:text-slate-400">
+        <div className="text-xs text-slate-500">
           (Current user)
         </div>
       )}

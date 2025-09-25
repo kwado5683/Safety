@@ -296,18 +296,18 @@ export default function ChecklistManager() {
   if (loading) {
     return (
       <div className="flex items-center justify-center py-12">
-        <div className="text-slate-600 dark:text-slate-300">Loading checklists...</div>
+        <div className="text-slate-600">Loading checklists...</div>
       </div>
     )
   }
 
   if (error) {
     return (
-      <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-4">
-        <div className="text-red-800 dark:text-red-200">{error}</div>
+      <div className="bg-red-50 border border-red-200 rounded-lg p-4">
+        <div className="text-red-800">{error}</div>
         <button 
           onClick={fetchChecklists}
-          className="mt-2 text-sm text-red-600 dark:text-red-400 hover:text-red-800 dark:hover:text-red-200"
+          className="mt-2 text-sm text-red-600 hover:text-red-800"
         >
           Try again
         </button>
@@ -321,8 +321,8 @@ export default function ChecklistManager() {
       {message && (
         <div className={`p-4 rounded-lg ${
           messageType === 'success' 
-            ? 'bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 text-green-800 dark:text-green-200'
-            : 'bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 text-red-800 dark:text-red-200'
+            ? 'bg-green-50 border border-green-200 text-green-800'
+            : 'bg-red-50 border border-red-200 text-red-800'
         }`}>
           {message}
         </div>
@@ -330,7 +330,7 @@ export default function ChecklistManager() {
 
       {/* Add New Checklist Button */}
       <div className="flex justify-between items-center">
-        <h2 className="text-xl font-semibold text-slate-800 dark:text-slate-100">
+        <h2 className="text-xl font-semibold text-slate-800">
           Checklists ({checklists.length})
         </h2>
         <button
@@ -343,30 +343,30 @@ export default function ChecklistManager() {
 
       {/* New Checklist Form */}
       {showNewChecklistForm && (
-        <div className="bg-white dark:bg-slate-800 rounded-lg shadow-lg p-4 sm:p-6">
-          <h3 className="text-lg font-semibold text-slate-800 dark:text-slate-100 mb-4">Create New Checklist</h3>
+        <div className="bg-white rounded-lg shadow-lg p-4 sm:p-6">
+          <h3 className="text-lg font-semibold text-slate-800 mb-4">Create New Checklist</h3>
           <form onSubmit={createChecklist} className="space-y-4">
             <div>
-              <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
+              <label className="block text-sm font-medium text-slate-700 mb-2">
                 Name *
               </label>
               <input
                 type="text"
                 value={newChecklist.name}
                 onChange={(e) => setNewChecklist({ ...newChecklist, name: e.target.value })}
-                className="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-md bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                className="w-full px-3 py-2 border border-slate-300 rounded-md bg-white text-slate-900 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
                 placeholder="Enter checklist name"
                 required
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
+              <label className="block text-sm font-medium text-slate-700 mb-2">
                 Category
               </label>
               <select
                 value={newChecklist.category}
                 onChange={(e) => setNewChecklist({ ...newChecklist, category: e.target.value })}
-                className="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-md bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                className="w-full px-3 py-2 border border-slate-300 rounded-md bg-white text-slate-900 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
               >
                 <option value="General">General</option>
                 <option value="Safety">Safety</option>
@@ -385,7 +385,7 @@ export default function ChecklistManager() {
               <button
                 type="button"
                 onClick={() => setShowNewChecklistForm(false)}
-                className="bg-slate-300 dark:bg-slate-600 text-slate-700 dark:text-slate-200 px-4 py-2 rounded-lg hover:bg-slate-400 dark:hover:bg-slate-500 transition-colors duration-200"
+                className="bg-slate-300 text-slate-700 px-4 py-2 rounded-lg hover:bg-slate-400 transition-colors duration-200"
               >
                 Cancel
               </button>
@@ -397,8 +397,8 @@ export default function ChecklistManager() {
       {/* Checklists Grid - Mobile: stacked cards, Desktop: grid */}
       <div className="grid gap-4 sm:gap-6">
         {checklists.length === 0 ? (
-          <div className="text-center py-12 bg-white dark:bg-slate-800 rounded-lg shadow-lg">
-            <div className="text-slate-500 dark:text-slate-400 mb-4">
+          <div className="text-center py-12 bg-white rounded-lg shadow-lg">
+            <div className="text-slate-500 mb-4">
               <svg className="w-12 h-12 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
               </svg>
@@ -465,9 +465,9 @@ function ChecklistCard({
   const totalItems = checklist.checklist_items?.length || 0
 
   return (
-    <div className="bg-white dark:bg-slate-800 rounded-lg shadow-lg overflow-hidden">
+    <div className="bg-white rounded-lg shadow-lg overflow-hidden">
       {/* Checklist Header */}
-      <div className="p-4 sm:p-6 border-b border-slate-200 dark:border-slate-700">
+      <div className="p-4 sm:p-6 border-b border-slate-200">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           <div className="flex-1">
             {isEditing ? (
@@ -476,13 +476,13 @@ function ChecklistCard({
                   type="text"
                   value={editData.name}
                   onChange={(e) => setEditData({ ...editData, name: e.target.value })}
-                  className="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-md bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-lg font-semibold"
+                  className="w-full px-3 py-2 border border-slate-300 rounded-md bg-white text-slate-900 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-lg font-semibold"
                   required
                 />
                 <select
                   value={editData.category}
                   onChange={(e) => setEditData({ ...editData, category: e.target.value })}
-                  className="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-md bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                  className="w-full px-3 py-2 border border-slate-300 rounded-md bg-white text-slate-900 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
                 >
                   <option value="General">General</option>
                   <option value="Safety">Safety</option>
@@ -500,7 +500,7 @@ function ChecklistCard({
                   <button
                     type="button"
                     onClick={() => setIsEditing(false)}
-                    className="bg-slate-300 dark:bg-slate-600 text-slate-700 dark:text-slate-200 px-3 py-1 rounded text-sm hover:bg-slate-400 dark:hover:bg-slate-500 transition-colors duration-200"
+                    className="bg-slate-300 text-slate-700 px-3 py-1 rounded text-sm hover:bg-slate-400 transition-colors duration-200"
                   >
                     Cancel
                   </button>
@@ -508,20 +508,20 @@ function ChecklistCard({
               </form>
             ) : (
               <div>
-                <h3 className="text-lg sm:text-xl font-semibold text-slate-800 dark:text-slate-100 mb-2">
+                <h3 className="text-lg sm:text-xl font-semibold text-slate-800 mb-2">
                   {checklist.name}
                 </h3>
                 <div className="flex items-center gap-4 text-sm">
                   <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                    checklist.category === 'Safety' ? 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200' :
-                    checklist.category === 'Equipment' ? 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200' :
-                    checklist.category === 'Maintenance' ? 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200' :
-                    checklist.category === 'Inspection' ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200' :
-                    'bg-slate-100 text-slate-800 dark:bg-slate-700 dark:text-slate-200'
+                    checklist.category === 'Safety' ? 'bg-red-100 text-red-800' :
+                    checklist.category === 'Equipment' ? 'bg-blue-100 text-blue-800' :
+                    checklist.category === 'Maintenance' ? 'bg-yellow-100 text-yellow-800' :
+                    checklist.category === 'Inspection' ? 'bg-green-100 text-green-800' :
+                    'bg-slate-100 text-slate-800'
                   }`}>
                     {checklist.category}
                   </span>
-                  <span className="text-slate-500 dark:text-slate-400">
+                  <span className="text-slate-500">
                     {totalItems} items ({criticalItems.length} critical)
                   </span>
                 </div>
@@ -533,19 +533,19 @@ function ChecklistCard({
             <div className="flex gap-2 flex-wrap">
               <Link
                 href={`/inspections/new?checklistId=${checklist.id}`}
-                className="bg-green-200 dark:bg-green-800 text-green-700 dark:text-green-200 px-3 py-2 rounded-lg hover:bg-green-300 dark:hover:bg-green-700 transition-colors duration-200 text-sm font-medium"
+                className="bg-green-200 text-green-700 px-3 py-2 rounded-lg hover:bg-green-300 transition-colors duration-200 text-sm font-medium"
               >
                 📋 Start Inspection
               </Link>
               <button
                 onClick={() => setIsEditing(true)}
-                className="bg-slate-200 dark:bg-slate-600 text-slate-700 dark:text-slate-200 px-3 py-2 rounded-lg hover:bg-slate-300 dark:hover:bg-slate-500 transition-colors duration-200 text-sm"
+                className="bg-slate-200 text-slate-700 px-3 py-2 rounded-lg hover:bg-slate-300 transition-colors duration-200 text-sm"
               >
                 Edit
               </button>
               <button
                 onClick={() => onDelete(checklist.id)}
-                className="bg-red-200 dark:bg-red-800 text-red-700 dark:text-red-200 px-3 py-2 rounded-lg hover:bg-red-300 dark:hover:bg-red-700 transition-colors duration-200 text-sm"
+                className="bg-red-200 text-red-700 px-3 py-2 rounded-lg hover:bg-red-300 transition-colors duration-200 text-sm"
               >
                 Delete
               </button>
@@ -557,7 +557,7 @@ function ChecklistCard({
       {/* Checklist Items */}
       <div className="p-4 sm:p-6">
         <div className="flex justify-between items-center mb-4">
-          <h4 className="font-medium text-slate-800 dark:text-slate-100">Items</h4>
+          <h4 className="font-medium text-slate-800">Items</h4>
           <button
             onClick={() => setShowNewItemForm(checklist.id)}
             className="bg-indigo-600 text-white px-3 py-1 rounded text-sm hover:bg-indigo-700 transition-colors duration-200"
@@ -568,24 +568,24 @@ function ChecklistCard({
 
         {/* New Item Form */}
         {showNewItemForm === checklist.id && (
-          <div className="mb-4 p-4 bg-slate-50 dark:bg-slate-700 rounded-lg">
-            <h5 className="font-medium text-slate-800 dark:text-slate-100 mb-3">Add New Item</h5>
+          <div className="mb-4 p-4 bg-slate-50 rounded-lg">
+            <h5 className="font-medium text-slate-800 mb-3">Add New Item</h5>
             <form onSubmit={(e) => onCreateItem(checklist.id, e)} className="space-y-3">
               <input
                 type="text"
                 value={newItem.text}
                 onChange={(e) => setNewItem({ ...newItem, text: e.target.value })}
-                className="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-md bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                className="w-full px-3 py-2 border border-slate-300 rounded-md bg-white text-slate-900 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
                 placeholder="Item text"
                 required
               />
               <div className="flex items-center gap-3">
-                <label className="flex items-center gap-2 text-sm text-slate-700 dark:text-slate-300">
+                <label className="flex items-center gap-2 text-sm text-slate-700">
                   <input
                     type="checkbox"
                     checked={newItem.critical}
                     onChange={(e) => setNewItem({ ...newItem, critical: e.target.checked })}
-                    className="rounded border-slate-300 dark:border-slate-600 text-indigo-600 focus:ring-indigo-500"
+                    className="rounded border-slate-300 text-indigo-600 focus:ring-indigo-500"
                   />
                   Critical item
                 </label>
@@ -600,7 +600,7 @@ function ChecklistCard({
                 <button
                   type="button"
                   onClick={() => setShowNewItemForm(null)}
-                  className="bg-slate-300 dark:bg-slate-600 text-slate-700 dark:text-slate-200 px-3 py-1 rounded text-sm hover:bg-slate-400 dark:hover:bg-slate-500 transition-colors duration-200"
+                  className="bg-slate-300 text-slate-700 px-3 py-1 rounded text-sm hover:bg-slate-400 transition-colors duration-200"
                 >
                   Cancel
                 </button>
@@ -612,7 +612,7 @@ function ChecklistCard({
         {/* Items List */}
         <div className="space-y-3">
           {checklist.checklist_items?.length === 0 ? (
-            <div className="text-center py-8 text-slate-500 dark:text-slate-400">
+            <div className="text-center py-8 text-slate-500">
               <p>No items yet. Add your first item above.</p>
             </div>
           ) : (
@@ -661,8 +661,8 @@ function ChecklistItem({
   return (
     <div className={`p-3 rounded-lg border ${
       item.critical 
-        ? 'border-red-200 dark:border-red-800 bg-red-50 dark:bg-red-900/20' 
-        : 'border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-700'
+        ? 'border-red-200 bg-red-50' 
+        : 'border-slate-200 bg-slate-50'
     }`}>
       {isEditing ? (
         <form onSubmit={handleUpdate} className="space-y-3">
@@ -670,16 +670,16 @@ function ChecklistItem({
             type="text"
             value={editData.text}
             onChange={(e) => setEditData({ ...editData, text: e.target.value })}
-            className="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-md bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+            className="w-full px-3 py-2 border border-slate-300 rounded-md bg-white text-slate-900 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
             required
           />
           <div className="flex items-center gap-3">
-            <label className="flex items-center gap-2 text-sm text-slate-700 dark:text-slate-300">
+            <label className="flex items-center gap-2 text-sm text-slate-700">
               <input
                 type="checkbox"
                 checked={editData.critical}
                 onChange={(e) => setEditData({ ...editData, critical: e.target.checked })}
-                className="rounded border-slate-300 dark:border-slate-600 text-indigo-600 focus:ring-indigo-500"
+                className="rounded border-slate-300 text-indigo-600 focus:ring-indigo-500"
               />
               Critical item
             </label>
@@ -694,7 +694,7 @@ function ChecklistItem({
             <button
               type="button"
               onClick={onCancelEdit}
-              className="bg-slate-300 dark:bg-slate-600 text-slate-700 dark:text-slate-200 px-3 py-1 rounded text-sm hover:bg-slate-400 dark:hover:bg-slate-500 transition-colors duration-200"
+              className="bg-slate-300 text-slate-700 px-3 py-1 rounded text-sm hover:bg-slate-400 transition-colors duration-200"
             >
               Cancel
             </button>
@@ -704,9 +704,9 @@ function ChecklistItem({
         <div className="flex items-start justify-between gap-3">
           <div className="flex-1">
             <div className="flex items-center gap-2 mb-1">
-              <h5 className="font-medium text-slate-800 dark:text-slate-100">{item.text}</h5>
+              <h5 className="font-medium text-slate-800">{item.text}</h5>
               {item.critical && (
-                <span className="px-2 py-1 bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200 text-xs font-medium rounded-full">
+                <span className="px-2 py-1 bg-red-100 text-red-800 text-xs font-medium rounded-full">
                   Critical
                 </span>
               )}
@@ -718,8 +718,8 @@ function ChecklistItem({
               onClick={() => onToggleCritical(item.id, item.critical)}
               className={`p-2 rounded-lg transition-colors duration-200 ${
                 item.critical
-                  ? 'bg-red-200 dark:bg-red-800 text-red-700 dark:text-red-200 hover:bg-red-300 dark:hover:bg-red-700'
-                  : 'bg-slate-200 dark:bg-slate-600 text-slate-700 dark:text-slate-200 hover:bg-slate-300 dark:hover:bg-slate-500'
+                  ? 'bg-red-200 text-red-700 hover:bg-red-300'
+                  : 'bg-slate-200 text-slate-700 hover:bg-slate-300'
               }`}
               title={item.critical ? 'Mark as normal' : 'Mark as critical'}
             >
@@ -729,7 +729,7 @@ function ChecklistItem({
             </button>
             <button
               onClick={onEdit}
-              className="p-2 bg-slate-200 dark:bg-slate-600 text-slate-700 dark:text-slate-200 rounded-lg hover:bg-slate-300 dark:hover:bg-slate-500 transition-colors duration-200"
+              className="p-2 bg-slate-200 text-slate-700 rounded-lg hover:bg-slate-300 transition-colors duration-200"
               title="Edit item"
             >
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -738,7 +738,7 @@ function ChecklistItem({
             </button>
             <button
               onClick={() => onDelete(item.id)}
-              className="p-2 bg-red-200 dark:bg-red-800 text-red-700 dark:text-red-200 rounded-lg hover:bg-red-300 dark:hover:bg-red-700 transition-colors duration-200"
+              className="p-2 bg-red-200 text-red-700 rounded-lg hover:bg-red-300 transition-colors duration-200"
               title="Delete item"
             >
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">

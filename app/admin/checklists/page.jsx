@@ -45,11 +45,11 @@ export default async function AdminChecklistsPage() {
     // If no user is logged in, show access denied
     if (!userId) {
       return (
-        <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 dark:from-slate-900 dark:via-slate-800 dark:to-indigo-900 flex items-center justify-center">
-          <div className="bg-white dark:bg-slate-800 rounded-xl shadow-lg p-8 max-w-md w-full mx-4">
+        <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 flex items-center justify-center">
+          <div className="bg-white rounded-xl shadow-lg p-8 max-w-md w-full mx-4">
             <div className="text-center">
-              <h2 className="text-2xl font-bold text-slate-800 dark:text-slate-100 mb-4">Access Denied</h2>
-              <p className="text-slate-600 dark:text-slate-300 mb-6">
+              <h2 className="text-2xl font-bold text-slate-800 mb-4">Access Denied</h2>
+              <p className="text-slate-600 mb-6">
                 You must be logged in to access the admin panel.
               </p>
               <Link href="/sign-in" className="bg-indigo-600 text-white px-6 py-3 rounded-lg hover:bg-indigo-700 transition-colors duration-200">
@@ -67,11 +67,11 @@ export default async function AdminChecklistsPage() {
     if (!myRole) {
       console.error('Admin checklists page error fetching role: No role returned')
       return (
-        <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 dark:from-slate-900 dark:via-slate-800 dark:to-indigo-900 flex items-center justify-center">
-          <div className="bg-white dark:bg-slate-800 rounded-xl shadow-lg p-8 max-w-md w-full mx-4">
+        <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 flex items-center justify-center">
+          <div className="bg-white rounded-xl shadow-lg p-8 max-w-md w-full mx-4">
             <div className="text-center">
-              <h2 className="text-2xl font-bold text-slate-800 dark:text-slate-100 mb-4">Error</h2>
-              <p className="text-slate-600 dark:text-slate-300 mb-6">
+              <h2 className="text-2xl font-bold text-slate-800 mb-4">Error</h2>
+              <p className="text-slate-600 mb-6">
                 Failed to retrieve your user role. Please try again.
               </p>
               <Link href="/" className="bg-indigo-600 text-white px-6 py-3 rounded-lg hover:bg-indigo-700 transition-colors duration-200">
@@ -88,11 +88,11 @@ export default async function AdminChecklistsPage() {
 
     if (!isAdmin) {
       return (
-        <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 dark:from-slate-900 dark:via-slate-800 dark:to-indigo-900 flex items-center justify-center">
-          <div className="bg-white dark:bg-slate-800 rounded-xl shadow-lg p-8 max-w-md w-full mx-4">
+        <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 flex items-center justify-center">
+          <div className="bg-white rounded-xl shadow-lg p-8 max-w-md w-full mx-4">
             <div className="text-center">
-              <h2 className="text-2xl font-bold text-slate-800 dark:text-slate-100 mb-4">Permission Denied</h2>
-              <p className="text-slate-600 dark:text-slate-300 mb-6">
+              <h2 className="text-2xl font-bold text-slate-800 mb-4">Permission Denied</h2>
+              <p className="text-slate-600 mb-6">
                 You do not have the necessary permissions to access the admin panel. Your current role is <span className="font-semibold capitalize">{myRole}</span>.
               </p>
               <Link href="/" className="bg-indigo-600 text-white px-6 py-3 rounded-lg hover:bg-indigo-700 transition-colors duration-200">
@@ -106,16 +106,16 @@ export default async function AdminChecklistsPage() {
 
     // Render the admin checklists management interface
     return (
-      <div className="p-4 sm:p-6 bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 dark:from-slate-900 dark:via-slate-800 dark:to-indigo-900 min-h-[calc(100vh-4rem)]">
+      <div className="p-4 sm:p-6 bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 min-h-[calc(100vh-4rem)]">
         {/* Page header */}
         <div className="mb-6 sm:mb-8">
           <div className="flex items-center gap-4 mb-4">
-            <Link href="/admin" className="text-indigo-600 dark:text-indigo-400 hover:text-indigo-700 dark:hover:text-indigo-300 transition-colors text-sm sm:text-base">
+            <Link href="/admin" className="text-indigo-600 hover:text-indigo-700 transition-colors text-sm sm:text-base">
               ← Back to Admin
             </Link>
           </div>
-          <h1 className="text-2xl sm:text-3xl font-bold text-slate-800 dark:text-slate-100 mb-2">Checklist Management</h1>
-          <p className="text-slate-600 dark:text-slate-300 text-sm sm:text-base">
+          <h1 className="text-2xl sm:text-3xl font-bold text-slate-800 mb-2">Checklist Management</h1>
+          <p className="text-slate-600 text-sm sm:text-base">
             Create and manage safety checklists with items. Toggle critical items and organize by category.
           </p>
         </div>
@@ -128,11 +128,11 @@ export default async function AdminChecklistsPage() {
   } catch (error) {
     console.error('Admin checklists page error:', error)
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 dark:from-slate-900 dark:via-slate-800 dark:to-indigo-900 flex items-center justify-center">
-        <div className="bg-white dark:bg-slate-800 rounded-xl shadow-lg p-8 max-w-md w-full mx-4">
+      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 flex items-center justify-center">
+        <div className="bg-white rounded-xl shadow-lg p-8 max-w-md w-full mx-4">
           <div className="text-center">
-            <h2 className="text-2xl font-bold text-slate-800 dark:text-slate-100 mb-4">Error</h2>
-            <p className="text-slate-600 dark:text-slate-300 mb-6">
+            <h2 className="text-2xl font-bold text-slate-800 mb-4">Error</h2>
+            <p className="text-slate-600 mb-6">
               An unexpected error occurred. Please try again later.
             </p>
             <Link href="/admin" className="bg-indigo-600 text-white px-6 py-3 rounded-lg hover:bg-indigo-700 transition-colors duration-200">

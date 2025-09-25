@@ -186,13 +186,13 @@ export default function CourseManager({ courses }) {
   return (
     <div className="p-4 space-y-6">
       {/* Header */}
-      <div className="bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-slate-200 dark:border-slate-700 p-6">
+      <div className="bg-white rounded-lg shadow-sm border border-slate-200 p-6">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           <div>
-            <h1 className="text-2xl font-bold text-slate-800 dark:text-slate-100 mb-2">
+            <h1 className="text-2xl font-bold text-slate-800 mb-2">
               Training Courses
             </h1>
-            <p className="text-slate-600 dark:text-slate-300">
+            <p className="text-slate-600">
               Manage training courses for your organization.
             </p>
           </div>
@@ -214,28 +214,28 @@ export default function CourseManager({ courses }) {
 
       {/* Messages */}
       {error && (
-        <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-4">
-          <p className="text-red-800 dark:text-red-200 text-sm">{error}</p>
+        <div className="bg-red-50 border border-red-200 rounded-lg p-4">
+          <p className="text-red-800 text-sm">{error}</p>
         </div>
       )}
 
       {success && (
-        <div className="bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg p-4">
-          <p className="text-green-800 dark:text-green-200 text-sm">{success}</p>
+        <div className="bg-green-50 border border-green-200 rounded-lg p-4">
+          <p className="text-green-800 text-sm">{success}</p>
         </div>
       )}
 
       {/* Create/Edit Form */}
       {(isCreating || editingCourse) && (
-        <div className="bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-slate-200 dark:border-slate-700 p-6">
-          <h2 className="text-xl font-semibold text-slate-800 dark:text-slate-100 mb-4">
+        <div className="bg-white rounded-lg shadow-sm border border-slate-200 p-6">
+          <h2 className="text-xl font-semibold text-slate-800 mb-4">
             {editingCourse ? 'Edit Course' : 'Create New Course'}
           </h2>
           
           <form onSubmit={editingCourse ? handleEditCourse : handleCreateCourse} className="space-y-4">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
+                <label className="block text-sm font-medium text-slate-700 mb-2">
                   Course Name *
                 </label>
                 <input
@@ -244,13 +244,13 @@ export default function CourseManager({ courses }) {
                   value={formData.name}
                   onChange={handleInputChange}
                   required
-                  className="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-slate-700 dark:text-slate-100"
+                  className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
                   placeholder="Enter course name"
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
+                <label className="block text-sm font-medium text-slate-700 mb-2">
                   Validity (Months)
                 </label>
                 <input
@@ -259,7 +259,7 @@ export default function CourseManager({ courses }) {
                   value={formData.validity_months}
                   onChange={handleInputChange}
                   min="1"
-                  className="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-slate-700 dark:text-slate-100"
+                  className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
                   placeholder="Enter validity in months (optional)"
                 />
               </div>
@@ -278,7 +278,7 @@ export default function CourseManager({ courses }) {
               <button
                 type="button"
                 onClick={resetForm}
-                className="bg-slate-200 dark:bg-slate-600 text-slate-700 dark:text-slate-200 px-6 py-2 rounded-lg hover:bg-slate-300 dark:hover:bg-slate-500 transition-colors"
+                className="bg-slate-200 text-slate-700 px-6 py-2 rounded-lg hover:bg-slate-300 transition-colors"
               >
                 Cancel
               </button>
@@ -291,19 +291,19 @@ export default function CourseManager({ courses }) {
       {courses.length > 0 ? (
         <div className="space-y-4">
           {courses.map((course) => (
-            <div key={course.id} className="bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-slate-200 dark:border-slate-700 p-6">
+            <div key={course.id} className="bg-white rounded-lg shadow-sm border border-slate-200 p-6">
               <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
                 <div className="flex-1">
                   <div className="flex items-start justify-between mb-3">
-                    <h3 className="text-lg font-semibold text-slate-800 dark:text-slate-100">
+                    <h3 className="text-lg font-semibold text-slate-800">
                       {course.name}
                     </h3>
-                    <span className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-900/40 dark:text-blue-200`}>
+                    <span className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800`}>
                       Course
                     </span>
                   </div>
                   
-                  <div className="space-y-2 text-sm text-slate-600 dark:text-slate-300">
+                  <div className="space-y-2 text-sm text-slate-600">
                     <p><span className="font-medium">Validity:</span> {getValidityDisplay(course.validity_months)}</p>
                   </div>
                 </div>
@@ -311,14 +311,14 @@ export default function CourseManager({ courses }) {
                 <div className="flex flex-col sm:flex-row gap-2">
                   <button
                     onClick={() => startEditing(course)}
-                    className="bg-slate-200 dark:bg-slate-600 text-slate-700 dark:text-slate-200 px-4 py-2 rounded-lg hover:bg-slate-300 dark:hover:bg-slate-500 transition-colors text-sm font-medium"
+                    className="bg-slate-200 text-slate-700 px-4 py-2 rounded-lg hover:bg-slate-300 transition-colors text-sm font-medium"
                   >
                     Edit
                   </button>
                   
                   <button
                     onClick={() => handleDeleteCourse(course.id)}
-                    className="bg-red-100 dark:bg-red-900/40 text-red-700 dark:text-red-200 px-4 py-2 rounded-lg hover:bg-red-200 dark:hover:bg-red-900/60 transition-colors text-sm font-medium"
+                    className="bg-red-100 text-red-700 px-4 py-2 rounded-lg hover:bg-red-200 transition-colors text-sm font-medium"
                   >
                     Delete
                   </button>
@@ -328,16 +328,16 @@ export default function CourseManager({ courses }) {
           ))}
         </div>
       ) : (
-        <div className="bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-slate-200 dark:border-slate-700 p-12 text-center">
-          <div className="w-16 h-16 bg-slate-100 dark:bg-slate-700 rounded-full flex items-center justify-center mx-auto mb-4">
+        <div className="bg-white rounded-lg shadow-sm border border-slate-200 p-12 text-center">
+          <div className="w-16 h-16 bg-slate-100 rounded-full flex items-center justify-center mx-auto mb-4">
             <svg className="w-8 h-8 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
             </svg>
           </div>
-          <h3 className="text-lg font-semibold text-slate-800 dark:text-slate-100 mb-2">
+          <h3 className="text-lg font-semibold text-slate-800 mb-2">
             No Training Courses Yet
           </h3>
-          <p className="text-slate-600 dark:text-slate-300 mb-6">
+          <p className="text-slate-600 mb-6">
             Create your first training course to get started.
           </p>
           <button

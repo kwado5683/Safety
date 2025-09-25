@@ -72,9 +72,9 @@ export default function InspectionsList({ inspections }) {
   // Get status color and text
   const getStatusInfo = (inspection) => {
     if (!inspection.submitted_at) {
-      return { color: 'text-yellow-600 dark:text-yellow-400', text: 'In Progress', bg: 'bg-yellow-100 dark:bg-yellow-900/20' }
+      return { color: 'text-yellow-600', text: 'In Progress', bg: 'bg-yellow-100' }
     }
-    return { color: 'text-green-600 dark:text-green-400', text: 'Completed', bg: 'bg-green-100 dark:bg-green-900/20' }
+    return { color: 'text-green-600', text: 'Completed', bg: 'bg-green-100' }
   }
 
   // Get stats display
@@ -83,10 +83,10 @@ export default function InspectionsList({ inspections }) {
     if (!stats) return 'Loading...'
     
     return (
-      <div className="text-xs text-slate-600 dark:text-slate-300">
+      <div className="text-xs text-slate-600">
         {stats.total || 0} items • {stats.passed || 0} passed • {stats.failed || 0} failed
         {stats.critical_fails > 0 && (
-          <span className="ml-2 text-red-600 dark:text-red-400 font-semibold">
+          <span className="ml-2 text-red-600 font-semibold">
             ({stats.critical_fails} critical)
           </span>
         )}
@@ -98,14 +98,14 @@ export default function InspectionsList({ inspections }) {
     return (
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {[...Array(6)].map((_, i) => (
-          <div key={i} className="bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 p-6 animate-pulse">
-            <div className="h-4 bg-slate-200 dark:bg-slate-700 rounded mb-2"></div>
-            <div className="h-3 bg-slate-200 dark:bg-slate-700 rounded mb-4 w-3/4"></div>
-            <div className="h-3 bg-slate-200 dark:bg-slate-700 rounded mb-2"></div>
-            <div className="h-3 bg-slate-200 dark:bg-slate-700 rounded mb-4 w-1/2"></div>
+          <div key={i} className="bg-white rounded-lg border border-slate-200 p-6 animate-pulse">
+            <div className="h-4 bg-slate-200 rounded mb-2"></div>
+            <div className="h-3 bg-slate-200 rounded mb-4 w-3/4"></div>
+            <div className="h-3 bg-slate-200 rounded mb-2"></div>
+            <div className="h-3 bg-slate-200 rounded mb-4 w-1/2"></div>
             <div className="flex gap-2">
-              <div className="h-8 bg-slate-200 dark:bg-slate-700 rounded w-20"></div>
-              <div className="h-8 bg-slate-200 dark:bg-slate-700 rounded w-24"></div>
+              <div className="h-8 bg-slate-200 rounded w-20"></div>
+              <div className="h-8 bg-slate-200 rounded w-24"></div>
             </div>
           </div>
         ))}
@@ -116,15 +116,15 @@ export default function InspectionsList({ inspections }) {
   if (inspections.length === 0) {
     return (
       <div className="text-center py-12">
-        <div className="mx-auto w-24 h-24 bg-slate-100 dark:bg-slate-800 rounded-full flex items-center justify-center mb-4">
-          <svg className="w-12 h-12 text-slate-400 dark:text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <div className="mx-auto w-24 h-24 bg-slate-100 rounded-full flex items-center justify-center mb-4">
+          <svg className="w-12 h-12 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
           </svg>
         </div>
-        <h3 className="text-lg font-semibold text-slate-900 dark:text-slate-100 mb-2">
+        <h3 className="text-lg font-semibold text-slate-900 mb-2">
           No Inspections Yet
         </h3>
-        <p className="text-slate-600 dark:text-slate-300 mb-6">
+        <p className="text-slate-600 mb-6">
           Start your first safety inspection to track compliance and identify issues.
         </p>
         <Link
@@ -147,14 +147,14 @@ export default function InspectionsList({ inspections }) {
         const stats = inspectionStats[inspection.id]
         
         return (
-          <div key={inspection.id} className="bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 p-6 hover:shadow-md transition-shadow">
+          <div key={inspection.id} className="bg-white rounded-lg border border-slate-200 p-6 hover:shadow-md transition-shadow">
             {/* Header */}
             <div className="flex items-start justify-between mb-4">
               <div className="flex-1">
-                <h3 className="text-lg font-semibold text-slate-900 dark:text-slate-100 mb-1">
+                <h3 className="text-lg font-semibold text-slate-900 mb-1">
                   {inspection.checklists?.name || 'Unknown Checklist'}
                 </h3>
-                <p className="text-sm text-slate-600 dark:text-slate-300">
+                <p className="text-sm text-slate-600">
                   {inspection.checklists?.category || 'No Category'}
                 </p>
               </div>
@@ -166,18 +166,18 @@ export default function InspectionsList({ inspections }) {
             {/* Inspection Details */}
             <div className="space-y-2 mb-4">
               <div className="flex justify-between text-sm">
-                <span className="text-slate-600 dark:text-slate-300">Started:</span>
-                <span className="text-slate-900 dark:text-slate-100">{formatDate(inspection.started_at)}</span>
+                <span className="text-slate-600">Started:</span>
+                <span className="text-slate-900">{formatDate(inspection.started_at)}</span>
               </div>
               {inspection.submitted_at && (
                 <div className="flex justify-between text-sm">
-                  <span className="text-slate-600 dark:text-slate-300">Completed:</span>
-                  <span className="text-slate-900 dark:text-slate-100">{formatDate(inspection.submitted_at)}</span>
+                  <span className="text-slate-600">Completed:</span>
+                  <span className="text-slate-900">{formatDate(inspection.submitted_at)}</span>
                 </div>
               )}
               <div className="flex justify-between text-sm">
-                <span className="text-slate-600 dark:text-slate-300">Inspector:</span>
-                <span className="text-slate-900 dark:text-slate-100">{inspection.inspector_id}</span>
+                <span className="text-slate-600">Inspector:</span>
+                <span className="text-slate-900">{inspection.inspector_id}</span>
               </div>
             </div>
 
@@ -191,7 +191,7 @@ export default function InspectionsList({ inspections }) {
               <button
                 onClick={() => window.open(`/api/inspections/${inspection.id}/pdf`, '_blank')}
                 disabled={!inspection.submitted_at}
-                className="flex-1 inline-flex items-center justify-center px-3 py-2 border border-slate-300 dark:border-slate-600 text-slate-700 dark:text-slate-300 text-sm font-medium rounded-md hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                className="flex-1 inline-flex items-center justify-center px-3 py-2 border border-slate-300 text-slate-700 text-sm font-medium rounded-md hover:bg-slate-50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />

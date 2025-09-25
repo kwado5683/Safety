@@ -81,10 +81,10 @@ export default function TaskManagement({ title = "Tasks" }) {
 
   const getPriorityColor = (priority) => {
     switch (priority) {
-      case 'high': return 'bg-red-100 text-red-800 dark:bg-red-900/20 dark:text-red-300'
-      case 'medium': return 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/20 dark:text-yellow-300'
-      case 'low': return 'bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-300'
-      default: return 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300'
+      case 'high': return 'bg-red-100 text-red-800'
+      case 'medium': return 'bg-yellow-100 text-yellow-800'
+      case 'low': return 'bg-green-100 text-green-800'
+      default: return 'bg-gray-100 text-gray-800'
     }
   }
 
@@ -99,13 +99,13 @@ export default function TaskManagement({ title = "Tasks" }) {
 
   if (loading) {
     return (
-      <div className="rounded-xl border p-6 shadow-lg bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700">
-        <h3 className="text-lg font-semibold mb-4 text-slate-900 dark:text-slate-100">
+      <div className="rounded-xl border p-6 shadow-lg bg-white border-slate-200">
+        <h3 className="text-lg font-semibold mb-4 text-slate-900">
           {title}
         </h3>
         <div className="flex items-center justify-center py-8">
           <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-indigo-600"></div>
-          <span className="ml-2 text-slate-600 dark:text-slate-300">Loading tasks...</span>
+          <span className="ml-2 text-slate-600">Loading tasks...</span>
         </div>
       </div>
     )
@@ -113,24 +113,24 @@ export default function TaskManagement({ title = "Tasks" }) {
 
   if (error) {
     return (
-      <div className="rounded-xl border p-6 shadow-lg bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700">
-        <h3 className="text-lg font-semibold mb-4 text-slate-900 dark:text-slate-100">
+      <div className="rounded-xl border p-6 shadow-lg bg-white border-slate-200">
+        <h3 className="text-lg font-semibold mb-4 text-slate-900">
           {title}
         </h3>
         <div className="text-center py-8">
-          <p className="text-red-600 dark:text-red-400">Error loading tasks: {error}</p>
+          <p className="text-red-600">Error loading tasks: {error}</p>
         </div>
       </div>
     )
   }
 
   return (
-    <div className="rounded-xl border p-6 shadow-lg bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700">
+    <div className="rounded-xl border p-6 shadow-lg bg-white border-slate-200">
       <div className="flex items-center justify-between mb-4">
-        <h3 className="text-lg font-semibold text-slate-900 dark:text-slate-100">
+        <h3 className="text-lg font-semibold text-slate-900">
           {title}
         </h3>
-        <span className="text-sm text-slate-500 dark:text-slate-400">
+        <span className="text-sm text-slate-500">
           {tasks.length} active
         </span>
       </div>
@@ -138,9 +138,9 @@ export default function TaskManagement({ title = "Tasks" }) {
       <div className="space-y-3">
         {tasks.length > 0 ? (
           tasks.map((task) => (
-            <div key={task.id} className="p-3 rounded-lg border border-slate-200 dark:border-slate-600 bg-slate-50 dark:bg-slate-700/50">
+            <div key={task.id} className="p-3 rounded-lg border border-slate-200 bg-slate-50">
               <div className="flex items-start justify-between mb-2">
-                <h4 className="font-medium text-slate-900 dark:text-slate-100 text-sm">
+                <h4 className="font-medium text-slate-900 text-sm">
                   {task.action_plan || task.title}
                 </h4>
                 <div className="flex gap-2">
@@ -153,7 +153,7 @@ export default function TaskManagement({ title = "Tasks" }) {
                 </div>
               </div>
               
-              <div className="flex items-center justify-between text-xs text-slate-500 dark:text-slate-400">
+              <div className="flex items-center justify-between text-xs text-slate-500">
                 <span>Assigned to: {task.responsible_officer || task.assignee || 'Unassigned'}</span>
                 <span>Due: {task.target_date ? new Date(task.target_date).toLocaleDateString() : task.dueDate}</span>
               </div>
@@ -161,20 +161,20 @@ export default function TaskManagement({ title = "Tasks" }) {
           ))
         ) : (
           <div className="text-center py-8">
-            <div className="w-12 h-12 bg-green-100 dark:bg-green-900/20 rounded-full flex items-center justify-center mx-auto mb-3">
-              <svg className="w-6 h-6 text-green-600 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-3">
+              <svg className="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
             </div>
-            <p className="text-slate-600 dark:text-slate-300">No active tasks</p>
-            <p className="text-xs text-slate-500 dark:text-slate-400">All caught up!</p>
+            <p className="text-slate-600">No active tasks</p>
+            <p className="text-xs text-slate-500">All caught up!</p>
           </div>
         )}
       </div>
 
       {tasks.length > 0 && (
-        <div className="mt-4 pt-4 border-t border-slate-200 dark:border-slate-600">
-          <button className="w-full text-sm text-indigo-600 dark:text-indigo-400 hover:text-indigo-700 dark:hover:text-indigo-300 font-medium">
+        <div className="mt-4 pt-4 border-t border-slate-200">
+          <button className="w-full text-sm text-indigo-600 hover:text-indigo-700 font-medium">
             View All Tasks →
           </button>
         </div>

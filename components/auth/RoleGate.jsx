@@ -98,7 +98,7 @@ export default function RoleGate({
     return (
       <div className="flex items-center justify-center p-8">
         <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-indigo-600"></div>
-        <span className="ml-2 text-slate-600 dark:text-slate-300">Loading...</span>
+        <span className="ml-2 text-slate-600">Loading...</span>
       </div>
     )
   }
@@ -106,7 +106,7 @@ export default function RoleGate({
   // Show error state
   if (error) {
     return (
-      <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-4">
+      <div className="bg-red-50 border border-red-200 rounded-lg p-4">
         <div className="flex">
           <div className="flex-shrink-0">
             <svg className="h-5 w-5 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -114,10 +114,10 @@ export default function RoleGate({
             </svg>
           </div>
           <div className="ml-3">
-            <h3 className="text-sm font-medium text-red-800 dark:text-red-200">
+            <h3 className="text-sm font-medium text-red-800">
               Error Loading Permissions
             </h3>
-            <div className="mt-2 text-sm text-red-700 dark:text-red-300">
+            <div className="mt-2 text-sm text-red-700">
               {error}
             </div>
           </div>
@@ -129,17 +129,17 @@ export default function RoleGate({
   // If no user is logged in
   if (!user) {
     return (
-      <div className="bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-lg p-6">
+      <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-6">
         <div className="text-center">
-          <div className="w-12 h-12 bg-yellow-100 dark:bg-yellow-900 rounded-full flex items-center justify-center mx-auto mb-4">
-            <svg className="w-6 h-6 text-yellow-600 dark:text-yellow-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <div className="w-12 h-12 bg-yellow-100 rounded-full flex items-center justify-center mx-auto mb-4">
+            <svg className="w-6 h-6 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z" />
             </svg>
           </div>
-          <h3 className="text-lg font-medium text-yellow-800 dark:text-yellow-200 mb-2">
+          <h3 className="text-lg font-medium text-yellow-800 mb-2">
             Please Sign In
           </h3>
-          <p className="text-yellow-700 dark:text-yellow-300 mb-4">
+          <p className="text-yellow-700 mb-4">
             You need to be logged in to access this content.
           </p>
           <Link 
@@ -163,25 +163,25 @@ export default function RoleGate({
 
   // User doesn't have required role - show access denied
   return (
-    <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-6">
+    <div className="bg-red-50 border border-red-200 rounded-lg p-6">
       <div className="text-center">
-        <div className="w-12 h-12 bg-red-100 dark:bg-red-900 rounded-full flex items-center justify-center mx-auto mb-4">
-          <svg className="w-6 h-6 text-red-600 dark:text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <div className="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
+          <svg className="w-6 h-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
           </svg>
         </div>
-        <h3 className="text-lg font-medium text-red-800 dark:text-red-200 mb-2">
+        <h3 className="text-lg font-medium text-red-800 mb-2">
           Not Permitted
         </h3>
-        <p className="text-red-700 dark:text-red-300 mb-2">
+        <p className="text-red-700 mb-2">
           {fallbackMessage}
         </p>
         {showRole && (
-          <p className="text-sm text-red-600 dark:text-red-400 mb-4">
+          <p className="text-sm text-red-600 mb-4">
             Your current role: <span className="font-medium capitalize">{userRole}</span>
           </p>
         )}
-        <p className="text-sm text-red-600 dark:text-red-400 mb-4">
+        <p className="text-sm text-red-600 mb-4">
           Required roles: <span className="font-medium">{roles.join(', ')}</span>
         </p>
         <Link 

@@ -73,9 +73,9 @@ export default function TrainingRecords({ trainingRecords, availableCourses, use
 
   // Get status color
   const getStatusColor = (expiryDate) => {
-    if (isExpired(expiryDate)) return 'bg-red-100 text-red-800 dark:bg-red-900/40 dark:text-red-200'
-    if (expiresSoon(expiryDate)) return 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/40 dark:text-yellow-200'
-    return 'bg-green-100 text-green-800 dark:bg-green-900/40 dark:text-green-200'
+    if (isExpired(expiryDate)) return 'bg-red-100 text-red-800'
+    if (expiresSoon(expiryDate)) return 'bg-yellow-100 text-yellow-800'
+    return 'bg-green-100 text-green-800'
   }
 
   // Get status text
@@ -235,13 +235,13 @@ export default function TrainingRecords({ trainingRecords, availableCourses, use
   return (
     <div className="p-4 space-y-6">
       {/* Header */}
-      <div className="bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-slate-200 dark:border-slate-700 p-6">
+      <div className="bg-white rounded-lg shadow-sm border border-slate-200 p-6">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           <div>
-            <h1 className="text-2xl font-bold text-slate-800 dark:text-slate-100 mb-2">
+            <h1 className="text-2xl font-bold text-slate-800 mb-2">
               My Training Records
             </h1>
-            <p className="text-slate-600 dark:text-slate-300">
+            <p className="text-slate-600">
               Track your training completion and certificates.
             </p>
           </div>
@@ -263,28 +263,28 @@ export default function TrainingRecords({ trainingRecords, availableCourses, use
 
       {/* Messages */}
       {error && (
-        <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-4">
-          <p className="text-red-800 dark:text-red-200 text-sm">{error}</p>
+        <div className="bg-red-50 border border-red-200 rounded-lg p-4">
+          <p className="text-red-800 text-sm">{error}</p>
         </div>
       )}
 
       {success && (
-        <div className="bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg p-4">
-          <p className="text-green-800 dark:text-green-200 text-sm">{success}</p>
+        <div className="bg-green-50 border border-green-200 rounded-lg p-4">
+          <p className="text-green-800 text-sm">{success}</p>
         </div>
       )}
 
       {/* Add/Edit Form */}
       {(isAdding || editingRecord) && (
-        <div className="bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-slate-200 dark:border-slate-700 p-6">
-          <h2 className="text-xl font-semibold text-slate-800 dark:text-slate-100 mb-4">
+        <div className="bg-white rounded-lg shadow-sm border border-slate-200 p-6">
+          <h2 className="text-xl font-semibold text-slate-800 mb-4">
             {editingRecord ? 'Edit Training Record' : 'Add New Training Record'}
           </h2>
           
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
+                <label className="block text-sm font-medium text-slate-700 mb-2">
                   Training Course *
                 </label>
                 <select
@@ -292,7 +292,7 @@ export default function TrainingRecords({ trainingRecords, availableCourses, use
                   value={formData.course_id}
                   onChange={handleInputChange}
                   required
-                  className="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-slate-700 dark:text-slate-100"
+                  className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
                 >
                   <option value="">Select a course</option>
                   {availableCourses.map(course => (
@@ -304,7 +304,7 @@ export default function TrainingRecords({ trainingRecords, availableCourses, use
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
+                <label className="block text-sm font-medium text-slate-700 mb-2">
                   Completion Date *
                 </label>
                 <input
@@ -313,12 +313,12 @@ export default function TrainingRecords({ trainingRecords, availableCourses, use
                   value={formData.completed_on}
                   onChange={handleInputChange}
                   required
-                  className="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-slate-700 dark:text-slate-100"
+                  className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
+                <label className="block text-sm font-medium text-slate-700 mb-2">
                   Expiry Date
                 </label>
                 <input
@@ -326,13 +326,13 @@ export default function TrainingRecords({ trainingRecords, availableCourses, use
                   name="expires_on"
                   value={formData.expires_on}
                   onChange={handleInputChange}
-                  className="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-slate-700 dark:text-slate-100"
+                  className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
                 />
               </div>
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
+              <label className="block text-sm font-medium text-slate-700 mb-2">
                 Certificate (PDF, JPG, PNG)
               </label>
               <input
@@ -340,10 +340,10 @@ export default function TrainingRecords({ trainingRecords, availableCourses, use
                 type="file"
                 accept=".pdf,.jpg,.jpeg,.png"
                 onChange={handleFileChange}
-                className="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-slate-700 dark:text-slate-100"
+                className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
               />
               {uploading && (
-                <p className="text-sm text-blue-600 dark:text-blue-400 mt-1">
+                <p className="text-sm text-blue-600 mt-1">
                   Uploading certificate...
                 </p>
               )}
@@ -362,7 +362,7 @@ export default function TrainingRecords({ trainingRecords, availableCourses, use
               <button
                 type="button"
                 onClick={resetForm}
-                className="bg-slate-200 dark:bg-slate-600 text-slate-700 dark:text-slate-200 px-6 py-2 rounded-lg hover:bg-slate-300 dark:hover:bg-slate-500 transition-colors"
+                className="bg-slate-200 text-slate-700 px-6 py-2 rounded-lg hover:bg-slate-300 transition-colors"
               >
                 Cancel
               </button>
@@ -375,11 +375,11 @@ export default function TrainingRecords({ trainingRecords, availableCourses, use
       {trainingRecords.length > 0 ? (
         <div className="space-y-4">
           {trainingRecords.map((record) => (
-            <div key={record.id} className="bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-slate-200 dark:border-slate-700 p-6">
+            <div key={record.id} className="bg-white rounded-lg shadow-sm border border-slate-200 p-6">
               <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
                 <div className="flex-1">
                   <div className="flex items-start justify-between mb-3">
-                    <h3 className="text-lg font-semibold text-slate-800 dark:text-slate-100">
+                    <h3 className="text-lg font-semibold text-slate-800">
                       {record.training_courses?.name || 'Unknown Course'}
                     </h3>
                     <span className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(record.expires_on)}`}>
@@ -387,7 +387,7 @@ export default function TrainingRecords({ trainingRecords, availableCourses, use
                     </span>
                   </div>
                   
-                  <div className="space-y-2 text-sm text-slate-600 dark:text-slate-300">
+                  <div className="space-y-2 text-sm text-slate-600">
                     {record.training_courses?.validity_months && (
                       <p><span className="font-medium">Validity:</span> {record.training_courses.validity_months} months</p>
                     )}
@@ -403,7 +403,7 @@ export default function TrainingRecords({ trainingRecords, availableCourses, use
                         href={record.certificate_url}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="inline-flex items-center text-indigo-600 dark:text-indigo-400 hover:text-indigo-700 dark:hover:text-indigo-300 text-sm font-medium"
+                        className="inline-flex items-center text-indigo-600 hover:text-indigo-700 text-sm font-medium"
                       >
                         <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
@@ -417,14 +417,14 @@ export default function TrainingRecords({ trainingRecords, availableCourses, use
                 <div className="flex flex-col sm:flex-row gap-2">
                   <button
                     onClick={() => startEditing(record)}
-                    className="bg-slate-200 dark:bg-slate-600 text-slate-700 dark:text-slate-200 px-4 py-2 rounded-lg hover:bg-slate-300 dark:hover:bg-slate-500 transition-colors text-sm font-medium"
+                    className="bg-slate-200 text-slate-700 px-4 py-2 rounded-lg hover:bg-slate-300 transition-colors text-sm font-medium"
                   >
                     Edit
                   </button>
                   
                   <button
                     onClick={() => handleDeleteRecord(record.id)}
-                    className="bg-red-100 dark:bg-red-900/40 text-red-700 dark:text-red-200 px-4 py-2 rounded-lg hover:bg-red-200 dark:hover:bg-red-900/60 transition-colors text-sm font-medium"
+                    className="bg-red-100 text-red-700 px-4 py-2 rounded-lg hover:bg-red-200 transition-colors text-sm font-medium"
                   >
                     Delete
                   </button>
@@ -434,16 +434,16 @@ export default function TrainingRecords({ trainingRecords, availableCourses, use
           ))}
         </div>
       ) : (
-        <div className="bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-slate-200 dark:border-slate-700 p-12 text-center">
-          <div className="w-16 h-16 bg-slate-100 dark:bg-slate-700 rounded-full flex items-center justify-center mx-auto mb-4">
+        <div className="bg-white rounded-lg shadow-sm border border-slate-200 p-12 text-center">
+          <div className="w-16 h-16 bg-slate-100 rounded-full flex items-center justify-center mx-auto mb-4">
             <svg className="w-8 h-8 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
             </svg>
           </div>
-          <h3 className="text-lg font-semibold text-slate-800 dark:text-slate-100 mb-2">
+          <h3 className="text-lg font-semibold text-slate-800 mb-2">
             No Training Records Yet
           </h3>
-          <p className="text-slate-600 dark:text-slate-300 mb-6">
+          <p className="text-slate-600 mb-6">
             Add your first training record to get started.
           </p>
           <button

@@ -1,6 +1,22 @@
 {
   "crons": [
     {
+      "path": "/api/cron/daily-incident-summary",
+      "schedule": "0 8 * * *"
+    },
+    {
+      "path": "/api/cron/weekly-compliance-report", 
+      "schedule": "0 9 * * 1"
+    },
+    {
+      "path": "/api/cron/monthly-training-expiry",
+      "schedule": "0 10 1 * *"
+    },
+    {
+      "path": "/api/cron/system-health-check",
+      "schedule": "0 7 * * 0"
+    },
+    {
       "path": "/api/training/reminders",
       "schedule": "0 9 * * *"
     }

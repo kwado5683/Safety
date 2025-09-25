@@ -237,17 +237,17 @@ export default function NewRiskAssessmentPage() {
 
   if (success) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 dark:from-slate-900 dark:via-slate-800 dark:to-indigo-900 flex items-center justify-center p-4">
-        <div className="bg-white dark:bg-slate-800 rounded-xl shadow-lg p-8 max-w-md w-full text-center">
-          <div className="w-12 h-12 bg-green-100 dark:bg-green-900/40 rounded-full flex items-center justify-center mx-auto mb-4">
-            <svg className="w-6 h-6 text-green-600 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 flex items-center justify-center p-4">
+        <div className="bg-white rounded-xl shadow-lg p-8 max-w-md w-full text-center">
+          <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+            <svg className="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
             </svg>
           </div>
-          <h3 className="text-lg font-semibold text-green-800 dark:text-green-200 mb-2">
+          <h3 className="text-lg font-semibold text-green-800 mb-2">
             Risk Assessment Published!
           </h3>
-          <p className="text-green-600 dark:text-green-300">
+          <p className="text-green-600">
             Redirecting back to admin panel...
           </p>
         </div>
@@ -262,7 +262,7 @@ export default function NewRiskAssessmentPage() {
         <div className="flex items-center gap-4">
           <Link
             href={backHref}
-            className="inline-flex items-center text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-slate-100 transition-colors"
+            className="inline-flex items-center text-slate-600 hover:text-slate-900 transition-colors"
           >
             <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
@@ -271,10 +271,10 @@ export default function NewRiskAssessmentPage() {
           </Link>
         </div>
 
-        <h1 className="text-3xl font-bold text-slate-900 dark:text-slate-100">New Risk Assessment</h1>
+        <h1 className="text-3xl font-bold text-slate-900">New Risk Assessment</h1>
 
       {/* Stepper */}
-      <div className="bg-white dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700">
+      <div className="bg-white border-b border-slate-200">
         <div className="px-4 py-4">
           <div className="flex items-center justify-between">
             {[1, 2, 3, 4, 5].map((step) => (
@@ -284,19 +284,19 @@ export default function NewRiskAssessmentPage() {
                     ? 'bg-indigo-600 text-white' 
                     : step < currentStep 
                       ? 'bg-green-500 text-white' 
-                      : 'bg-slate-200 dark:bg-slate-600 text-slate-600 dark:text-slate-300'
+                      : 'bg-slate-200 text-slate-600'
                 }`}>
                   {step < currentStep ? '✓' : step}
                 </div>
                 {step < 5 && (
                   <div className={`w-8 h-0.5 mx-2 ${
-                    step < currentStep ? 'bg-green-500' : 'bg-slate-200 dark:bg-slate-600'
+                    step < currentStep ? 'bg-green-500' : 'bg-slate-200'
                   }`} />
                 )}
               </div>
             ))}
           </div>
-          <div className="flex justify-between mt-2 text-xs text-slate-600 dark:text-slate-400">
+          <div className="flex justify-between mt-2 text-xs text-slate-600">
             <span>Details</span>
             <span>Hazards</span>
             <span>Risk Matrix</span>
@@ -309,65 +309,65 @@ export default function NewRiskAssessmentPage() {
       {/* Content */}
       <div className="p-4">
         {error && (
-          <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-4 mb-4">
-            <p className="text-red-800 dark:text-red-200 text-sm">{error}</p>
+          <div className="bg-red-50 border border-red-200 rounded-lg p-4 mb-4">
+            <p className="text-red-800 text-sm">{error}</p>
           </div>
         )}
 
         {/* Step 1: Details */}
         {currentStep === 1 && (
-          <div className="bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-slate-200 dark:border-slate-700 p-6">
-            <h2 className="text-xl font-semibold text-slate-800 dark:text-slate-100 mb-6">Risk Assessment Details</h2>
+          <div className="bg-white rounded-lg shadow-sm border border-slate-200 p-6">
+            <h2 className="text-xl font-semibold text-slate-800 mb-6">Risk Assessment Details</h2>
             
             <div className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
+                <label className="block text-sm font-medium text-slate-700 mb-2">
                   Title *
                 </label>
                 <input
                   type="text"
                   value={raData.title}
                   onChange={(e) => updateRaData({ title: e.target.value })}
-                  className="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-slate-700 dark:text-slate-100"
+                  className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
                   placeholder="Enter risk assessment title"
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
+                <label className="block text-sm font-medium text-slate-700 mb-2">
                   Activity *
                 </label>
                 <textarea
                   value={raData.activity}
                   onChange={(e) => updateRaData({ activity: e.target.value })}
-                  className="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-slate-700 dark:text-slate-100"
+                  className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
                   rows={3}
                   placeholder="Describe the activity being assessed"
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
+                <label className="block text-sm font-medium text-slate-700 mb-2">
                   Location *
                 </label>
                 <input
                   type="text"
                   value={raData.location}
                   onChange={(e) => updateRaData({ location: e.target.value })}
-                  className="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-slate-700 dark:text-slate-100"
+                  className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
                   placeholder="Enter location"
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
+                <label className="block text-sm font-medium text-slate-700 mb-2">
                   Assessor ID *
                 </label>
                 <input
                   type="text"
                   value={raData.assessor_id}
                   onChange={(e) => updateRaData({ assessor_id: e.target.value })}
-                  className="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-slate-700 dark:text-slate-100"
+                  className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
                   placeholder="Enter assessor ID"
                 />
               </div>
@@ -377,9 +377,9 @@ export default function NewRiskAssessmentPage() {
 
         {/* Step 2: Hazards */}
         {currentStep === 2 && (
-          <div className="bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-slate-200 dark:border-slate-700 p-6">
+          <div className="bg-white rounded-lg shadow-sm border border-slate-200 p-6">
             <div className="flex justify-between items-center mb-6">
-              <h2 className="text-xl font-semibold text-slate-800 dark:text-slate-100">Hazards</h2>
+              <h2 className="text-xl font-semibold text-slate-800">Hazards</h2>
               <button
                 onClick={() => updateRaData({ 
                   hazards: [...raData.hazards, { 
@@ -403,9 +403,9 @@ export default function NewRiskAssessmentPage() {
 
             <div className="space-y-4">
               {raData.hazards.map((hazard, index) => (
-                <div key={index} className="border border-slate-200 dark:border-slate-600 rounded-lg p-4">
+                <div key={index} className="border border-slate-200 rounded-lg p-4">
                   <div className="flex justify-between items-center mb-4">
-                    <h3 className="font-medium text-slate-800 dark:text-slate-100">Hazard {index + 1}</h3>
+                    <h3 className="font-medium text-slate-800">Hazard {index + 1}</h3>
                     <button
                       onClick={() => updateRaData({ 
                         hazards: raData.hazards.filter((_, i) => i !== index) 
@@ -418,7 +418,7 @@ export default function NewRiskAssessmentPage() {
 
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
-                      <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
+                      <label className="block text-sm font-medium text-slate-700 mb-2">
                         Hazard *
                       </label>
                       <input
@@ -429,13 +429,13 @@ export default function NewRiskAssessmentPage() {
                           newHazards[index].hazard = e.target.value
                           updateRaData({ hazards: newHazards })
                         }}
-                        className="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-slate-700 dark:text-slate-100"
+                        className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
                         placeholder="Describe the hazard"
                       />
                     </div>
 
                     <div>
-                      <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
+                      <label className="block text-sm font-medium text-slate-700 mb-2">
                         Who might be harmed? *
                       </label>
                       <input
@@ -446,7 +446,7 @@ export default function NewRiskAssessmentPage() {
                           newHazards[index].who_might_be_harmed = e.target.value
                           updateRaData({ hazards: newHazards })
                         }}
-                        className="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-slate-700 dark:text-slate-100"
+                        className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
                         placeholder="Who might be harmed"
                       />
                     </div>
@@ -455,7 +455,7 @@ export default function NewRiskAssessmentPage() {
               ))}
 
               {raData.hazards.length === 0 && (
-                <div className="text-center py-8 text-slate-500 dark:text-slate-400">
+                <div className="text-center py-8 text-slate-500">
                   <p>No hazards added yet. Click "Add Hazard" to get started.</p>
                 </div>
               )}
@@ -465,21 +465,21 @@ export default function NewRiskAssessmentPage() {
 
         {/* Step 3: Risk Matrix */}
         {currentStep === 3 && (
-          <div className="bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-slate-200 dark:border-slate-700 p-6">
-            <h2 className="text-xl font-semibold text-slate-800 dark:text-slate-100 mb-6">Risk Assessment Matrix</h2>
+          <div className="bg-white rounded-lg shadow-sm border border-slate-200 p-6">
+            <h2 className="text-xl font-semibold text-slate-800 mb-6">Risk Assessment Matrix</h2>
             
             <div className="space-y-6">
               {raData.hazards.map((hazard, index) => (
-                <div key={index} className="border border-slate-200 dark:border-slate-600 rounded-lg p-4">
-                  <h3 className="font-medium text-slate-800 dark:text-slate-100 mb-4">{hazard.hazard}</h3>
+                <div key={index} className="border border-slate-200 rounded-lg p-4">
+                  <h3 className="font-medium text-slate-800 mb-4">{hazard.hazard}</h3>
                   
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     {/* Before Controls */}
                     <div>
-                      <h4 className="font-medium text-slate-700 dark:text-slate-300 mb-3">Before Controls</h4>
+                      <h4 className="font-medium text-slate-700 mb-3">Before Controls</h4>
                       <div className="grid grid-cols-2 gap-4">
                         <div>
-                          <label className="block text-sm font-medium text-slate-600 dark:text-slate-400 mb-2">
+                          <label className="block text-sm font-medium text-slate-600 mb-2">
                             Likelihood (1-5)
                           </label>
                           <select
@@ -490,7 +490,7 @@ export default function NewRiskAssessmentPage() {
                               newHazards[index].risk_before = calculateRisk(parseInt(e.target.value), newHazards[index].severity_before)
                               updateRaData({ hazards: newHazards })
                             }}
-                            className="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-slate-700 dark:text-slate-100"
+                            className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
                           >
                             {[1, 2, 3, 4, 5].map(num => (
                               <option key={num} value={num}>{num}</option>
@@ -499,7 +499,7 @@ export default function NewRiskAssessmentPage() {
                         </div>
 
                         <div>
-                          <label className="block text-sm font-medium text-slate-600 dark:text-slate-400 mb-2">
+                          <label className="block text-sm font-medium text-slate-600 mb-2">
                             Severity (1-5)
                           </label>
                           <select
@@ -510,7 +510,7 @@ export default function NewRiskAssessmentPage() {
                               newHazards[index].risk_before = calculateRisk(newHazards[index].likelihood_before, parseInt(e.target.value))
                               updateRaData({ hazards: newHazards })
                             }}
-                            className="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-slate-700 dark:text-slate-100"
+                            className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
                           >
                             {[1, 2, 3, 4, 5].map(num => (
                               <option key={num} value={num}>{num}</option>
@@ -520,7 +520,7 @@ export default function NewRiskAssessmentPage() {
                       </div>
                       
                       <div className="mt-3">
-                        <div className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-${getRiskColor(hazard.risk_before)}-100 text-${getRiskColor(hazard.risk_before)}-800 dark:bg-${getRiskColor(hazard.risk_before)}-900/40 dark:text-${getRiskColor(hazard.risk_before)}-200`}>
+                        <div className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-${getRiskColor(hazard.risk_before)}-100 text-${getRiskColor(hazard.risk_before)}-800${getRiskColor(hazard.risk_before)}-900/40${getRiskColor(hazard.risk_before)}-200`}>
                           Risk: {hazard.risk_before} ({getRiskLevel(hazard.risk_before)})
                         </div>
                       </div>
@@ -528,10 +528,10 @@ export default function NewRiskAssessmentPage() {
 
                     {/* After Controls */}
                     <div>
-                      <h4 className="font-medium text-slate-700 dark:text-slate-300 mb-3">After Controls</h4>
+                      <h4 className="font-medium text-slate-700 mb-3">After Controls</h4>
                       <div className="grid grid-cols-2 gap-4">
                         <div>
-                          <label className="block text-sm font-medium text-slate-600 dark:text-slate-400 mb-2">
+                          <label className="block text-sm font-medium text-slate-600 mb-2">
                             Likelihood (1-5)
                           </label>
                           <select
@@ -542,7 +542,7 @@ export default function NewRiskAssessmentPage() {
                               newHazards[index].risk_after = calculateRisk(parseInt(e.target.value), newHazards[index].severity_after)
                               updateRaData({ hazards: newHazards })
                             }}
-                            className="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-slate-700 dark:text-slate-100"
+                            className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
                           >
                             {[1, 2, 3, 4, 5].map(num => (
                               <option key={num} value={num}>{num}</option>
@@ -551,7 +551,7 @@ export default function NewRiskAssessmentPage() {
                         </div>
 
                         <div>
-                          <label className="block text-sm font-medium text-slate-600 dark:text-slate-400 mb-2">
+                          <label className="block text-sm font-medium text-slate-600 mb-2">
                             Severity (1-5)
                           </label>
                           <select
@@ -562,7 +562,7 @@ export default function NewRiskAssessmentPage() {
                               newHazards[index].risk_after = calculateRisk(newHazards[index].likelihood_after, parseInt(e.target.value))
                               updateRaData({ hazards: newHazards })
                             }}
-                            className="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-slate-700 dark:text-slate-100"
+                            className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
                           >
                             {[1, 2, 3, 4, 5].map(num => (
                               <option key={num} value={num}>{num}</option>
@@ -572,7 +572,7 @@ export default function NewRiskAssessmentPage() {
                       </div>
                       
                       <div className="mt-3">
-                        <div className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-${getRiskColor(hazard.risk_after)}-100 text-${getRiskColor(hazard.risk_after)}-800 dark:bg-${getRiskColor(hazard.risk_after)}-900/40 dark:text-${getRiskColor(hazard.risk_after)}-200`}>
+                        <div className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-${getRiskColor(hazard.risk_after)}-100 text-${getRiskColor(hazard.risk_after)}-800${getRiskColor(hazard.risk_after)}-900/40${getRiskColor(hazard.risk_after)}-200`}>
                           Risk: {hazard.risk_after} ({getRiskLevel(hazard.risk_after)})
                         </div>
                       </div>
@@ -586,17 +586,17 @@ export default function NewRiskAssessmentPage() {
 
         {/* Step 4: Controls */}
         {currentStep === 4 && (
-          <div className="bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-slate-200 dark:border-slate-700 p-6">
-            <h2 className="text-xl font-semibold text-slate-800 dark:text-slate-100 mb-6">Controls</h2>
+          <div className="bg-white rounded-lg shadow-sm border border-slate-200 p-6">
+            <h2 className="text-xl font-semibold text-slate-800 mb-6">Controls</h2>
             
             <div className="space-y-6">
               {raData.hazards.map((hazard, index) => (
-                <div key={index} className="border border-slate-200 dark:border-slate-600 rounded-lg p-4">
-                  <h3 className="font-medium text-slate-800 dark:text-slate-100 mb-4">{hazard.hazard}</h3>
+                <div key={index} className="border border-slate-200 rounded-lg p-4">
+                  <h3 className="font-medium text-slate-800 mb-4">{hazard.hazard}</h3>
                   
                   <div className="space-y-4">
                     <div>
-                      <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
+                      <label className="block text-sm font-medium text-slate-700 mb-2">
                         Existing Controls *
                       </label>
                       <textarea
@@ -606,14 +606,14 @@ export default function NewRiskAssessmentPage() {
                           newHazards[index].existing_controls = e.target.value
                           updateRaData({ hazards: newHazards })
                         }}
-                        className="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-slate-700 dark:text-slate-100"
+                        className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
                         rows={3}
                         placeholder="Describe existing controls"
                       />
                     </div>
 
                     <div>
-                      <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
+                      <label className="block text-sm font-medium text-slate-700 mb-2">
                         Additional Controls
                       </label>
                       <textarea
@@ -623,7 +623,7 @@ export default function NewRiskAssessmentPage() {
                           newHazards[index].additional_controls = e.target.value
                           updateRaData({ hazards: newHazards })
                         }}
-                        className="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-slate-700 dark:text-slate-100"
+                        className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
                         rows={3}
                         placeholder="Describe additional controls needed"
                       />
@@ -637,14 +637,14 @@ export default function NewRiskAssessmentPage() {
 
         {/* Step 5: Review */}
         {currentStep === 5 && (
-          <div className="bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-slate-200 dark:border-slate-700 p-6">
-            <h2 className="text-xl font-semibold text-slate-800 dark:text-slate-100 mb-6">Review & Publish</h2>
+          <div className="bg-white rounded-lg shadow-sm border border-slate-200 p-6">
+            <h2 className="text-xl font-semibold text-slate-800 mb-6">Review & Publish</h2>
             
             <div className="space-y-6">
               {/* RA Details */}
               <div>
-                <h3 className="font-medium text-slate-800 dark:text-slate-100 mb-3">Risk Assessment Details</h3>
-                <div className="bg-slate-50 dark:bg-slate-700 rounded-lg p-4 space-y-2">
+                <h3 className="font-medium text-slate-800 mb-3">Risk Assessment Details</h3>
+                <div className="bg-slate-50 rounded-lg p-4 space-y-2">
                   <p><span className="font-medium">Title:</span> {raData.title}</p>
                   <p><span className="font-medium">Activity:</span> {raData.activity}</p>
                   <p><span className="font-medium">Location:</span> {raData.location}</p>
@@ -654,19 +654,19 @@ export default function NewRiskAssessmentPage() {
 
               {/* Hazards Summary */}
               <div>
-                <h3 className="font-medium text-slate-800 dark:text-slate-100 mb-3">Hazards Summary</h3>
+                <h3 className="font-medium text-slate-800 mb-3">Hazards Summary</h3>
                 <div className="space-y-3">
                   {raData.hazards.map((hazard, index) => (
-                    <div key={index} className="bg-slate-50 dark:bg-slate-700 rounded-lg p-4">
-                      <h4 className="font-medium text-slate-800 dark:text-slate-100 mb-2">{hazard.hazard}</h4>
-                      <p className="text-sm text-slate-600 dark:text-slate-400 mb-2">
+                    <div key={index} className="bg-slate-50 rounded-lg p-4">
+                      <h4 className="font-medium text-slate-800 mb-2">{hazard.hazard}</h4>
+                      <p className="text-sm text-slate-600 mb-2">
                         <span className="font-medium">Who might be harmed:</span> {hazard.who_might_be_harmed}
                       </p>
                       <div className="flex gap-4 text-sm">
-                        <span className={`px-2 py-1 rounded bg-${getRiskColor(hazard.risk_before)}-100 text-${getRiskColor(hazard.risk_before)}-800 dark:bg-${getRiskColor(hazard.risk_before)}-900/40 dark:text-${getRiskColor(hazard.risk_before)}-200`}>
+                        <span className={`px-2 py-1 rounded bg-${getRiskColor(hazard.risk_before)}-100 text-${getRiskColor(hazard.risk_before)}-800${getRiskColor(hazard.risk_before)}-900/40${getRiskColor(hazard.risk_before)}-200`}>
                           Before: {hazard.risk_before} ({getRiskLevel(hazard.risk_before)})
                         </span>
-                        <span className={`px-2 py-1 rounded bg-${getRiskColor(hazard.risk_after)}-100 text-${getRiskColor(hazard.risk_after)}-800 dark:bg-${getRiskColor(hazard.risk_after)}-900/40 dark:text-${getRiskColor(hazard.risk_after)}-200`}>
+                        <span className={`px-2 py-1 rounded bg-${getRiskColor(hazard.risk_after)}-100 text-${getRiskColor(hazard.risk_after)}-800${getRiskColor(hazard.risk_after)}-900/40${getRiskColor(hazard.risk_after)}-200`}>
                           After: {hazard.risk_after} ({getRiskLevel(hazard.risk_after)})
                         </span>
                       </div>
@@ -701,7 +701,7 @@ export default function NewRiskAssessmentPage() {
           <button
             onClick={prevStep}
             disabled={currentStep === 1}
-            className="px-6 py-3 bg-slate-200 dark:bg-slate-600 text-slate-700 dark:text-slate-200 rounded-lg hover:bg-slate-300 dark:hover:bg-slate-500 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            className="px-6 py-3 bg-slate-200 text-slate-700 rounded-lg hover:bg-slate-300 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
           >
             Previous
           </button>

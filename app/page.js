@@ -36,6 +36,7 @@ import DepartmentRanking from '@/components/DepartmentRanking'
 import TaskManagement from '@/components/TaskManagement'
 import AlertSystem from '@/components/AlertSystem'
 import { BarChart, PieChart } from '@/components/Chart'
+import PullToRefresh from '@/components/mobile/PullToRefresh'
 
 // Main dashboard component
 export default function Dashboard() {
@@ -90,10 +91,10 @@ export default function Dashboard() {
         if (loading || !isLoaded) {
           return (
             <Layout>
-              <div className="p-6 bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700">
+              <div className="p-6 bg-white rounded-xl border border-slate-200">
                 <div className="flex items-center justify-center py-12">
                   <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-indigo-600"></div>
-                  <span className="ml-3 text-slate-600 dark:text-slate-300">Loading dashboard...</span>
+                  <span className="ml-3 text-slate-600">Loading dashboard...</span>
                 </div>
               </div>
             </Layout>
@@ -104,17 +105,17 @@ export default function Dashboard() {
         if (error) {
           return (
             <Layout>
-              <div className="p-6 bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700">
+              <div className="p-6 bg-white rounded-xl border border-slate-200">
                 <div className="text-center py-12">
-                  <div className="w-16 h-16 bg-red-100 dark:bg-red-900 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <svg className="w-8 h-8 text-red-600 dark:text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <svg className="w-8 h-8 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
                   </div>
-                  <h2 className="text-xl font-semibold text-slate-900 dark:text-slate-100 mb-2">
+                  <h2 className="text-xl font-semibold text-slate-900 mb-2">
                     Error Loading Dashboard
                   </h2>
-                  <p className="text-slate-600 dark:text-slate-300 mb-6">
+                  <p className="text-slate-600 mb-6">
                     {error}
                   </p>
                   <button 
@@ -135,16 +136,28 @@ export default function Dashboard() {
         // Main dashboard content
         return (
           <Layout>
-            {/* Enhanced Header with Date Filters */}
-            <EnhancedHeader 
-              onDateFilterChange={handleDateFilterChange}
-              notificationCount={4}
-            />
+            {/* Main content container */}
+            <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50">
+              {/* Enhanced Header with Date Filters */}
+              <EnhancedHeader 
+                onDateFilterChange={handleDateFilterChange}
+                notificationCount={4}
+              />
 
-            {/* Welcome section for visitors */}
+              {/* Main content wrapper with pull-to-refresh */}
+              <PullToRefresh 
+                onRefresh={async () => {
+                  // Refresh dashboard data
+                  if (typeof window !== 'undefined') {
+                    window.location.reload()
+                  }
+                }}
+              >
+                <div className="p-6">
+                {/* Welcome section for visitors */}
             {!user && (
-              <div className="mb-8 p-4 rounded-lg bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700">
-                <p className="text-sm mb-2 text-slate-700 dark:text-slate-300">
+              <div className="mb-8 p-4 rounded-lg bg-slate-50 border border-slate-200">
+                <p className="text-sm mb-2 text-slate-700">
                   <strong>👋 Welcome, visitor!</strong> You&apos;re viewing our demo dashboard. 
                   Sign up to access the full safety management system.
                 </p>
@@ -157,7 +170,7 @@ export default function Dashboard() {
                   </Link>
                   <Link 
                     href="/sign-in" 
-                    className="text-indigo-600 dark:text-indigo-400 px-4 py-2 rounded-lg hover:bg-indigo-50 dark:hover:bg-indigo-900/20 transition-colors text-sm font-medium border border-indigo-200 dark:border-indigo-800"
+                    className="text-indigo-600 px-4 py-2 rounded-lg hover:bg-indigo-50 transition-colors text-sm font-medium border border-indigo-200"
                   >
                     Sign In
                   </Link>
@@ -166,7 +179,7 @@ export default function Dashboard() {
             )}
 
             {/* Enhanced KPI cards with real data */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8 p-6">
               <KPI 
                 label="Incidents Reported" 
                 value={kpis.openIncidents ?? 12} 
@@ -215,8 +228,8 @@ export default function Dashboard() {
               </div>
 
             {/* Gauge Chart for Compliance */}
-            <div className="rounded-xl border p-6 shadow-lg hover:shadow-xl transition-all duration-300 bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700">
-              <h3 className="text-lg font-semibold mb-4 text-slate-900 dark:text-slate-100">
+            <div className="rounded-xl border p-6 shadow-lg hover:shadow-xl transition-all duration-300 bg-white border-slate-200">
+              <h3 className="text-lg font-semibold mb-4 text-slate-900">
                 Safety Compliance
               </h3>
               <div className="flex justify-center">
@@ -253,8 +266,8 @@ export default function Dashboard() {
               )}
 
               {/* Top Causes Chart */}
-              <div className="rounded-xl border p-6 shadow-lg hover:shadow-xl transition-all duration-300 bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700">
-                <h3 className="text-lg font-semibold mb-4 text-slate-900 dark:text-slate-100">
+              <div className="rounded-xl border p-6 shadow-lg hover:shadow-xl transition-all duration-300 bg-white border-slate-200">
+                <h3 className="text-lg font-semibold mb-4 text-slate-900">
                   Top Causes of Incidents
                 </h3>
                 <div className="space-y-4">
@@ -265,24 +278,28 @@ export default function Dashboard() {
                     { cause: 'Other', percentage: 30, color: 'bg-gray-300' }
                   ].map((item, index) => (
                     <div key={index} className="flex items-center gap-3">
-                      <div className="w-20 text-sm font-medium text-slate-900 dark:text-slate-100">
+                      <div className="w-20 text-sm font-medium text-slate-900">
                         {item.cause}
                       </div>
                       <div className="flex-1">
-                        <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-3">
+                        <div className="w-full bg-gray-200 rounded-full h-3">
                           <div
                             className={`h-3 rounded-full transition-all duration-1000 ${item.color}`}
                             style={{ width: `${item.percentage}%` }}
                           />
                         </div>
                       </div>
-                      <div className="w-12 text-right text-sm font-semibold text-slate-600 dark:text-slate-300">
+                      <div className="w-12 text-right text-sm font-semibold text-slate-600">
                         {item.percentage}%
                       </div>
                     </div>
                   ))}
                 </div>
               </div>
+            </div>
+            
+                </div>
+              </PullToRefresh>
             </div>
           </Layout>
         )
