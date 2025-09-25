@@ -41,11 +41,10 @@ const NotificationBell = ({ count = 0 }) => (
   <div className="relative">
     <button className="p-2 rounded-lg hover:bg-gray-100 transition-colors">
       <svg 
-        className="w-6 h-6" 
+        className="w-6 h-6 text-slate-600" 
         fill="none" 
         stroke="currentColor" 
         viewBox="0 0 24 24"
-        style={{ color: 'var(--muted-foreground)' }}
       >
         <path 
           strokeLinecap="round" 
@@ -71,7 +70,7 @@ const UserProfile = ({ user }) => (
         {user?.firstName?.charAt(0) || user?.emailAddresses?.[0]?.emailAddress?.charAt(0) || 'U'}
       </span>
     </div>
-    <span className="text-sm font-medium hidden sm:block" style={{ color: 'var(--foreground)' }}>
+    <span className="text-sm font-medium hidden sm:block text-slate-800">
       {user?.firstName || 'User'}
     </span>
   </div>
@@ -81,16 +80,13 @@ export default function EnhancedHeader({ onDateFilterChange, notificationCount =
   const { user } = useUser()
 
   return (
-    <header className="sticky top-0 z-50 bg-white shadow-sm border-b backdrop-blur-sm" style={{ 
-      backgroundColor: 'var(--card)',
-      borderColor: 'var(--border)' 
-    }}>
+    <header className="sticky top-0 z-50 backdrop-blur-md bg-white/70 shadow-lg">
       <div className="px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           {/* Left side - Logo and Title */}
           <div className="flex items-center gap-3">
             <ShieldIcon className="w-8 h-8 text-blue-600" />
-            <h1 className="text-xl font-bold" style={{ color: 'var(--foreground)' }}>
+            <h1 className="text-xl font-bold text-slate-800">
               Safety Dashboard
             </h1>
           </div>

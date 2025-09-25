@@ -135,7 +135,7 @@ export default function DashboardLayout({ children }) {
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50">
       {/* Header - contains app title and user actions - STICKY */}
-      <header className="sticky top-0 z-50 h-16 backdrop-blur-sm border-b border-slate-200 bg-white/80 flex items-center justify-between px-4 sm:px-6 shadow-sm">
+      <header className="sticky top-0 z-50 h-16 backdrop-blur-md bg-white/70 flex items-center justify-between px-4 sm:px-6 shadow-lg">
         {/* App title with gradient text */}
         <div className="font-bold text-xl tracking-tight bg-gradient-to-r from-indigo-600 to-blue-600 bg-clip-text text-transparent">
           Safety Dashboard
@@ -174,7 +174,7 @@ export default function DashboardLayout({ children }) {
       {/* Main content area with sidebar and page content */}
       <div className="flex relative">
         {/* Sidebar navigation - hidden on mobile, visible on desktop - STICKY */}
-        <aside className="hidden md:block w-64 shrink-0 backdrop-blur-sm border-r border-slate-200 bg-white/80 h-[calc(100vh-4rem)] p-4 shadow-sm fixed left-0 top-16 z-40 overflow-y-auto">
+        <aside className="hidden md:block w-64 shrink-0 backdrop-blur-md bg-white/60 h-[calc(100vh-4rem)] p-4 shadow-xl fixed left-0 top-16 z-40 overflow-y-auto">
           {/* Navigation menu */}
           <nav className="space-y-2">
             {/* Dashboard link */}

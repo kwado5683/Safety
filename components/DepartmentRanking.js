@@ -51,11 +51,8 @@ export default function DepartmentRanking({ title = "Department Safety Ranking",
   }
 
   return (
-    <div className="rounded-xl border p-6 shadow-lg hover:shadow-xl transition-all duration-300" style={{
-      backgroundColor: 'var(--card)',
-      borderColor: 'var(--border)'
-    }}>
-      <h3 className="text-lg font-semibold mb-4" style={{ color: 'var(--foreground)' }}>
+    <div className="rounded-xl backdrop-blur-md bg-white/70 p-6 shadow-xl hover:shadow-2xl transition-all duration-300 border border-white/20">
+      <h3 className="text-lg font-semibold mb-4 text-slate-800">
         {title}
       </h3>
       
@@ -63,7 +60,7 @@ export default function DepartmentRanking({ title = "Department Safety Ranking",
         {departmentsWithColors.map((dept, index) => (
           <div key={dept.name} className="flex items-center gap-3">
             {/* Department Name */}
-            <div className="w-20 text-sm font-medium" style={{ color: 'var(--foreground)' }}>
+            <div className="w-20 text-sm font-medium text-slate-800">
               {dept.name}
             </div>
             
@@ -86,23 +83,23 @@ export default function DepartmentRanking({ title = "Department Safety Ranking",
       </div>
 
       {/* Performance Legend */}
-      <div className="mt-4 pt-4 border-t" style={{ borderColor: 'var(--border)' }}>
+      <div className="mt-4 pt-4 border-t border-white/30">
         <div className="flex items-center justify-between text-xs">
           <div className="flex items-center gap-1">
             <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-            <span style={{ color: 'var(--muted-foreground)' }}>Excellent (90-100)</span>
+            <span className="text-slate-600">Excellent (90-100)</span>
           </div>
           <div className="flex items-center gap-1">
             <div className="w-2 h-2 bg-yellow-500 rounded-full"></div>
-            <span style={{ color: 'var(--muted-foreground)' }}>Good (70-89)</span>
+            <span className="text-slate-600">Good (70-89)</span>
           </div>
           <div className="flex items-center gap-1">
             <div className="w-2 h-2 bg-orange-500 rounded-full"></div>
-            <span style={{ color: 'var(--muted-foreground)' }}>Fair (50-69)</span>
+            <span className="text-slate-600">Fair (50-69)</span>
           </div>
           <div className="flex items-center gap-1">
             <div className="w-2 h-2 bg-red-500 rounded-full"></div>
-            <span style={{ color: 'var(--muted-foreground)' }}>Poor (0-49)</span>
+            <span className="text-slate-600">Poor (0-49)</span>
           </div>
         </div>
       </div>

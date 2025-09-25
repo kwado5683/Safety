@@ -120,7 +120,7 @@ export default function Dashboard() {
         if (loading || !isLoaded) {
           return (
             <Layout>
-              <div className="p-6 bg-white rounded-xl border border-slate-200">
+              <div className="p-6 backdrop-blur-md bg-white/70 rounded-xl border border-white/20 shadow-xl">
                 <div className="flex items-center justify-center py-12">
                   <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-indigo-600"></div>
                   <span className="ml-3 text-slate-600">Loading dashboard...</span>
@@ -134,7 +134,7 @@ export default function Dashboard() {
         if (error) {
           return (
             <Layout>
-              <div className="p-6 bg-white rounded-xl border border-slate-200">
+              <div className="p-6 backdrop-blur-md bg-white/70 rounded-xl border border-white/20 shadow-xl">
                 <div className="text-center py-12">
                   <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
                     <svg className="w-8 h-8 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -185,7 +185,7 @@ export default function Dashboard() {
                 <div className="p-6">
                 {/* Welcome section for visitors */}
             {!user && (
-              <div className="mb-8 p-4 rounded-lg bg-slate-50 border border-slate-200">
+              <div className="mb-8 p-4 rounded-lg backdrop-blur-sm bg-white/60 border border-white/30 shadow-lg">
                 <p className="text-sm mb-2 text-slate-700">
                   <strong>👋 Welcome, visitor!</strong> You&apos;re viewing our demo dashboard. 
                   Sign up to access the full safety management system.
@@ -257,7 +257,7 @@ export default function Dashboard() {
               </div>
 
             {/* Gauge Chart for Compliance */}
-            <div className="rounded-xl border p-6 shadow-lg hover:shadow-xl transition-all duration-300 bg-white border-slate-200">
+            <div className="rounded-xl backdrop-blur-md bg-white/70 p-6 shadow-xl hover:shadow-2xl transition-all duration-300 border border-white/20">
               <h3 className="text-lg font-semibold mb-4 text-slate-900">
                 Safety Compliance
               </h3>
@@ -304,7 +304,7 @@ export default function Dashboard() {
               )}
 
               {/* Top Causes Chart - NOW USING REAL DATA */}
-              <div className="rounded-xl border p-6 shadow-lg hover:shadow-xl transition-all duration-300 bg-white border-slate-200">
+              <div className="rounded-xl backdrop-blur-md bg-white/70 p-6 shadow-xl hover:shadow-2xl transition-all duration-300 border border-white/20">
                 <h3 className="text-lg font-semibold mb-4 text-slate-900">
                   Top Causes of Incidents
                 </h3>

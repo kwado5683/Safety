@@ -75,11 +75,8 @@ export default function HeatMapWidget({ title = "Heat Map", locationData = {} })
   }
 
   return (
-    <div className="rounded-xl border p-6 shadow-lg hover:shadow-xl transition-all duration-300" style={{
-      backgroundColor: 'var(--card)',
-      borderColor: 'var(--border)'
-    }}>
-      <h3 className="text-lg font-semibold mb-4" style={{ color: 'var(--foreground)' }}>
+    <div className="rounded-xl backdrop-blur-md bg-white/70 p-6 shadow-xl hover:shadow-2xl transition-all duration-300 border border-white/20">
+      <h3 className="text-lg font-semibold mb-4 text-slate-800">
         {title}
       </h3>
       
@@ -128,26 +125,26 @@ export default function HeatMapWidget({ title = "Heat Map", locationData = {} })
       <div className="flex items-center justify-center gap-4 text-sm">
         <div className="flex items-center gap-1">
           <div className="w-3 h-3 bg-red-500 rounded"></div>
-          <span style={{ color: 'var(--muted-foreground)' }}>High Risk</span>
+          <span className="text-slate-600">High Risk</span>
         </div>
         <div className="flex items-center gap-1">
           <div className="w-3 h-3 bg-yellow-500 rounded"></div>
-          <span style={{ color: 'var(--muted-foreground)' }}>Medium Risk</span>
+          <span className="text-slate-600">Medium Risk</span>
         </div>
         <div className="flex items-center gap-1">
           <div className="w-3 h-3 bg-green-500 rounded"></div>
-          <span style={{ color: 'var(--muted-foreground)' }}>Low Risk</span>
+          <span className="text-slate-600">Low Risk</span>
         </div>
       </div>
 
       {/* Hover Information */}
       {hoveredArea && (
-        <div className="mt-4 p-3 bg-gray-50 rounded-lg">
+        <div className="mt-4 p-3 backdrop-blur-sm bg-white/50 rounded-lg border border-white/30 shadow-lg">
           <div className="text-sm">
-            <div className="font-semibold" style={{ color: 'var(--foreground)' }}>
+            <div className="font-semibold text-slate-800">
               {hoveredArea.name}
             </div>
-            <div style={{ color: 'var(--muted-foreground)' }}>
+            <div className="text-slate-600">
               Incidents: {hoveredArea.incidents} | Risk Level: {hoveredArea.risk}
             </div>
           </div>
